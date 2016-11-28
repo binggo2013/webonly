@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文章管理</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/base.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="libs/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="public/scripts/article.js"></script>
+<script src="public/scripts/admin.js"></script>
+<script src="public/scripts/tools.js"></script>
+<link href="public/styles/admin.css" rel="stylesheet">
+<link href="public/styles/base.css" rel="stylesheet">
+</head>
+<body>
+<!--modal模态框开始  -->
+<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
+			</div>
+			<div class="modal-body body">
+				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
+			</div>
+			<div class="modal-footer">
+				<a href="" type="button" class="btn btn-success" id="true">确定</a>
+				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
+			</div>
+</div>
+<!--modal模态框结束  -->
+{if $show}
+<div class="row">
+<div class="col-md-12">
+	<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=article&action=show'>文章管理</a></li>
+			<li class="active">显示文章</li>
+			<li><a href="?a=article&a=article&action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li>
+	</ul>
+		<table class="table table-bordered table-striped table-hover table-condensed">
+		<form action="?a=article&action=deleteAll" method="post">
+			<tr>
+				<td>编号</td>
+				<td>标题</td>
+				<td>属性</td>
+				<td>栏目</td>
+				<td>浏览量</td>
+				<td>发布时间</td>
+				<td>显示|隐藏</td>
+				<td>操作</td>
+				<td><input type="checkbox" id="selectBar"></td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$key+$num}</td>
+				<td>{$value->title|truncate:10:".."}</td>
+				<td>{$value->attr}</td>
+				<td>{$value->nid}</td>
+				<td>{$value->pageview}</td>
+				<td>{$value->date}</td>
+				<td>{$value->state}</td>
+				<td><a href="?a=article&action=update&id={$value->id}">修改</a><a href="?a=article&action=delete&id={$value->id}" class="deleteBtn">删除</a></td>
+				<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+			</tr>
+			{/foreach}
+			<tr>
+				<td colspan="9" class='text-right'><input type="submit" class="btn btn-success" name="send" value="全删"></td>
+			</tr>
+			{else}
+			<tr><td colspan="9">暂无文章</td></tr>
+			{/if}
+			</form>
+		</table>
+</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-center">
+	<form method="get" style="display:inline">
+		<input type="hidden" name="action" value="show">
+		<input type="hidden" name="a" value="article">
+		<select name="nid" class="input-sm">
+		<option value="0">所有栏目</option>.
+		{$nav}
+		</select>
+		<input type="submit" name="send" value="提交" class="btn btn-success">&nbsp;&nbsp;
+	</form>
+	{$page}
+	</div>
+</div>
+{/if}
+{if $add}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=article&action=show'>文章管理</a></li>
+			<li class="active">添加文章</li>
+			<!-- <li><a href="?action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li> -->
+		</ul>
+		<form method="post" enctype="multipart/form-data">
+		<table class="table table-bordered table-striped table-hover table-condensed">				
+				<tr class="text-center"><td colspan="2" id="feedback"></td></tr>
+				<tr>
+					<td class="text-right">所属的栏目</td>
+					<td>
+						<select name="nid" class="form-control input-sm inline-block" id="nav" style="width:160px;">
+						<option value="0">选择文章所属的栏目</option>
+						 {$nav}
+						</select>(<span class="glyphicon glyphicon-asterisk text-alert"></span>)
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">文章标题</td><td><input type="text" name="title" class="form-control"></td>
+				</tr>
+				<tr>
+					<td class="text-right">文章属性</td>
+					<td>
+						<input type="checkbox" value="headline" name="attr[]">头条
+						<input type="checkbox" value="recommend" name="attr[]">推荐
+						<!--breaking news  -->
+						<input type="checkbox" value="focus" name="attr[]">焦点
+						<input type="checkbox" value="topic" name="attr[]" disabled>专题
+						<input type="checkbox" value="pickup" name="attr[]" disabled>精选
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">缩略图</td>
+					<td class=".reg">
+						<img src="public/uploads/article/default.jpg" class="img-circle" style="width:80px;height:80px;"><a href="javascript:void(0)" id="iconBtn">太丑了，换一张</a>						
+						<input type="file" name="thumbnail" class="form-control" id="reg_icon" accept="image/*">
+					</td>
+				</tr>	
+				<tr>
+					<td class="text-right">书籍广告</td>
+					<td>
+						<select name="cid" class="form-control input-sm inline-block" id="cat" style="width:160px;">
+						<option value="0">图书分类</option>
+						 {$category}
+						</select>(<span class="glyphicon glyphicon-asterisk text-alert"></span>)
+					</td>
+				</tr>			
+				<tr>
+					<td class="text-right">Tag</td><td><input type="text" name="tag" class="form-control"></td>
+				</tr>
+				<tr>
+					<td class="text-right">作者</td><td><input type="text" name="author" class="form-control" value="Kong"></td>
+				</tr>
+				<tr>
+					<td class="text-right">来源</td><td><input type="text" name="source" class="form-control"></td>
+				</tr>
+				<tr>
+					<td class="text-right">导语</td><td><textarea name="lead" class="form-control"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					 <textarea rows="" cols="" name="content" id="content" style="display:none;"></textarea>
+						<script id="editor" type="text/plain" style="width:100%"></script>
+						<script type="text/javascript">    
+							var ue = UE.getEditor('editor');	
+							$(function(){
+								$("#nav").change(function(){
+									$(".text-alert").html("");
+								});
+								$("#submitBtn").click(function(){
+									$("#content").val(UE.getEditor('editor').getContent());
+									if($("#nav").val()=="0"){
+										$(".text-alert").html("栏目不得为空");
+										return false;
+									}
+									return true;
+								});
+							});
+						</script>
+					</td>
+				</tr>
+				<tr class="text-center"><td colspan="2"><input type="submit" value="提交" name="send" class="btn btn-success" id="submitBtn"></td></tr>
+		</table>
+		</form>
+	</div>
+</div>
+{/if}
+{if $update}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=article&action=show'>文章管理</a></li>
+			<li class="active">添加文章</li>
+			<!-- <li><a href="?action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li> -->
+		</ul>
+		<form method="post" enctype="multipart/form-data">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+		<input type="hidden" name="id" value="{$oneArticle->id}">
+		<input type="hidden" name="thumbnail2" value="{$oneArticle->thumbnail}">
+				<caption>新增文章</caption>
+				<tr class="text-center"><td colspan="2" id="feedback"></td></tr>
+				<tr>
+					<td class="text-right">所属的栏目</td>
+					<td>
+						<select name="nid" class="form-control input-sm inline-block" id="nav" style="width:160px;>
+						<option value="0">选择文章所属的栏目</option>
+						 {$nav}
+						</select>(<span class="glyphicon glyphicon-asterisk text-alert"></span>)
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">文章标题</td><td><input type="text" name="title" class="form-control" value="{$oneArticle->title}"></td>
+				</tr>
+				<tr>
+					<td class="text-right">文章属性</td>
+					<td>
+						<input type="checkbox" value="headline" name="attr[]" {$headline}>头条
+						<input type="checkbox" value="recommend" name="attr[]" {$recommend}>推荐
+						<input type="checkbox" value="focus" name="attr[]" {$focus} disabled>焦点
+						<input type="checkbox" value="topic" name="attr[]" {$topic} disabled>专题
+						<input type="checkbox" value="pickup" name="attr[]" {$pickup} disabled>精选
+					</td>
+				</tr>
+				<tr>
+					<td class="text-right">缩略图</td>
+					<td>
+						<img src="public/uploads/article/{$oneArticle->thumbnail}" class="article-thumbnail img-circle" style="width:250px;height:250px;"><a href="javascript:void(0);" id="btn">换一张</a>
+						<input type="file" name="thumbnail" class="form-control" style="display:none;" id="product_icon">
+					</td>
+					 <script>
+      	$(function(){
+      		var reader=new FileReader();
+      		$("#product_icon").change(function(){
+  				//限定图片类型
+  				 if(!/image\/\w+/.test($("#product_icon").get(0).files[0].type)){
+  					 	alert("头像必须是图片格式");
+  						return false;
+  				 }
+  				 //限定图片大小
+  				 if($("#product_icon").get(0).files[0].size>1000000){					 	
+  						alert("图片不能大于1M");						
+  						return false;
+  				 }				 
+  				 reader.readAsDataURL($("#product_icon").get(0).files[0]);
+  					reader.onload=function(){
+  						//console.log(this.result);
+  						$(".article-thumbnail").attr("src",this.result);
+  					}
+  			});
+      		$("#btn").click(function(){      			
+      			$("#product_icon").click();
+      		});
+      	})
+      </script>
+				</tr>
+				<tr>
+					<td class="text-right">Tag</td><td><input type="text" name="tag" class="form-control" value="{$oneArticle->tag}"></td>
+				</tr>
+				<tr>
+					<td class="text-right">作者</td><td><input type="text" name="author" class="form-control" value="{$oneArticle->author}"></td>
+				</tr>
+				<tr>
+					<td class="text-right">来源</td><td><input type="text" name="source" class="form-control" value="{$oneArticle->source}"></td>
+				</tr>
+				<tr>
+					<td class="text-right">导语</td><td><textarea name="lead" class="form-control">{$oneArticle->lead}</textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					 <textarea rows="" cols="" name="content" id="content" style="display:none;">{$oneArticle->content}</textarea>
+					<script id="editor2" type="text/plain" style="width:100%"></script>
+					<script type="text/javascript">    
+						 var ue2 = UE.getEditor('editor2');							 
+						 $('#editor2').html($("#content").val());
+						 $(function(){
+							 $("#submitBtn2").click(function(){
+								 $("#content").val(ue2.getContent());
+							 });
+						 });
+					</script>
+					</td>
+				</tr>
+				<tr class="text-center"><td colspan="2"><input type="submit" value="提交" name="send" class="btn btn-success" id="submitBtn2"></td></tr>
+		</table>
+		</form>
+	</div>
+</div>
+{/if}
+</body>
+</html>

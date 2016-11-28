@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商城首页</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/buttons.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="libs/Require/RequireJS.js" data-main='public/scripts/front'></script>
+<link href="public/styles/home.css" rel="stylesheet">
+<link href="public/styles/productlist.css" rel="stylesheet">
+<link href="public/styles/common.css" rel="stylesheet">
+<link href="public/styles/header.css" rel="stylesheet">
+</head>
+<body>
+{include file="home/common.html"}
+{include file="home/header.html"}
+<div class="container">
+<div class="row">
+		<div class="col-md-12" id="breadcrumb" style="padding-left:1px;padding-right:1px;">
+			<ul class="breadcrumb" style="background:url(public/images/topbar_bg.gif);margin-bottom:0;">
+				<li><a href='index.php'>首页</a></li>
+			{if $mainNav}
+				<li><a href='?a=subnav&action=show&id={$mainNav->id}'>{$mainNav->name}</a></li>
+				<li><a href="?a=subnavdetail&action=show&name={$subNav->name}&father={$mainNav->name}&fid={$mainNav->id}">{$subNav->name}</a></li>
+			{else}
+				<li><a href='?a=subnav&action=show'>主导航</a></li>
+				<li><a href='?a=subnavdetail&action=show'>子导航</a></li>
+			{/if}
+				<li class="active">正文</a></li>
+			</ul>
+		</div>
+	</div>
+{if $show}
+	<div class="row" style="border:0;">
+		<div class="col-md-8 hotProduct">
+			{foreach $allProducts as $key=>$value}
+			<dl>
+				<dd><a href="?a=cart&action=detail&id={$value->id}" target="_blank"><img src="public/uploads/product/{$value->pix}"></a></dd>
+				<dt><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></dt>
+				<dd class="take"><span class="pull-left">¥&nbsp;{$value->price}</span><a href="?a=cart&action=detail&id={$value->id}" target="_blank" class="pull-right text-danger">点击购买</a></dd>
+			</dl>
+			{/foreach}
+		</div>
+		<div class="col-md-4">
+			coming soon!
+		</div>
+	</div>
+{/if}
+{if $detail}
+<div class="row" style="border:0;">
+	<div class="col-md-12 detail">
+	
+	<form method="post" action="?a=cart&action=cart" class="form-horizontal" >
+		<input type="hidden" name="id" value="{$oneProduct->id}">
+		<table class="table table-bordered table-striped table-hover table-condensed" style="margin:0">
+			<tr class="text-center"><td colspan="2"><h3><input type="text" value="{$oneProduct->name}" id="{$oneProduct->id}" style="border:0;background:transparent;"></h3></td></tr>
+			<tr>
+				<td class="text-right" rowspan="4" width="271">
+				<img src="public/uploads/product/{$oneProduct->pix}" style="width:100%;height:100%;">
+				</td>
+				<td style="line-height:77px;"><input type="text" value="{$oneProduct->author}" id="{$oneProduct->id}" style="border:0;background:transparent;"></td>				
+			</tr>
+			<tr>
+				
+				<td style="line-height:77px;"><input type="text" value="{$oneProduct->price}" id="{$oneProduct->price}" style="border:0;background:transparent;"></td>				
+			</tr>
+			<tr>
+				
+				<td style="line-height:77px;"><input type="text" value="{$oneProduct->inventory}" id="{$oneProduct->inventory}" style="border:0;background:transparent;"></td>				
+			</tr>
+			<tr>
+				
+				<td style="line-height:77px;"><input type="submit" class="button button-raised button-primary takeTest" value="放 入 购 物 车" name="send"></td>				
+			</tr>
+		</table>		
+	</form>
+		</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<dl class="board">
+				<dt class="text-center">商品推荐</dt>
+				{if $productRecommend}
+				{foreach $productRecommend as $key=>$value}
+				<dd><span>{$key+1}</span><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></dd>
+				{/foreach}
+				{else}
+				<dd><span>1</span><a href="javascript:void(0)">HTML从入门到精通</a></dd>
+				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">CSS权威指南</a></dd>
+				<dd><span>3</span><a href="javascript:void(0)">JavaScript红宝书</a></dd>
+				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">锋利的jQuery</a></dd>
+				<dd><span>5</span><a href="javascript:void(0)">PHP核心模块</a></dd>
+				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">PHP设计模式</a></dd>
+				{/if}
+			</dl>
+	</div>
+	<div class="col-md-8 description">
+		<div>{$oneProduct->description}</div>
+	</div>
+</div>
+{/if}
+{if $cart}
+<div class="row">
+	<div class="col-md-12 cart">
+	<table class="table table-bordered table-striped table-hover">
+{foreach $cart as $key=>$value}
+<tr>
+	<td>{$value->name}</td>
+	<td>
+		<a class="btn btn-primary glyphicon glyphicon-chevron-up" onclick='location.href="?a=cart&action=update&type=plus&id={$value->id}"'></a>
+			[{$value->num}]
+		<a class="btn btn-primary glyphicon glyphicon-chevron-down" onclick='location.href="?a=cart&action=update&type=minus&id={$value->id}"'></a>
+	</td>
+	<td>{$value->price}</td>
+	<td>{$value->price*$value->num}</td>
+	<td><a href="?a=cart&action=removeProduct&id={$value->id}&num=removeOne" class="btn btn-danger">移除商品</a></td>
+</tr>
+{/foreach}
+<tr>
+	<td align="right" colspan="5">
+	<a href="?a=cart&action=removeProduct&num=removeAll" class="btn btn-info">清空购物车</a>&nbsp;&nbsp;
+	<a href="?" class="btn btn-warning">继续购物</a>
+	<a href="?a=cart&action=placeOrder" class="btn btn-success">提交订单</a>
+	总计：{$sum}
+	</td>
+</tr>
+{/if}
+</table>
+	</div>
+</div>
+{include file="home/footer.html"}
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/admin.js"></script>
+<script src="public/scripts/tools.js"></script>
+<script src="public/scripts/download.js"></script>
+<link href="public/styles/admin.css" rel="stylesheet">
+<script src="public/scripts/choice.js"></script>
+</head>
+<body>
+<!--modal模态框开始  -->
+<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
+			</div>
+			<div class="modal-body body">
+				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
+			</div>
+			<div class="modal-footer">
+				<a href="" type="button" class="btn btn-success" id="true">确定</a>
+				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
+			</div>
+</div>
+<!--modal模态框结束  -->
+{if $show}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=download&action=show'>下载内容管理</a></li>
+				<li class="active">显示下载内容</li>
+				<li><a href="?a=download&action=add" title='添加等级'><i class="fa fa-plus-circle"></i></a></li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
+			<tr>
+				<td>编号</td>
+				<td>名称</td>
+				<td>文件</td>
+				<td>URL</td>
+				<td>描述</td>	
+				<td>所属主题</td>			
+				<td>操作</td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$key+$num}</td>
+				<td>{$value->title}</td>
+				<td>{$value->name}</td>
+				<td title="{$value->url}">{$value->url|truncate:"15":"..."}</td>
+				<td>{$value->description}</td>	
+				<td>{$value->tid}</td>			
+				<td>
+					<a href="?a=download&action=update&id={$value->id}">修改</a>
+					<a href="?a=download&action=delete&id={$value->id}" class="deleteBtn">删除</a>
+				</td>
+			</tr>
+			{/foreach}
+			{else}
+			<tr><td colspan="5">暂无数据</td></tr>
+			{/if}
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">{$page}</div>
+	</div>
+{/if}
+{if $update}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=download&action=show'>下载内容管理</a></li>
+				<li class="active">添加下载内容</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post" enctype="multipart/form-data">
+			<tr>
+				<td class="text-right">等级描述</td>
+				<td>
+					<select id="tid" name="tid" class="form-control" style="width:135px;padding:5px;display:inline-block">
+						<option value="0">选择一个主题</option>{$topic}
+					</select>(<span class="glyphicon glyphicon-asterisk" style="color:red"></span>)
+				</td>
+			</tr>
+			<tr><td class="text-right" style="width:100px;">下载内容名称</td><td><input type="text" name="title" class="form-control" value="{$oneDownload->title}"></td></tr>
+			<tr>
+				<td class="text-right" style="width:100px;">下载内容</td>
+				<td>
+					<input type="text" name="pic" value="{$oneDownload->name}" class="form-control" style="width:200px;display:inline-block">
+					&nbsp;&nbsp;<input type="file" name="newpic" style="display:none" id="newpic">
+					<a href="javascript:void(0);" id="changeBtn">换一个文件</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:100px;">下载URL</td>
+				<td>
+					<input type="text" name="url" value="{$oneDownload->url}" class="form-control">
+				</td>
+			</tr>
+			<tr><td class="text-right">等级描述</td><td><textarea name="description" class="form-control">{$oneDownload->description}</textarea></td></tr>			
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send" id="submitBtn"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+{if $add}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=download&action=show'>下载内容管理</a></li>
+				<li class="active">添加下载内容</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post" enctype="multipart/form-data">
+			<tr>
+				<td class="text-right">等级描述</td>
+				<td>
+					<select id="tid" name="tid" class="form-control" style="width:135px;padding:5px;display:inline-block">
+						<option value="0">选择一个主题</option>{$topic}
+					</select>(<span class="glyphicon glyphicon-asterisk" style="color:red"></span>)
+				</td>
+			</tr>
+			<tr><td class="text-right" style="width:100px;">下载内容名称</td><td><input type="text" name="title" class="form-control"></td></tr>
+			<tr>
+				<td class="text-right" style="width:100px;">添加文件</td>
+				<td><input type="file" name="pic" class="form-control"></td>								
+			</tr>
+			<tr>
+				<td class="text-right" style="width:100px;">下载URL</td>				
+				<td><input type="text" name="url" class="form-control" id="addURL"></td>				
+			</tr>
+			<tr><td class="text-right">下载描述</td><td><textarea name="description" class="form-control"></textarea></td></tr>			
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send" id="submitBtn"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+</body>
+</html>

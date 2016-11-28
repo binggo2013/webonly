@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+body{
+	background:#f9f9f9;
+}
+.col-md-12{
+	background:#fff;
+}
+.main{
+	width:730px;
+}
+.main p{
+	marigin-top:15p;
+	text-align:left;
+	border-bottom:1px solid #eee;
+	padding:5px;
+	color:#4d4d4d;
+}
+dl{
+	width:450px;	
+	margin:25px auto;
+}
+dd{
+	margin-bottom:10px;
+}
+.btn-success{
+	padding:10px 15px;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
+<link href="public/styles/base.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<link href="public/styles/welcome.css" rel="stylesheet">
+<body>
+<div class="jumbotron" style="padding:0;height:496px;">
+	<div class="alert alert-info alert-dismissible msg" role="alert">
+	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	  <strong>恭喜!</strong> 您现在使用的是KongMPMS多功能管理系统v11.0。
+	</div>
+	<table class="table table-bordered table-striped table-hover table-condensed">
+		<caption class="h3 text-primary text-head">快捷操作</caption>
+		<tr class="text-center">
+			<td><a class="btn btn-primary" href="?a=article&action=show">文章管理 <span class="badge">{$articleNum}</span></a></td>
+			<td><a class="btn btn-primary" href="?a=download&action=show">下载管理 <span class="badge">4</span></a></td>
+			<td><a class="btn btn-primary" href="?a=user&action=show">会员管理 <span class="badge">{$userNum}</span></a></td>
+		</tr>
+		<tr class="text-center">
+			<td><a class="btn btn-primary" href="?a=product&m=adminShow">商品管理 <span class="badge">{$productNum}</span></a></td>
+			<td><a class="btn btn-primary" href="?a=learning&action=showChoice">选择题管理 <span class="badge">{$choiceNum}</span></a></td>
+			<td><a class="btn btn-primary" href="?a=learning&action=showJudge">判断管理 <span class="badge">{$judgeNum}</span></a></td>
+		</tr>
+		<tr class="text-center">
+			<td><a class="btn btn-primary" href="?a=learning&action=showExam">试卷管理 <span class="badge">{$examNum}</span></a></td>
+			<td><a class="btn btn-primary" href="?a=order&action=show">订单管理 <span class="badge">4</span></a></td>	
+			<td><a class="btn btn-primary" href="?a=readme&action=func">网站帮助 <span class="badge">4</span></a></td>			
+		</tr>
+		<tr class="text-center">
+			<td><a class="btn btn-primary" href="?a=dict&action=admin">词典管理 <span class="badge">{$aaa}</span></a></td>
+			<td><a class="btn btn-primary" href="?a=dict&action=reportAdmin">新词管理 <span class="badge" style="color:red;">{$rrr}</span></a></td>	
+			<td><a class="btn btn-primary" href="?a=feedback&action=admin">用户反馈 <span class="badge" style="color:red;">{$fff}</span></a></td>			
+		</tr>
+	</table>
+</div>
+</body>
+</html>

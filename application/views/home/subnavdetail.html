@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$oneNav->name}</title>
+<meta name="keywords" content="{$smarty.const.KEY_WORDS}">
+<meta name="description" content="{$smarty.const.DESCRIPTION}">
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/home.js"></script>
+<link href="public/styles/home.css" rel="stylesheet">
+</head>
+<body id="home">
+{include file="home/header.html"}
+<div class="container subnav">
+<div class="row">
+	<div class="col-md-12" style="padding:0;">
+		<ul class="breadcrumb" style="background:url(public/images/topbar_bg.gif)">
+			<li><a href='index.php'>首页</a></li>
+			<li><a href="?a=subnav&action=show&id={$fid}">{$father}</a></li>
+			<li class="active">{$oneNav->name}</li>
+		</ul>
+	</div>
+</div>
+	<div class="row up">
+		<div class="col-md-8 headline">
+			<dl>
+				{if $headline}
+				<dd><a href="?a=article&action=detail&id={$headline->id}" target="_blank"><img src="public/uploads/article/{$headline->thumbnail}"></a></dd>
+				<dd><h2><a href="?a=article&action=detail&id={$headline->id}" target="_blank">{$headline->title|truncate:20:"..."}</a></h2><span><a href="#"><i class="fa fa-share-alt"></i></a><br><a href="#"><i class="fa fa-comment-o"></i></a></span></dd>
+				{else}
+				<dd><img src="public/images/headline.jpg"></dd>
+				<dd><h2><a href="#">新闻标题</a></h2></dd>
+				{/if}
+			</dl>
+		</div>
+		<div class="col-md-4 demo">
+			<img src="public/images/sidebarDemo.jpg">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 middle">
+		{if $articles}
+		{foreach $articles as $key=>$value}
+		<table border="0" cellspacing="0" cellpadding="0">
+				<tr style="height:33px;"><td rowspan="2" style="width:120px;"><a href="?a=article&action=detail&id={$value->id}" target="_blank"><img src="public/uploads/article/{$value->thumbnail}"></a></td><td class="newstitle"><a href="?a=article&action=detail&id={$value->id}" target="_blank">{$value->title|truncate:20:"..."}</a></td></tr>
+				<tr><td colspan="2" class="newscontent">{$value->lead|truncate:120:"..."}</td></tr>
+		</table>
+		{/foreach}
+		{else}
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tr style="height:33px;"><td rowspan="2" style="width:120px;"><img src="public/images/default.jpg"></td><td><h2><a href="#">示例文章</a></h2></td><td style="width:70px;">22</td></tr>
+			<tr><td colspan="2">文章简介文章简介文章简介文章简介</td></tr>
+		</table>
+		{/if}
+		<div class="row page">
+			<div class="col-md-12">{$page}</div>
+		</div>
+		</div>
+		<div class="col-md-4 demo2">
+			<img src="public/images/demo2.jpg">
+		</div>
+	</div>
+	{include file="home/footer.html"}
+</div>
+</body>
+</html>

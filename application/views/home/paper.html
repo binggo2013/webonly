@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>在线测试</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<link href="public/styles/home.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/home.js"></script>
+<link href="public/styles/paper.css" rel="stylesheet">
+</head>
+<body id="home">
+{include file="home/header.html"}
+<div class="container">
+{if $show}
+	<div class="row allCourse">
+		<div class="col-md-8 hotCourse">
+			{foreach $allCourse as $key=>$value}
+			<dl style="width:150px;">
+				<dt>{$value->name}</dt>
+				<dd class="take"><a href="?a=quiz&action=show&cid={$value->id}" class="btn btn-success btn-block" target="_blank">参加</a></dd>
+			</dl>
+			{/foreach}
+		</div>
+		<div class="col-md-4">
+			coming soon
+		</div>
+	</div>
+{/if}
+{include file="home/footer.html"}
+</div>
+</body>
+</html>

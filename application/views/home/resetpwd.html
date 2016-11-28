@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>忘记密码</title>
+<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/resetpwd.js"></script>
+<link href="public/styles/home.css" rel="stylesheet">
+<link href="public/styles/resetpwd.css" rel="stylesheet">
+</head>
+<body>
+{include file="home/common.html"}
+{include file="home/header.html"}
+<div class="container main">
+	{if $forget}
+	<div class="row">
+		<div class="col-md-12 text-center ">
+			<p>请输入注册时的用户名和密码</p>
+			<dl>
+				<dd><input type="text" placeholder="用户名" class="form-control" id="username" required></dd>
+				<dd><input type="email" placeholder="请输入注册时的邮箱" class="form-control" id="email" required></dd>
+				<dd><input type="button" value="下一步" class="btn btn-success" id="nextBtn"></dd>
+			</dl>			
+		</div>
+	</div>
+	{/if}
+	{if $reset}
+	<div class="row main">
+		<div class="col-md-12 text-center">
+		<p>设置新的密码</p>
+			<dl>
+				<dd><input type="password" placeholder="密码" class="form-control" id="pwd"></dd>
+				<dd><input type="password" placeholder="再输入一次确认" class="form-control" id="repwd"></dd>
+				<dd>
+					<a href="?a=resetpwd&action=forget" class="btn btn-success pull-left">上一步</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="提 交" class="btn btn-success" id="submitBtn">
+				</dd>
+			</dl>			
+		</div>
+	</div>
+	{/if}
+</div>
+</body>
+</html>

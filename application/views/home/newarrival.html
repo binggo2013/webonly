@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会员中心</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<link href="public/styles/admin.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/admin.js"></script>
+</head>
+<body>
+<div class="container">
+{if $member}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb" style="margin-bottom:2px;">
+			<li><a href='index.php'>首页</a></li>
+			<li class="active">会员中心</li>
+		</ul>
+		<table class="table table-bordered table-striped">
+			<tr>
+				<td rowspan="5" width=160 height=160><img src="public/uploads/member/{$oneUser->icon}" style='width:160px;height:160px;'></td>
+				<td colspan="2">{$oneUser->username}</td>
+			</tr>
+			<tr>				
+				<td colspan="2">{$oneUser->email}</td>
+			</tr>
+			<tr>				
+				<td colspan="2">{$oneUser->login_num}</td>
+			</tr>
+			<tr>				
+				<td colspan="2">{$oneUser->last_ip}</td>
+			</tr>
+			<tr>				
+				<td colspan="2">{$oneUser->last_time}</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<dl>
+						<dt>评论列表</dt>
+						{if $allComments}
+						{foreach $allComments as $key=>$value}
+						<dd class="divider"><i class="fa fa-pencil-square-o"></i> {$value->content}</dd>						
+						{/foreach}
+						<dd>{$page}</dd>
+						{else}
+						<dd>暂无评论</dd>
+						{/if}
+					</dl>
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+{/if}
+{if $update}
+	<div class="row">
+		<div class="col-md-12">
+		<table class="table table-bordered table-striped">
+		<form action="?a=user&action=update" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$oneUser->id}">
+		<input type="hidden" name="icon2" value="{$oneUser->icon}">
+			<tr>
+				<td rowspan="5" width=160 height=160><img src="public/uploads/member/{$oneUser->icon}" style='width:160px;height:160px;'></td>
+				<td>{$oneUser->username}</td><td><input type="file" name="icon" class="form-control"></td>
+			</tr>
+			<tr>				
+				<td colspan="2"><input type="text" class="form-control" name="email" value="{$oneUser->email}"></td>
+			</tr>
+			<tr>				
+				<td colspan="2"><input type="text" class="form-control" name="pwd" value="{$oneUser->pwd}"></td>
+			</tr>	
+			<tr>
+				<td colspan="2" class="text-center"><input type="submit" name="send" value="提交" class="btn btn-success"></td>
+			</tr>	
+			</form>
+		</table>
+		</div>
+	</div>
+{/if}
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+.hotProduct{
+	border-right:1px solid #eee;
+}
+.hotProduct dl{
+	width:25%;
+	display:inline-block;
+	margin-left:35px;
+	margin-top:15px;
+	border:1px solid #eee;
+}
+.hotProduct dl img{
+	width:173px;
+	height:248px;
+}

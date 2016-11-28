@@ -1,0 +1,123 @@
+@CHARSET "UTF-8";
+@media screen and (max-width:750px){
+	#home{
+		width:100%;
+		font-size:28px;
+	}
+	.col-md-10{
+		padding:0;
+	}
+	.breadcrumb{		
+		padding:0;
+		margin:0;
+	}
+}
+.choice dt p,.judge dt p{
+	display:inline;
+}
+.choice dt pre+p,.judge dt pre+p{
+	display:none;
+}
+/******/
+.choice input[type="radio"],.judge input[type="radio"] {
+	display: none;
+}
+.choice input[type="radio"]+label:before,.judge [type="radio"]+label:before {
+	content: "";	
+	display: inline-block;
+	width: 15px;
+	height: 15px;	
+	margin-right:5px;
+	border-radius:15px;
+	border:2px solid #ddd;
+	transition:all 0.2s ease 0.1s;
+}
+.choice input[type="radio"]+label:hover::before,.judge input[type="radio"]+label:hover::before{
+	border:2px solid #2489c5;
+}
+.choice input[type="radio"]:checked+label:before,.judge input[type="radio"]:checked+label:before {
+	background:#2489c5;
+}
+.item{
+	padding:5px;
+	background:white;
+	margin-bottom:5px;
+	box-shadow:0 0 5px #ddd;
+	border:1px solid #ddd;
+}
+.item:hover{
+	background:lightyellow;
+}
+.container{
+	background:white;
+}
+dd{
+	margin-left:20px;
+}
+dd input{
+	cursor:pointer;
+}
+dd label{
+	font-weight:normal;
+	cursor:pointer;
+}
+.board{
+	font-weight:normal;
+}
+.board dd{
+	margin-left:0;
+}
+.right{
+	color:green;
+	font-weight:bold;
+}
+.wrong{
+	color:red;
+	font-weight:bold;
+}
+.rightSide{
+	padding-top:15px;
+}
+.jump {
+	position:fixed;
+	bottom:10%;
+	margin-top:-10px;
+	right:13%;
+	border:1px solid #999;
+	box-shadow:0 0 8px #999;
+	background:white;
+	border-radius:5px;
+	padding:15px;
+	z-index:500;
+	width:200px;
+}
+.jump li{
+	float:left;
+	width:23px;
+	height:23px;
+	line-height:23px;
+	border:1px solid #ddd;
+	text-align:center;
+	margin-right:3px;
+	cursor:pointer;
+}
+.highlight{
+	background:#369;
+}
+.countdown{
+	color:red;
+	font-weight:bold;
+	font-family:times new roman "微软雅黑";
+	font-size:20px;
+}
+.failed{
+	margin:3px 3px 5px 3px;
+}
+.tips{
+	background:lightyellow;
+	border:1px solid #ddd;
+	font-size:14px;
+	margin:5px;
+	padding:5px;
+	border-radius:5px;
+}

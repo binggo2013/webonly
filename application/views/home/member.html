@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会员中心</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet" />
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<link href="public/styles/home.css" rel="stylesheet">
+<link href="public/styles/member.css" rel="stylesheet">
+<link href="public/styles/tools.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="libs/echarts/echarts.js"></script>
+<script src="public/scripts/member.js"></script>
+<script src="public/scripts/tools.js"></script>
+<script src="public/scripts/home.js"></script>
+</head>
+<body id="home">
+<div class="container">
+{if $show}
+	<div class="row">
+		<div class="col-md-12">		
+		<dl class="memberTitle">
+			<dd><a href="javascript:void(0);">基本资料</a></dd>
+			<dd><a href="javascript:void(0);">我的评论</a></dd>
+			<dd><a href="javascript:void(0);">我的订单</a></dd>
+			<!-- <img src="public/uploads/member/{$oneUser->icon}" class='icon img-circle'> -->
+			<dd><a href="javascript:void(0);">我的成绩</a></dd>
+			<dd><a href="javascript:void(0);">我的问答</a></dd>
+			<h1 class="clearfix"></h1>
+		</dl>		
+		<div class="tab panel panel-default highlight">	
+			<form action="" method="post" enctype="multipart/form-data">				
+					<div class="panel-body">
+						<p><a href="javascript:void();" class="text-danger">修改</a>自己的资料<a href="?" class="btn btn-success pull-right">首页</a></p>
+				</div>
+				<table class="table table-bordered table-striped table-hover">
+			<tr>				
+				<td style='width:90px;' class="text-right">姓名</td><td>{$oneUser->username}</td>
+			</tr>
+			<tr><input type="password" name="pwd" value="{$oneUser->pwd}" style="display:none;">
+				<td style='width:90px;' class="text-right">密码</td><td><input type="password" name="newpwd" value="{$oneUser->pwd}" class="form-control"></td>
+			</tr>
+			<tr>
+				<td style='width:90px;' class="text-right">邮箱</td><td><input type="text" name="email" value="{$oneUser->email}" class="form-control"></td>
+			</tr>
+			<tr>
+				<td style='width:90px;' class="text-right">头像</td><td><img src="public/uploads/member/{$oneUser->icon}" class='icon img-circle'>&nbsp;&nbsp;<a href='javascript:void();' id="changeBtn">换一张</a></td>
+			</tr>
+			<input type="text" name="newpic"  value="{$oneUser->icon}" style="display:none;">
+			<input type="file" id="pic" name="pic" style="display:none;">			
+			<input type="text" name="id" value="{$oneUser->id}" style="display:none;">			
+			<tr>
+				<td style='width:90px;' class="text-right">登录次数</td><td>{$oneUser->login_num}</td>
+			</tr>
+			<tr>
+				<td style='width:90px;' class="text-right">登录IP</td><td>{$oneUser->last_ip}</td>
+			</tr>
+			<tr>
+				<td style='width:90px;' class="text-right">登录时间</td><td>{$oneUser->last_time}</td>
+			</tr>
+			<tr>
+				<td style='width:90px;' class="text-right"></td><td><input type="submit" value="提 交" class="btn btn-success" name="send"></td>
+			</tr>	
+		</table>
+		</form>	
+		</div>
+		<div class="tab panel panel-default">			
+				<div class="panel-heading">我的评论</div>
+					<div class="panel-body">
+						<p><a href="?" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有评论</a></p>
+				</div>
+				<table class="table table-bordered table-striped table-hover">
+					<tr><th>评论内容</th><th>评论时间</th><th>评论的文章</th></tr>
+					{if $allComments}
+					{foreach $allComments as $key=>$value}
+					<tr>
+						<td>{$value->content}</td>
+						<td>{$value->date}</td>
+						<td>{$value->title}</td>
+					</tr>
+					{/foreach}
+					{else}
+					<tr><td>暂无评论</td></tr>
+					{/if}
+				</table>
+		</div>
+		<div class="tab panel panel-default">			
+				<div class="panel-heading">我的订单</div>
+					<div class="panel-body">
+						<p><a href="?" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有订单</a></p>
+				</div>
+				<table class="table table-bordered table-striped table-hover">
+					<tr><th>所购商品</th><th>总价(元)</th><th>是否付款</th><th>是否发货</th><th>下订单时间</th></tr>
+					{if $allOrders}
+					{foreach $allOrders as $key=>$value}
+					<tr>
+						<td>{$value->pid}</td>
+						<td>{$value->total}</td>
+						<td>{$value->payed}</td>
+						<td>{$value->sent}</td>
+						<td>{$value->orderTime}</td>
+					</tr>
+					{/foreach}
+					{else}
+					<tr><td>暂无评论</td></tr>
+					{/if}
+				</table>
+		</div>
+		<div class="tab panel panel-default">			
+				<div class="panel-heading">我的成绩</div>
+				<div class="panel-body">
+				<p><a href="?" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有成绩</a></p>
+	
+				</div>
+				<table class="table table-bordered table-striped table-hover">
+					<tr><th>考试时间</th><th>课程</th><th>题目数</th><th>做了的题目</th><th>作对的题目</th><th>考试成绩</th></tr>
+					{if $allScores}
+					{foreach $allScores as $key=>$value}
+					<tr>
+						<td>{$value->createdTime}</td>
+						<td>{$value->cid}</td>
+						<td>{$value->total}</td>
+						<td>{$value->ticked}</td>
+						<td>{$value->rightNum}</td>
+						<td>{$value->score}</td>
+						<input type="hidden" data="{$value->cid}" value="{$value->score}" info="{$value->cid},{$value->createdTime}" class='getScore'>
+					</tr>
+					{/foreach}
+					{else}
+					<tr><td>暂无成绩</td></tr>
+					{/if}
+				</table> 
+   </div>	
+<div id="charts" style="width:100%;height:400px;"></div>
+    <script type="text/javascript">
+    var inputs=document.querySelectorAll(".getScore");
+    //console.log(inputs.length);
+    var arr=new Array();
+    var arr2=new Array(); 
+    for(var i=0;i<inputs.length;i++){
+    	arr[i]=parseInt(inputs[i].value);
+    	arr2[i]=inputs[i].getAttribute("info");
+    }
+   	arr.reverse();
+   	arr2.reverse();
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('charts'));
+		// 指定图表的配置项和数据
+		option = {
+				color: ['#FFAA00'],
+    title: {
+        text: '考试成绩表'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data:['考试成绩']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    //显示在右上角的工具栏
+    toolbox: {
+    	show: true,
+        feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true },
+            type: 'shadow'
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: arr2
+    },
+    yAxis: {
+        type: 'value'
+    },
+ 
+    series: [
+        {
+            name:'考试成绩',
+            type:'line',
+            stack: '总量',
+            data:arr
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>		
+<!-- <canvas id="canvas" height="150" width="200"></canvas>
+<script>
+var inputs=document.getElementsByTagName("input");
+var arr=new Array();
+var arr2=new Array();
+for(var i=0;i<inputs.length;i++){
+	arr[i]=parseInt(inputs[i].value);
+	arr2[i]=inputs[i].getAttribute("info");
+}
+console.log(arr);
+	var label2=arr2;
+	var datas=arr;
+	var lineChartData = {
+		labels : label2,
+		datasets : [
+			{
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(255,0,0,0.8)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+				data : datas
+			}
+		]
+	}
+
+	window.onload = function(){
+		var ctx = document.getElementById("canvas").getContext("2d");
+		window.myLine = new Chart(ctx).Line(lineChartData, {
+			responsive: true
+		});
+	}
+	</script> -->		
+		<div class="tab panel panel-default">			
+				<div class="panel-heading">我的问答</div>
+				<div class="panel-body">
+						<p><a href="?" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有问答</a></p>
+				</div>
+				<table class="table table-bordered table-striped table-hover">
+					<tr><th>问答时间</th><th>我的提问</th><th>我的回复</th><th>点赞数</th><th>踩数</th></tr>
+					{if $allAsks}
+					{foreach $allAsks as $key=>$value}
+					<tr>
+						<td>{$value->date}</td>
+						<td>{$value->topic}</td>
+						<td>{$value->content}</td>
+						<td>{$value->rightNum}</td>
+						<td>{$value->score}</td>
+					</tr>
+					{/foreach}
+					{else}
+					<tr><td>暂无成绩</td></tr>
+					{/if}
+				</table>				
+		</div>		
+</div>	
+</div>
+</div>
+{/if}
+{if $update}
+	<div class="row">
+		<div class="col-md-12">
+		<table class="table table-bordered table-striped">
+		<form action="?a=user&action=update" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$oneUser->id}">
+		<input type="hidden" name="icon2" value="{$oneUser->icon}">
+		<input type="hidden" name="pwd2" value="{$oneUser->pwd}">
+			<tr>
+				<td rowspan="5" width=160 height=160><img src="public/uploads/member/{$oneUser->icon}" style='width:160px;height:160px;'></td>
+				<td>{$oneUser->username}</td><td><input type="file" name="icon" class="form-control"></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" class="form-control" name="email" value="{$oneUser->email}"></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" class="form-control" name="pwd" value="{$oneUser->pwd}"></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="text-center"><input type="submit" name="send" value="提交" class="btn btn-success"></td>
+			</tr>
+			</form>
+		</table>
+		</div>
+	</div>
+{/if}
+{if $showScore}
+<div class="row">
+		<div class="col-md-8">
+		{foreach $score as $key=>$value}
+		<input type="text" value="{$value->score}" info="{$value->createdTime}"><br>
+		{/foreach}
+<!-- <script>
+<!-- //
+var inputs=document.getElementsByTagName("input");
+var arr=new Array();
+var arr2=new Array();
+for(var i=0;i<inputs.length;i++){
+	arr[i]=parseInt(inputs[i].value);
+	arr2[i]=inputs[i].getAttribute("info");
+}
+//console.log(arr);
+	/* var label2=arr2;
+	var datas=arr;
+	var lineChartData = {
+		labels : label2,
+		datasets : [
+			{
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(255,0,0,0.8)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+				data : datas
+			}
+		]
+	} */
+
+	/* window.onload = function(){
+		var ctx = document.getElementById("canvas").getContext("2d");
+		window.myLine = new Chart(ctx).Line(lineChartData, {
+			responsive: true
+		});
+	} */
+	</script>
+		</div>
+		<div class="col-md-8"></div> --> -->
+{/if}
+{include file="home/footer.html"}
+</div>
+</body>
+</html>

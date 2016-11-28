@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+#Redirect{
+	border:1px solid #ddd;
+	box-shadow:0 0 8px #999;
+	padding:20px;
+	position:absolute;
+	min-width:200px;
+	background:white;
+	text-align:center;	
+	z-index:15000;
+}

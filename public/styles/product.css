@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.form-group{
+	margin-left:0;
+	margin-right:0;
+	width:90%;
+}
+.description{
+	color:#666;
+	font: 12px/150% Arial,Verdana,"宋体";
+	overflow:hidden;
+	width:100px;
+	height:20px;
+}
+.pix{
+	width:160px;
+	height:180px;
+}

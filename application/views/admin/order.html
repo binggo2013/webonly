@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/admin.js"></script>
+<script src="public/scripts/tools.js"></script>
+<link href="public/styles/admin.css" rel="stylesheet">
+</head>
+<body>
+<!--modal模态框开始  -->
+<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
+			</div>
+			<div class="modal-body body">
+				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
+			</div>
+			<div class="modal-footer">
+				<a href="" type="button" class="btn btn-success" id="true">确定</a>
+				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
+			</div>
+</div>
+<!--modal模态框结束  -->
+	{if $show}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=level&action=show'>订单管理</a></li>
+				<li class="active">显示订单</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
+			<form action="?a=order&action=deleteAll" method="post">
+			<tr>
+				<td>编号</td>
+				<td>名称</td>
+				<td>商品</td>
+				<td>总价</td>
+				<td>是否付款</td>
+				<td>是否发货</td>
+				<td>操作</td>
+				<td>日期</td>
+				<td><input type="checkbox" id="selectBar"></td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$key+$num}</td>
+				<td>{$value->orderId}</td>
+				<td title="{$value->pid}">{$value->pid|truncate:10:"..."}</td>
+				<td>{$value->total}</td>
+				<td>{$value->payed}</td>
+				<td>{$value->sent}</td>
+				<td>
+					<a href="?a=order&action=delete&id={$value->id}" class="deleteBtn">删除</a>|
+					<a href="?a=order&action=detail&id={$value->id}">详细</a>
+				</td>
+				<td>{$value->orderTime}</td>
+				<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+			</tr>
+			{/foreach}
+			<tr>
+				<td colspan="11" class='text-right'><input type="submit" class="btn btn-success" name="send" value="全删"></td>
+			</tr>
+			{else}
+			<tr><td colspan="5">暂无数据</td></tr>
+			{/if}
+			</form>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">{$page}</div>
+	</div>
+	{/if}
+{if $showPermission}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=level&action=show'>等级管理</a></li>
+			<li class="active">显示权限</li>
+			<li><a href="?a=level&action=add" title='添加等级'><i class="fa fa-plus-circle"></i></a></li>
+		</ul>
+		<table class="table table-bordered table-striped table-hover table-condensed">
+		<tr class="text-center text-success"><td>{$oneLevel->name}</td></tr>
+		{if $permission}
+		<tr class="text-center"><td>{$permission}</td></tr>
+		{else}
+		<tr><td>暂无权限</td></tr>
+		{/if}
+		</table>
+	</div>
+</div>
+{/if}
+{if $detail}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=level&action=show'>订单管理</a></li>
+			<li class="active">订单详细</li>
+		</ul>
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+			<tr>
+				<td class="text-right">订单ID</td>
+				<td><input type="text" name="name" class="form-control" value="{$oneOrder->orderId}" disabled></td>
+			</tr>
+			<tr>
+				<td class="text-right">订购商品</td>
+				<td><input name="description" class="form-control" value="{$oneOrder->productName}" disabled></td>
+			</tr>
+			<tr>
+				<td class="text-right">商品总价</td>
+				<td><input name="description" class="form-control" value="{$oneOrder->total}" disabled></td>
+			</tr>
+			<tr>
+				<td class="text-right">是否付款</td>
+				<td>{$oneOrder->payed}</td>
+			</tr>
+			<tr>
+				<td class="text-right">是否发货</td>
+				<td>{$oneOrder->sent}</td>
+			</tr>
+			<tr>
+				<td class="text-right">顾客</td>
+				<td><input type="text" class="form-control" value="{$oneOrder->username}" disabled></td>
+			</tr>
+			<tr>
+				<td class="text-right">订单日期</td>
+				<td><input type="text" class="form-control" value="{$oneOrder->orderTime}" disabled></td>
+			</tr>
+			<tr class="text-center">
+				<td colspan="2"><a href="{$back}" class="btn btn-success">返回</a></td>
+			</tr>
+			</form>
+		</table>
+	</div>
+</div>
+{/if}
+{if $add}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=level&action=show'>等级管理</a></li>
+				<li class="active">添加等级</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+			<tr><td class="text-right">等级名称</td><td><input type="text" name="name" class="form-control"></td></tr>
+			<tr><td class="text-right">等级描述</td><td><textarea name="description" class="form-control"></textarea></td></tr>
+			<tr><td class="text-right">等级描述</td><td>{$permission}</td></tr>
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+{if $update}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=level&action=show'>等级管理</a></li>
+				<li class="active">添加等级</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+			<input type="hidden" name="id" value="{$oneLevel->id}">
+			<tr><td class="text-right">等级名称</td><td><input type="text" name="name" class="form-control" value="{$oneLevel->name}"></td></tr>
+			<tr><td class="text-right">等级描述</td><td><textarea name="description" class="form-control">{$oneLevel->description}</textarea></td></tr>
+			<tr><td class="text-right">等级描述</td><td>{$permission}</td></tr>
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+</body>
+</html>

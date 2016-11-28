@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>试卷：{$oneCourse->name}</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<link href="public/styles/buttons.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/home.js"></script>
+<script src="public/scripts/quiz.js"></script>
+<script src="public/scripts/tools.js"></script>
+<link href="public/styles/quiz.css" rel="stylesheet">
+<link href="public/styles/home.css" rel="stylesheet">
+<link href="public/styles/tools.css" rel="stylesheet">
+<link href="public/styles/header.css" rel="stylesheet">
+</head>
+<body id="home">
+{include file="home/header.html"}
+<div class="container">
+{if $show}
+	<div class="row">	
+		<div class="col-md-10">
+		<ul class="breadcrumb" style="margin-bottom:2px;">
+			<li><a href="?" class="active">首页</a></li>			
+			<li><a class="text-danger"><b>倒数第{$oneUser->countdown}次</b></a></li>
+			<li><a class="text-primary"><b>试卷：{$oneCourse->name}</b></a></li>
+		</ul>
+		<form method="post" action="?a=quiz&action=result" id="exam">
+		<input type="hidden" name="uid" value="{$id}">
+		<input type="hidden" name="cid" value="{$oneCourse->id}">
+			<dl class="choice"><h1>选择题</h1>
+				{foreach $choices as $key=>$value}
+				<a name="{$key+1}"></a>
+				<div class="item">
+				<dt><span>{$key+1}.</span>{$value->question}</dt> 			
+				<dd>
+					<input type="hidden" name='choice{$key+1}' value='{$value->id}'/>
+				</dd>
+				<dd>
+					<input type="radio" name='choice[{$value->id}]' value='A' id="choice[{$value->id}]a" num="{$key}"/>
+					<label for="choice[{$value->id}]a">{$value->a}</label>
+				</dd>
+				<dd>
+					<input type="radio" name='choice[{$value->id}]' value='B' id="choice[{$value->id}]b" num="{$key}"/>
+					<label for="choice[{$value->id}]b">{$value->b}</label>
+				</dd>
+				<dd>
+					<input type="radio" name='choice[{$value->id}]' value='C' id="choice[{$value->id}]c" num="{$key}"/>
+					<label for="choice[{$value->id}]c">{$value->c}</label>
+				</dd>
+				<dd>
+					<input type="radio" name='choice[{$value->id}]' value='D' id="choice[{$value->id}]d" num="{$key}"/>
+					<label for="choice[{$value->id}]d">{$value->d}</label>
+				</dd>
+				</div>
+				{/foreach}
+			</dl>						
+			<dl class="judge"><h1>判断题</h1>
+				{foreach $judges as $k=>$v}
+				<a name="{$k+1}"></a>
+				<div class="item">
+				<dt><span>{$k+1}.</span>{$v->question}</dt>
+				<dd><input type="hidden" name='judge{$k+1}' value='{$v->id}'/></dd>
+				<dd>					
+					<input type="radio" name='judge[{$v->id}]' value="1" num="{$k}" id='judge[{$v->id}]right'/>
+					<label for="judge[{$v->id}]right">正确</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;					
+					<input type="radio" name='judge[{$v->id}]' value="0" num="{$k}" id='judge[{$v->id}]wrong'/>
+					<label for="judge[{$v->id}]wrong">错误</label>
+				</dd>
+				</div>
+				{/foreach}
+			</dl>
+			<span>
+				<input type="hidden" name="choiceNum" value="{$key+1}">
+				<input type="hidden" name="judgeNum" value="{$k+1}">
+			</span>
+			<div><input type="submit" name="send" value="提交" class="button button-raised button-primary" style="margin-bottom:15px"></div>
+		</form>
+		</div>
+		<div class="col-md-2 rightSide">
+			<ul class="jump">
+				<h5 class="countdown">剩余时间:<span>50:00</span></h5>
+				<h5>选择题</h5>
+				<div class="content1"></div>
+				<div class="clearfix"></div>
+				<h5>判断题</h5>
+				<div class="content2"></div>
+				<div class="clearfix"></div>
+			</ul>
+		</div>
+	</div>
+{/if}
+{if $result}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb" style="margin-bottom:2px;">
+			<li><a href="?" class="active">首页</a></li>			
+			<li><a class="text-danger"><b>倒数第{$oneUser->countdown}次</b></a></li>
+		</ul>
+	</div>
+</div>
+<div class='row'>
+	<div class="col-md-8">
+	<div class="alert alert-success">
+		<b>共{$total}道题，做了{$ticked}道题，<span style='color:green;'>对了{$resultNum+$resultNum2}题，得分{$score}分</span></b>
+		<a href="?a=quiz&action=show&cid={$oneCourse->id}"><b style="color:red">再做一次</b></a>&nbsp;&nbsp;<a href="?a=member&action=show&id={$smarty.session.oneUserName->id}"><b style="color:green;">查看历史成绩</b></a>
+	</div>
+	<dl><h1>选择题</h1>
+		{$choiceOutput}
+	</dl>
+	<dl><h1>判断题</h1>
+		{$judgeOutput}
+	</dl>
+	</div>
+	<div class="col-md-4">			
+			<dl class="board text-center">
+			<h3 class="text-center">成绩排行</h3>
+				{if $arr}
+				{foreach $arr as $key=>$value}
+				<dt class="text-center userLeaderboard">{$key}</dt>
+				{/foreach}
+				{foreach $arr as $key=>$value}
+				<div class="boardContent text-left">
+					{foreach $value as $k=>$v}						
+					<dd><span>{$k+1}</span><a>{$v->uid}</a>&nbsp;&nbsp;&nbsp;{$v->score}分</dd>
+					{/foreach}
+				</div>	
+				{/foreach}					
+				{else}			
+				<dd><span>1</span><a href="javascript:void(0)">Tom</a></dd>
+				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">Peter</a></dd>
+				<dd><span>3</span><a href="javascript:void(0)">Mary</a></dd>
+				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">Mike</a></dd>
+				<dd><span>5</span><a href="javascript:void(0)">Grace</a></dd>
+				{/if}
+			</dl>
+		</div>
+</div>
+{/if}
+<!-- {include file="home/footer.html"} -->
+</div>
+</body>
+</html>

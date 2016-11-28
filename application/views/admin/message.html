@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="libs/ueditor/ueditor.config.js"></script>
+<script src="libs/ueditor/ueditor.all.js"></script>
+<script src="public/scripts/tools.js"></script>
+<link href="public/styles/admin.css" rel="stylesheet">
+</head>
+<body>
+{if $add}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li class="active">添加信息</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form action="" method="post">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<tr>
+				<td class="text-right">信息类型</td>
+				<td>
+					<input type="radio" value="1" name="type" id="one"><label for="one">公告</label>
+					<input type="radio" value="2" name="type" id="two"><label for="two">通知</label>
+					<input type="radio" value="3" name="type" id="three"><label for="three">用户提示</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">信息范围</td>
+				<td>
+					<input type="radio" value="1" name="range" id="all"><label for="all">全站</label>
+					<input type="radio" value="2" name="range" id="some"><label for="some">特定用户</label>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<textarea name="uid" class="form-control" placeholder="暂时不用"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>信息标题</td>
+				<td>
+					<textarea name="title" class="form-control"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:120px;">信息内容</td>
+				<td>
+					<!-- 加载编辑器的容器 -->
+<script id="container" name="content" type="text/plain" style="width:100%">初始化内容</script>
+    					<script type="text/javascript">
+				        var ue = UE.getEditor('container');
+				    </script>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" name="send" value="提 交" class="btn btn-success"></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+{/if}
+{if $update}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li class="active">修改信息</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form action="" method="post">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<tr>
+				<td class="text-right">信息类型</td>
+				<td>
+					<input type="radio" value="1" name="type" id="one" {$oneMsg->one}><label for="one">公告</label>
+					<input type="radio" value="2" name="type" id="two" {$oneMsg->two}><label for="two">通知</label>
+					<input type="radio" value="3" name="type" id="three" {$oneMsg->three}><label for="three">用户提示</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">信息范围</td>
+				<td>
+					<input type="radio" value="1" name="range" id="all"><label for="all">全站</label>
+					<input type="radio" value="2" name="range" id="some"><label for="some">特定用户</label>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<textarea name="uid" class="form-control" placeholder="暂时不用"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>信息标题</td>
+				<td>
+					<textarea name="title" class="form-control" >{$oneMsg->title}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:120px;">信息内容</td>
+				<td>
+					<!-- 加载编辑器的容器 -->
+<script id="container" name="content" type="text/plain" style="width:100%">{$oneMsg->content}</script>
+    					<script type="text/javascript">
+				        var ue = UE.getEditor('container');
+				    </script>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" name="send" value="提 交" class="btn btn-success"></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+{/if}
+{if $show}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li class="active">显示信息</li>
+			<li><a href="?a=message&action=add" title='添加信息'><i class="fa fa-plus-circle"></i></a></li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form action="?a=message&action=deleteAll" method="post">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<tr>
+				<td>信息类型</td>
+				<td>信息范围</td>
+				<td>信息内容</td>
+				<td>阅读状态</td>
+				<td>显示状态</td>
+				<td>操作</td>
+				<td>日期</td>
+			</tr>
+			{if $AllMsg}
+			{foreach $AllMsg as $key=>$value}
+			<tr>
+				<td>{$value->type}</td>
+				<td>{$value->range}</td>
+				<td>{$value->content}</td>
+				<td>{$value->readStatus}</td>
+				<td>{$value->state}</td>
+				<td>
+					<a href="?a=message&action=update&id={$value->id}">修改</a>|
+				删除
+				</td>
+				<td>{$value->date}</td>
+			</tr>
+			{/foreach}
+			{else}
+			<tr><td>暂无数据</td></tr>
+			{/if}
+		</table>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-center">{$page}</div>
+</div>
+{/if}
+</body>
+</html>

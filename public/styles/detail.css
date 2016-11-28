@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+*{
+	margin:0;
+	padding:0;
+}
+body{
+	background:#f9f9f9;
+}
+.container{
+	width:1200px;
+	background:#fff;
+	border:1px solid #eee;
+	padding:15px;
+	padding-top:0;
+	padding-bottom:0;
+}
+.title{
+	font-size:26px;
+	font-family:"微软雅黑";
+	text-align:center;
+	margin-top:10px;
+	margin-bottom:15px;
+	color:#036;
+}
+.subtitle{
+	text-align:center;
+	color:#7e7e7e;
+	margin-bottom:10px;
+}
+.lead{
+	border-top:1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+	background:#fbfbfb;
+	font-size:16px;
+	padding: 10px 24px 10px 20px;
+    margin-bottom:15px;
+    color: #434343;
+}
+.article img{
+	max-width:95%;s
+}
+.article dl{
+	padding:20px;
+	padding-top:10px;
+}
+.content{
+	color: #434343;
+}
+#breadcrumb{
+	padding:0;
+}
+.breadcrumb{
+	margin-bottom:0;
+}
+.recommend{
+	border-left:1px solid #e5e5e5;
+	padding-top:5px;
+}
+.recommend table img{
+	max-width:100%;
+}
+.comment_content{
+	border:1px solid #e5e5e5;
+	width:95%;
+	margin-left:25px;
+	height:65px;
+}
+textarea:focus {
+    outline: none;
+}
+#showComment table{
+	background:#fff;
+	border:1px solid #e5e5e5;
+	border-left:0;
+	border-right:0;
+	width:95%;
+	margin:auto;
+	margin-top:5px;
+}
+#showComment table tr,#showComment table td{
+	border:0;
+}
+#showComment img{
+	width:48px;
+	height:48px;
+}
+
+
+

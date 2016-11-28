@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$oneSubject->title}</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet">
+<link href="public/styles/normalize.css" rel="stylesheet">
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/home.js"></script>
+<link href="public/styles/home.css" rel="stylesheet">
+</head>
+<body>
+{if $showResult}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-striped table-hover table-condensed">
+				<caption class="h4">投票结果</caption>
+				<tr class="text-center"><td colspan="4">投票主题:<span class="text-danger">{$oneSubject->title}</span></td></tr>
+				<tr>
+					<td>投票项</td>
+					<td width=330>比例</td>
+					<td>百分比</td>
+					<td>票数</td>
+				</tr>
+				{if $data}
+				{foreach $data as $key=>$value}
+				<tr>
+					<td>{$value->title}</td>
+					<td>
+						<span class="voteBg"><span class="progress-bar progress-bar-striped {$class[$key]}" style="width:{$value->percent}%">{$value->percent}</span></span>
+					</td>
+					<td>{$value->percent}%</td>
+					<td>{$value->amount}</td>
+				</tr>
+				{/foreach}
+				{else}
+				<tr><td colspan="4">暂无投票</td></tr>
+				{/if}
+			</table>
+		</div>
+	</div>
+</div>
+{/if}
+</body>
+</html>/div>
+	</div>
+</div>
+{/if}
+</body>
+</html>

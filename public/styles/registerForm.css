@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+*{padding:0; margin:0;}
+ol,ul,li{list-style:none;}
+.bm{width:100%; background:#FFF; font-family:Microsoft Yahei; padding:50px 0 10px;}
+.bm h2{height:70px; background:url('http://www.itcast.cn/images/h_bg.png') no-repeat center top; text-indent:-9999px;}
+.bm .bm_con{width:938px; margin:0 auto; overflow:hidden;}
+.bm .bm_con .left{width:720px; float:left;}
+.bm .bm_con .left ul {overflow: hidden;}
+.bm .bm_con .left ul li{float:left; width:338px; margin-bottom:20px; overflow:hidden; height:41px;}	
+.bm .bm_con .left ul li .l_text{float:left; font-size:18px; color:#666; padding-right:10px; line-height:40px;}
+.bm .bm_con .left ul li input{float:left; width:211px; padding:10px 0; border:1px solid #c9c9c9; border-radius:3px; padding-left:10px; box-shadow:inset 1px 2px 3px #f1f1f1; margin-top:2px;}	
+.bm .bm_con .right{width:218px; float:left;}
+.bm .bm_con .right input{display:block; width:216px; height:36px; color:#fff; font-size:16px; background:#4492dc; border:none; outline:none; border-radius:3px; font-family:Microsoft Yahei;}
+.bm .bm_con .right input:hover{ background:#5aa3e9;}
+.bm .bm_con .right p{font-size:12px; color:#666; margin-top:25px;}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>下载首页</title>
+<link href="public/styles/bootstrap.css" rel="stylesheet" />
+<link href="public/styles/font-awesome.css" rel="stylesheet">
+<link href="public/styles/buttons.css" rel="stylesheet">
+<link href="public/styles/home.css" rel="stylesheet">
+<link href="public/styles/member.css" rel="stylesheet">
+<link href="public/styles/download.css" rel="stylesheet">
+<link href="public/styles/tools.css" rel="stylesheet">
+<script src="public/scripts/jquery-1.10.2.js"></script>
+<script src="public/scripts/bootstrap.js"></script>
+<script src="public/scripts/member.js"></script>
+<script src="public/scripts/tools.js"></script>
+<script src="public/scripts/download.js"></script>
+<script src="public/scripts/home.js"></script>
+<link href="public/styles/header.css" rel="stylesheet">
+</head>
+<body id="home">
+{include file="home/header.html"}
+<div class='container'>	
+	{if $show}
+	<div class="row">
+		<div class="col-md-8">
+		<dl class="memberTitle">
+			{if $temp}
+			{foreach $temp as $key=>$value}
+			<dd><a href="javascript:void(0);">{$key}</a></dd>
+			{/foreach}
+			{else}
+			<dd><a href="javascript:void(0);">基本资料</a></dd>			
+			{/if}
+			<h1 class="clearfix"></h1>
+		</dl>		
+		{foreach $temp as $key=>$value}
+			<div class="tab panel panel-default">
+				<div class="panel-body">
+						<p class="text-right"><a href="?a=download&m=all&name={$key}" class="text-danger">所有{$key}</a></p>
+				</div>
+			{if $value }
+			{foreach $value as $v}				
+			<table class="table table-bordered table-striped table-hover" style="border:1px solid #2489c5;margin-bottom:5px;">
+					<tr>				
+						<td style='width:90px;'>名称:{$v->title}</td>
+						<td  style='width:35px;'>
+							{if $v->name}
+							<i class="fa fa-download" style="color:gray;"></i>
+							<a href="?a=download&m=updateDownloadNum&name={$v->name}&id={$v->id}" class="downloadBtn">下载</a>							
+							{else}
+							<i class="fa fa-download" style="color:gray;"></i>
+							<a href="{$v->url}" info="{$v-id}" target="_blank" class="downloadBtn">下载</a>							
+							{/if}
+						</td>
+						<td style='width:45px;'>下载次数:{$v->download_num}</td>
+						<td style='width:90px;'>更新时间:{$v->date}</td>
+					</tr>
+					<tr>
+						<td style='width:90px;' colspan="4">描述:{$v->description}</td>
+					</tr>						
+										
+			</table>									
+			{/foreach}
+			{else}
+				<table class="table table-bordered table-striped table-hover" style="border:1px solid #ddd;margin-bottom:25px;">
+					<tr>				
+						<td style='width:90px;' class="text-right">名称</td><td>暂无文件可下载</td>
+					</tr>
+					<tr>
+						<td style='width:90px;' class="text-right">描述</td><td>暂无文件可下载</td>
+					</tr>
+					<tr>
+						<td style='width:90px;' class="text-right">文件</td>
+						<td>暂无文件可下载</td>
+					</tr>										
+					<tr>
+						<td style='width:90px;' class="text-right">下载次数</td><td>{$v->download_num}</td>
+					</tr>					
+			</table>
+			{/if}
+		 </div>		
+		{/foreach}					
+		</div>
+		{$page}
+		<div class="col-md-4">
+			<dl class="board">
+				<dt class="text-center">热门下载</dt>
+				{if $downloadLeaderboard}
+				{foreach $downloadLeaderboard as $key=>$value}
+				<dd>
+					<span>{$key+1}</span>
+					<a href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->title|truncate:25:"..."}</a>
+					&nbsp;&nbsp;{$value->download_num}次
+				</dd>
+				{/foreach}	
+				{else}			
+				<dd><span>1</span><a href="javascript:void(0)">最佳前端入门方法</a></dd>
+				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">CSS权威指南如何？</a></dd>
+				<dd><span>3</span><a href="javascript:void(0)">JavaScript红宝书在哪儿有卖？</a></dd>
+				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">锋利的jQuery锋利在哪儿？</a></dd>
+				<dd><span>5</span><a href="javascript:void(0)">PHP核心模块这边书有价值吗？</a></dd>				
+				{/if}
+			</dl>
+		</div>
+	</div>
+	{/if}
+	{if $allDownload}
+	<div class="row">
+	<div class="col-md-8">
+		<dl class="memberTitle text-primary" style="padding-left:15px;">{$oneTopic->name}&nbsp;&nbsp;<a href="{$back}"><button class="button button-3d button-action button-circle" style="margin:5px;" title="返回"><i class="fa fa-reply"></i></button></a></dl>
+		{foreach $allDownload as $v}				
+			<table class="table table-bordered table-striped table-hover" style="border:1px solid #ddd;margin-bottom:5px;">
+					<tr>				
+						<td style='width:90px;'>名称:{$v->title}</td>
+						<td  style='width:35px;'>{if $v->name}<i class="fa fa-download" style="color:gray;"></i><a href="?a=download&m=updateDownloadNum&name={$v->name}&id={$v->id}" id="downloadBtn">下载</a>{else}暂无下载{/if}</td>
+						<td style='width:45px;'>下载次数:{$v->download_num}</td>
+						<td style='width:90px;'>发布时间:{$v->date}</td>
+					</tr>
+					<tr>
+						<td style='width:90px;' colspan="4">描述:{$v->description}</td>
+					</tr>									
+			</table>						
+			{/foreach}
+			<div>{$page}</div>
+	</div>
+		<div class="col-md-4">
+			<dl class="board">
+				<dt class="text-center">热门下载</dt>
+				{if $downloadLeaderboard}
+				{foreach $downloadLeaderboard as $key=>$value}
+				<dd>
+					<span>{$key+1}</span>
+					<a href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->title|truncate:25:"..."}</a>
+					&nbsp;&nbsp;{$value->download_num}次
+				</dd>
+				{/foreach}	
+				{else}			
+				<dd><span>1</span><a href="javascript:void(0)">最佳前端入门方法</a></dd>
+				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">CSS权威指南如何？</a></dd>
+				<dd><span>3</span><a href="javascript:void(0)">JavaScript红宝书在哪儿有卖？</a></dd>
+				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">锋利的jQuery锋利在哪儿？</a></dd>
+				<dd><span>5</span><a href="javascript:void(0)">PHP核心模块这边书有价值吗？</a></dd>				
+				{/if}
+			</dl>
+		</div>
+	</div>
+	{/if}
+</div>
+</body>
+</html>

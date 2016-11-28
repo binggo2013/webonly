@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+input[type="radio"]{
+	display: none;
+}
+label{
+	cursor:pointer;
+}
+input[type="radio"]+label:before{
+	content: "";	
+	display: inline-block;
+	width: 15px;
+	height: 15px;	
+	margin-right:5px;
+	border-radius:15px;
+	border:2px solid #ddd;
+}
+input[type="radio"]:checked+label:before{
+	background:#2489c5;
+}

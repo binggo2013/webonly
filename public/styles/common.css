@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+#msgModal .modal-header,#msgModal .modal-footer{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+#msgModal h3{
+	margin:0;
+}
+#loginBox .modal-content{
+	margin-top:100px;
+	width:300px;
+	border:1px solid white;
+	position:absolute;
+	background:white;
+	box-shadow:0 0 3px #e3e3e3;
+	border-radius:5px;
+	padding-bottom:5px;
+	z-index:101;	
+	margin-left:150px;
+}
+#loginBox .modal-content #defaultimg{
+	width:85px;
+	height:85px;
+	margin-bottom:2px;
+}
+#loginBox .modal-title{
+	font-weight:bold;
+	font-family:"微软雅黑";
+}
+#loginBox .modal-header{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+#loginBox .modal-body{
+	padding-top:2px;
+	padding-bottom:0;
+}
+#loginBox .loginBtn{
+	margin-bottom:5px;
+}
+#loginBox .modal-footer{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+#loginBox .alert-danger{
+	width:98%;
+	margin:auto;
+	display:none;
+	padding-top:5px;
+	padding-bottom:5px;
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$smarty.const.SITE_NAME}</title>
+</head>
+<body>
+<!-- <div class="alert alert-warning alert-dismissible fade in introduction text-center" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <span>为了保证最佳的使用体验，请使用Chrome浏览器浏览。</span>
+</div> -->
+<div id="mask"></div><i class="fa fa-spinner fa-spin loading"></i>
+<!-- 登录界面-->
+	<div id="login" class="panel panel-default">
+		<i class="fa fa-times closeBar"></i>
+		<div class="panel-heading">
+			<strong>登录到WEBONLY</strong>
+		</div>
+		<div class="alert alert-danger feedback text-danger text-center center-block" role="alert">...</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="center-block">
+					<img class="img-circle center-block" src="public/images/default.jpg" alt="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-10  col-md-offset-1 ">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon">
+							<i class="glyphicon glyphicon-user"></i>
+							</span>
+							<input class="form-control" placeholder="用户名"	id="login_username" name="loginname" type="text" autofocus>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"> <i
+								class="glyphicon glyphicon-lock"></i>
+							</span> <input class="form-control" placeholder="密码"
+								id="login_pwd" name="password" type="password" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-lg btn-primary btn-block"
+							id="loginBtn" value="登 录">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer ">
+			还没有帐号! <a href="?a=reg&m=show"> 这儿注册 </a>
+		</div>
+	</div>
+<!--登录界面结束  -->
+<div class="top">
+<div class="container">
+<div class="row">
+	<div class="col-md-12">
+		<h3><a href="?"><img src="public/images/kong.jpg" class="img-circle icon" title="kong" class='kong'></a></h3>
+		<ul class="list-inline pull-left project">
+			<li><a href='space/hecheng/index.html' target="blank">作品二</a></li>
+			<li><a href='space/wenjie/index.html' target="blank">作品一</a></li>			
+		</ul>
+		<span class="glyphicon glyphicon-align-justify justify pull-right"></span>		
+		<!-- {if $banner}<a href="{$banner->link}" target="_blank"><img src="public/uploads/ad/{$banner->thumbnail}" title="{$banner->description}"></a>{else}<img src="public/images/bannerDemo.jpg" title="示例Banner">{/if} -->	
+<div class="dropdown clearfix memberMenu2" style="display:{if $logged}block{else}none{/if}" id="sess">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuDivider" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    {$smarty.session.oneUserName->username}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+    <li><a href="#">点数:{$oneUser->countdown}</a></li>
+    <li role="separator" class="divider"></li>
+    <li>{if $smarty.session.oneUserName->id}<a href="?a=member&action=show&id={$smarty.session.oneUserName->id}" id="memberSpace" target="_blank">{else}<a href="" id="memberSpace" target="_blank">{/if}会员中心</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="?a=home&action=logout">注销</a></li>
+  </ul>
+</div>
+		<ul class="userport">
+			<li><a href="?a=reg&m=show" id="regBar" style="display:{if $logged}none{else}block{/if}">注册</a></li>
+			<li><a href="javascript:void(0)" id="loginBar" style="display:{if $logged}none{else}block{/if}">登录</a></li>
+<div class="dropdown clearfix memberMenu" style="display:{if $logged}none{else}block{/if}" id="member">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuDivider" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class='getName'></span>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+    <li><a href="#" id="countdownBox"></a></li>
+    <li role="separator" class="divider"></li>
+    <li>{if $smarty.session.oneUserName->id}<a href="?a=member&action=show&id={$smarty.session.oneUserName->id}" id="memberSpace" target="_blank">{else}<a href="" id="memberSpace2" target="_blank">{/if}会员中心</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="?a=home&action=logout">注销</a></li>
+  </ul>
+</div>
+			<div class="clearfix"></div>
+		</ul>
+	</div>
+</div>
+</div>
+<div class="row line">
+	<div class="col-md-12">
+		<div class="head_bottom">
+			<div class="inner"></div>
+		</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

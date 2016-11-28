@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+.allCourse{
+	padding-top:25px;
+}
+.allCourse dl{
+	border:1px solid #ddd;
+	width:100px;
+	text-align:center;
+	float:left;
+	margin-left:25px;
+	box-shadow:0 0 8px #ddd;
+}

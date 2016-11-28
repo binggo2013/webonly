@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+.pix div{
+	border:1px solid #ddd;
+	box-shadow:0 0 3px #ddd;
+	padding:10px;
+}
+.pix img{
+	width:160px;
+	height:180px;
+}
+.pix ul{
+	margin-top:3px;
+}
+.pix ul li{
+	width:40px;
+	height:40px;
+	border:1px solid #ddd;
+	float:right;
+	margin-left:2px;
+}
+.detail{
+	padding:0;
+	border:0;
+}
+.row{
+	margin:0;
+}
+.col-sm-9{
+	padding-left:0px;
+}
+.col-md-4,.col-md-6,.col-md-2,.col-md-8{
+	padding-top:20px;
+}
+.cart{
+	padding-top:20px;
+}
+.cart .table{
+
+}
+.col-md-10 .table{
+	border:1px solid red;
+}
+.description{
+	margin-bottom:3px;
+}
+.description div{
+	border:1px solid #ddd;
+	background:white;
+	padding:5px;
+	padding-left:25px;
+	color:#666;
+	font: 12px/150% Arial,Verdana,"宋体";
+}
+.description div img{
+	width:100%;
+}

@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+.main{
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.reg .form-group .input-group-addon{
+	width:35px;
+	float:right;
+	margin-top:-32px;
+	height:31px;
+	border:0;
+	margin-right:1px;
+	border-left:1px solid #ddd;
+}
+.reg .form-group img{
+	width:85px;
+	height:85px;
+}
+.reg .form-group a{
+	font-family:"微软雅黑";
+	font-weight:bold;
+	margin-left:15px;
+}
+.col-md-6{
+	padding-top:20px;
+}
+.alert{
+	height:34px;
+	line-height:34px;
+	padding:2px;
+	padding-top:0;
+	margin-bottom:15px;
+}
+.right{
+	padding-left:0;
+}
+#reg_icon{
+	display:none;
+}
+#submitBtn{
+	font-family:"微软雅黑";
+	font-weight:bold;
+}
+.submit{
+	position:relative;
+}
+.reg_loading{
+	color:white;
+	position:absolute;
+	right:270px;
+	top:10px;
+	font-size:18px;
+}

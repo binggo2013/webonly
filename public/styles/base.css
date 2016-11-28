@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+.text-alert{
+	color:red;
+}
+.inline-block{
+	display:inline-block;
+}
+.disappear{
+	display:none;
+}
+.product-icon{
+	width:158px;
+	height:180px;
+}
+.article-thumbnail{
+	width:200px;
+	height:200px;
+}
+.text-head{
+	font-family:"微软雅黑";
+	font-weight:bold;
+}

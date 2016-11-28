@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+.bg{
+	background:#2489c5;	
+}
+.bg a{
+	color:white;
+}
+.icon{
+	width:100px;
+	height:100px;
+}
+.memberTitle{
+	font-family: tahoma, arial, 'Hiragino Sans GB', 'Microsoft Yahei', 宋体;
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	margin:0;
+	padding:0;
+	border:1px solid #ddd;
+	padding-top:15px;
+	padding-bottom:5px;	
+	box-shadow:0 0 3px #ddd;
+	margin-bottom:5px;
+}
+.memberTitle dd{
+	float:left;
+	width:16%;
+	height:110px;
+	line-height:110px;
+	text-align:center;
+}
+.panel{
+	display:none;
+}
+.highlight{
+	display:block;	
+}
+.score{
+	height:750px;
+	width:700px;
+}

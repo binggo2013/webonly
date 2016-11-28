@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+/*跳转样式*/
+.redirect{
+	width:420px;
+	height:220px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-260px;
+	margin-top:-110px;
+	border-radius:5px;
+	background:white;
+	z-index:9999;
+}
+.redirect .body{
+	height:120px;
+}
+.redirect .body dl{
+	margin:0;
+}
+.redirect .modal-title{
+	font-size:18px;
+	font-weight:bold;
+}
+/*跳转样式*/
+/*确认框*/
+.confirm{
+	width:420px;
+	height:220px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-260px;
+	margin-top:-110px;
+	border-radius:5px;
+	background:white;
+	z-index:9999;
+	display:none;
+}
+.confirm .body{
+	height:105px;
+}
+.confirm .body dl{
+	margin:0;
+}
+.confirm .modal-title{
+	font-size:18px;
+	font-weight:bold;
+}
