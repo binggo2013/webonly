@@ -1,5 +1,34 @@
 $(function(){
-	//////检测用户名////////
+	errorMsg=null;
+	function valid_email(_content){
+	    var pattern=/^[a-z0-9]+([\._-][a-z0-9]+)?@[a-z0-9]+([_-][a-z0-9]+)?\.[a-z]{2,9}(\.[a-z]{2,4})?$/i;
+	    var result=null;
+	    if(pattern.test(_content)){
+	        result=true;
+	    }else{
+	        result=false;
+	    }
+	    return result;
+	}
+	function valid_pwd(_content){
+	    var num=0;
+	    //如果密码不是数字
+	    if(!/[\d]/.test(_content)){
+	        num+=1;
+	    }
+	    if(!/[a-z]/.test(_content)){
+	        num+=1;
+	    }
+	    if(!/[A-Z]/.test(_content)){
+	        num+=1;
+	    }
+	    /*特殊字符*/
+	    if(!/[\W]/.test(_content)){
+	        num+=1;
+	    }
+	    return num;
+	}
+	//////检测用户名:用户名失去焦点////////
 	$("#reg_username").blur(function(){
 		if($.trim($.trim($("#reg_username").val())).length==0){
 			$(".right div:eq(0)").addClass("alert-danger").removeClass("alert-success");;
@@ -40,7 +69,7 @@ $(function(){
 			});
 		}
 	});
-	///////////////
+	/////用户名获得焦点//////////
 	$("#reg_username").focus(function(){
 		$(".right div:eq(0) span").removeClass("glyphicon-remove glyphicon-ok");
 		$(".right div:eq(0) strong").html("");
@@ -48,52 +77,30 @@ $(function(){
 	});
 	//////密码/////
 	$("#reg_pwd").keyup(function(){
-		var errorNum = 0;
-		if (!/[\d]/.test($.trim($.trim($("#reg_pwd").val())))) {
-			//errorNum=errorNum+1;
-			errorNum++;
-		}
-		//不包含小写
-		if (!/[a-z]/.test($.trim($.trim($("#reg_pwd").val())))) {
-			//errorNum=errorNum+1;
-			errorNum++;
-		}
-		//不包含大写
-		if (!/[A-Z]/.test($.trim($.trim($("#reg_pwd").val())))) {
-			//errorNum=errorNum+1;
-			errorNum++;
-		}
-		//不包含非[a-zA-Z0-9]
-		if (!/[\W]/.test($.trim($.trim($("#reg_pwd").val())))) {
-			//errorNum=errorNum+1;
-			errorNum++;
-		}
-		if (errorNum == 4) {
-			$(".right div:eq(1)").removeClass("alert-warning alert-success").addClass("alert-danger");
-			$(".right div:eq(1) span").removeClass("glyphicon-ok").addClass("glyphicon-remove");
-			$(".right div:eq(1) strong").html("密码必须包含大小写、数字、特殊字符");
-			return false;
-		} else if (errorNum == 3) {
-			$(".right div:eq(1)").removeClass("alert-warning alert-success").addClass("alert-danger");
-			$(".right div:eq(1) span").removeClass("glyphicon-ok").addClass("glyphicon-remove");
-			$(".right div:eq(1) strong").html("密码强度非常低");
-			return false;
-		} else if (errorNum == 2) {
-			$(".right div:eq(1)").removeClass("alert-danger alert-success").addClass("alert-warning");
-			$(".right div:eq(1) span").removeClass("glyphicon-ok").addClass("glyphicon-remove");
-			$(".right div:eq(1) strong").html("密码强度低");
-			return false;
-		} else if (errorNum == 1) {
-			$(".right div:eq(1)").removeClass("alert-danger alert-warning").addClass("alert-success");
-			$(".right div:eq(1) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
-			$(".right div:eq(1) strong").html("密码强度中");
-			return false;
-		} else if (errorNum == 0) {
-			$(".right div:eq(1)").removeClass("alert-danger alert-warning").addClass("alert-success");
-			$(".right div:eq(1) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
-			$(".right div:eq(1) strong").html("密码强度高");			
-		}
+		switch (valid_pwd($(this).val())){
+	        case 3:
+	        		$(".right div:eq(1)").removeClass("alert-warning alert-success").addClass("alert-danger");
+				$(".right div:eq(1) span").removeClass("glyphicon-ok").addClass("glyphicon-remove");
+				$(".right div:eq(1) strong").html("密码强度低");
+	            break;
+	        case 2:
+	        		$(".right div:eq(1)").removeClass("alert-danger alert-success").addClass("alert-warning");
+				$(".right div:eq(1) span").removeClass("glyphicon-ok").addClass("glyphicon-remove");
+				$(".right div:eq(1) strong").html("密码强度中");
+	            break;
+	        case 1:
+	        		$(".right div:eq(1)").removeClass("alert-danger alert-warning").addClass("alert-success");
+				$(".right div:eq(1) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
+				$(".right div:eq(1) strong").html("密码强度较高");
+	            break;
+	        case 0:
+	        		$(".right div:eq(1)").removeClass("alert-danger alert-warning").addClass("alert-success");
+				$(".right div:eq(1) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
+				$(".right div:eq(1) strong").html("密码强度高");	
+	            break;
+	    }
 	});
+	//密码确认
 	$("#confirm_reg_pwd").keyup(function(){
 		if($.trim($("#reg_pwd").val())!=$.trim($("#confirm_reg_pwd").val())){
 			$(".right div:eq(2)").removeClass("alert-warning alert-success").addClass("alert-danger");
@@ -109,18 +116,19 @@ $(function(){
 		}
 	});
 	//////////检测邮箱////////////////
-	var pattern=/^[a-zA-Z0-9]+([\._-]+[a-zA-Z0-9]+)?@[a-zA-Z0-9]+([_-]+[a-zA-Z0-9]+)?\.[a-zA-Z]{2,4}(\.[a-zA-Z]{2,4})?$/i;
 	$("#reg_email").keyup(function(){
-			if(!pattern.test($.trim($("#reg_email").val()))){
-				$(".right div:eq(3)").addClass("alert-danger");
-				$(".right div:eq(3) span").addClass("glyphicon-remove");
-				$(".right div:eq(3) strong").html("邮箱格式不正确");
-				return false;
-			}else{
-				$(".right div:eq(3) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
-				$(".right div:eq(3) strong").html("邮箱格式正确");
-				$(".right div:eq(3)").removeClass("alert-danger").addClass("alert-success");
-		}
+		if(!valid_email($(this).val())){
+			$(".right div:eq(3)").addClass("alert-danger");
+			$(".right div:eq(3) span").addClass("glyphicon-remove");
+			$(".right div:eq(3) strong").html("邮箱格式不正确");
+			errorMsg="邮箱格式错误";
+			return false;
+        }else{
+        		$(".right div:eq(3) span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
+			$(".right div:eq(3) strong").html("邮箱格式正确");
+			$(".right div:eq(3)").removeClass("alert-danger").addClass("alert-success");
+            errorMsg=false;
+        }
 	});
 	////////////////
 	$("#iconBtn").click(function(){
@@ -152,7 +160,8 @@ $(function(){
 			}
 	});
 	////上传///
-	$("#submitBtn").click(function(){
+	$("#submitBtn").click(function(evt){
+		//用户名不得为空
 		if($.trim($("#reg_username").val()).length==0){
 			$("#msgModal .msg").html("用户名不得为空");
 			$("#msgModal").modal("show");
@@ -161,6 +170,7 @@ $(function(){
 			},2000);
 			return false;
 		}
+		//密码不得为空
 		if($.trim($("#reg_pwd").val()).length==0){
 			$("#msgModal .msg").html("密码不得为空");
 			$("#msgModal").modal("show");
@@ -169,22 +179,70 @@ $(function(){
 			},2000);
 			return false;
 		}
+		/*验证密码*/
+        switch (valid_pwd($.trim($("#reg_pwd").val()))){
+            case 3:
+                errorMsg="密码强度低";
+                break;
+            case 2:
+                errorMsg="密码强度中";
+                break;
+            case 1:
+                errorMsg="密码强度较高";
+                break;
+            case 0:
+                errorMsg=false;
+                break;
+        }
+        //alert(errorMsg);
+		//两次密码必须一致
 		if($.trim($("#reg_pwd").val())!=$.trim($("#confirm_reg_pwd").val())){
 			$("#msgModal .msg").html("两次密码必须一致");
 			$("#msgModal").modal("show");
 			setTimeout(function(){
 				$("#msgModal").modal("hide");
 			},2000);
+			errorMsg="两次密码必须一致";
 			return false;
 		}
+		//alert(errorMsg);
 		if($.trim($("#reg_email").val()).length==0){
 			$("#msgModal .msg").html("邮箱不得为空");
 			$("#msgModal").modal("show");
 			setTimeout(function(){
 				$("#msgModal").modal("hide");
 			},2000);
+			errorMsg="邮箱不得为空";
 			return false;
 		}
+		if(!valid_email($("#reg_email").val())){
+			$("#msgModal .msg").html("邮箱格式错误");
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
+			errorMsg="邮箱格式错误";
+			return false;
+        }
+		if(typeof $("#reg_icon").get(0).files[0]=="undefined"){
+			$("#msgModal .msg").html("必须要上传图片");
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
+            errorMsg="必须要上传图片";
+            return false;
+        }
+        //alert(errorMsg);
+        if(errorMsg){
+        		$("#msgModal .msg").html(errorMsg);
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
+            return false;
+        }
+        //alert(errorMsg+"aaa");
 		var fd=new FormData($("#reg_form")[0]);
 		fd.append("action","send");
 		fd.append("username",$("#reg_username").val());
