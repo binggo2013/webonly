@@ -1,5 +1,13 @@
 @CHARSET "UTF-8";
-@CHARSET "UTF-8";
+#fold{
+	font-size:22px;
+	cursor:pointer;
+}
+.main:after{
+	content:"";
+	display:"block";
+	clear:both;
+}
 /*跳转样式*/
 .redirect{
 	width:420px;
@@ -106,6 +114,14 @@ body{
 	position:absolute;
 	z-index:101;
 	width:300px;
+	height:350px;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+	margin:auto;
+	border-radius:8px;
+	box-shadow:0 0 8px black;
 }
 #admin_login .alert{
 	display:none;
@@ -216,7 +232,8 @@ body{
 	color:white;
 }
 #loginBody{
-	background:#ddd;
+	background:url(../images/loginbg.jpg);
+	background-size:cover;
 }
 #admin_login{
 	width:300px;
@@ -256,12 +273,23 @@ body{
 }
 
 .menu{
-	padding:5px;
+	float:left;
+	width:19%;
+	height:100%;
+	overflow:hidden;
 }
 .rightFrame {
 	height: 500px;
 	padding:2px;
-
+	float:right;
+	
+	width:80%;
+	height:427px;
+}
+.rightFrame iframe{
+	width:100%;
+	height:450px;
+	border:0;
 }
 .top {
 	height: 50px;
@@ -298,12 +326,6 @@ body{
 }
 #accordion{
 	width:100%;
-}
-iframe{
-	border:0;
-	width:100%;
-	height:100%;
-	/* overflow: hidden; */
 }
 #mask{
 	background:black;
@@ -407,6 +429,8 @@ ul{
 	color: gray;
 	background: white;
 	border: 1px solid #ddd;
+	clear:both;
+	margin-top:100px;
 }
 .footer dd{
 	margin:15px auto;

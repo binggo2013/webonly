@@ -163,7 +163,7 @@
 			<tr>
 				<td>{$value->type}</td>
 				<td>{$value->range}</td>
-				<td>{$value->content}</td>
+				<td>{$value->content|truncate:"30":"..."}</td>
 				<td>{$value->readStatus}</td>
 				<td>{$value->state}</td>
 				<td>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<meta name="viewport" charset="width-device-width">-->
+    <script src="Tools.js"></script>
+    <script>var t=new Tools();</script>
+    <style>
+        #code{
+            width:35%;
+            display:inline-block;
+        }
+        #captcha{
+            cursor: pointer;
+        }
+        #preview{
+            width:100px;
+        }
+        *{
+            margin:0;
+            padding:0;
+            font-size:20px;
+        }
+        dl{
+            border:1px solid #ddd;
+            width:350px;
+            margin:auto;
+            padding:15px;
+        }
+        dt{
+            text-align: center;
+        }
+        dd{
+            margin-bottom: 5px;
+        }
+        #feedback{
+            text-align:center;
+            color:red;
+        }
+        dl input{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+
+<dl>
+    <div id="feedback"></div>
+    <dt>注册</dt>
+    <dd>
+        <input type="text"  id="username" placeholder="用户名">
+    </dd>
+    <dd>
+        <input type="password"  id="pwd" placeholder="密码">
+    </dd>
+    <dd>
+        <input type="password"  id="repwd" placeholder="密码确认">
+    </dd>
+    <dd>
+        <input type="text"  id="email" placeholder="邮箱">
+    </dd>
+    <dd>
+        <label  for="pic">上传头像</label>
+        <input type="file" id="pic" style="display:none">
+    </dd>
+    <dd><img src="7.jpg" id="preview"></dd>
+    <dd>
+        <input type="text"  id="code" placeholder="验证码">
+        <img src="code.php" id="captcha">
+    </dd>
+    <dd>
+        <button class="btn btn-success btn-block" id="submitBtn">提 交</button>
+    </dd>
+</dl>
+<script>
+    /*errorMsg:反馈信息的集中管理
+     * */
+    var pic=document.querySelector("#pic");
+    var submitBtn=document.querySelector("#submitBtn");
+    var username=document.querySelector("#username");
+    var pwd=document.querySelector("#pwd");
+    var repwd=document.querySelector("#repwd");
+    var email=document.querySelector("#email");
+    var feedback=document.querySelector("#feedback");
+    var captcha=document.querySelector("#captcha");
+    var preview=document.querySelector("#preview");
+    var errorMsg=null;
+    pwd.addEventListener("keyup",function(){
+        //console.log(t.valid_pwd(this.value));
+        switch (t.valid_pwd(this.value)){
+            case 3:
+                feedback.innerHTML="密码强度低";
+                //errorMsg="密码强度低";
+                break;
+            case 2:
+                feedback.innerHTML="密码强度中";
+                //errorMsg="密码强度中";
+                break;
+            case 1:
+                feedback.innerHTML="密码强度较高";
+                //errorMsg="密码强度较高";
+                break;
+            case 0:
+                feedback.innerHTML="密码强度高";
+                //errorMsg=false;
+                break;
+        }
+    })
+    /*用户名失去焦点时，验证用户名是否存在
+     * */
+    username.addEventListener("blur",function(){
+        //alert("blur");
+        var fd2=new FormData();
+        var xhr2=new XMLHttpRequest();
+        xhr2.open('post',"checkUsername.php");
+        feedback.innerHTML="加载中...";
+        //把this.value赋给username,保存在fd2
+        fd2.append("username",this.value);
+        xhr2.send(fd2);
+        xhr2.addEventListener("readystatechange",function(){
+            if(xhr2.readyState==4){
+                if(xhr2.status==200){
+                    feedback.innerHTML="";
+                    //console.log(xhr2.responseText);
+                    if(xhr2.responseText=='taken'){
+                        feedback.innerHTML="用户名已经被占用";
+                        setTimeout(function(){
+                            feedback.innerHTML="";
+                        },3000);
+                        errorMsg="用户名已经被占用";
+                        return false;
+                    }else{
+                        errorMsg=false;
+                    }
+                }
+            }
+        });
+    })
+    //http://www.a.com/index.php?action=add&page=5;
+    //点击刷新验证码
+    captcha.addEventListener("click",function(){
+        this.src="code.php?num="+Math.random();
+    })
+    /*邮箱失去焦点时验证*/
+    email.addEventListener('keyup',function(){
+        //feedback.innerHTML=t.valid_email(this.value);
+        if(!t.valid_email(this.value)){
+            feedback.innerHTML="邮箱格式错误";
+            errorMsg="邮箱格式错误";
+            return false;
+        }else{
+            feedback.innerHTML="邮箱格式正确";
+            errorMsg=false;
+        }
+    })
+    /*上传图片预览*/
+    pic.addEventListener("change",function(){
+        var fr=new FileReader();
+        fr.readAsDataURL(this.files[0]);
+        fr.addEventListener("load",function(){
+            preview.src=this.result;
+        })
+        //console.log(pic.files);
+        //console.log(pic.files[0]);
+        //console.log(pic.files[0].name);
+    })
+    /*点击注册，@td:连续两次点击提交*/
+    submitBtn.addEventListener("click",function(evt){
+        if(username.value.length==0){
+            feedback.innerHTML="用户名不得为空";
+            return false;
+        }
+        if(t.trim(pwd.value).length==0){
+            errorMsg="密码不得为空";
+            feedback.innerHTML="密码不得为空";
+            return false;
+        }else{
+            errorMsg=false;
+        }
+        /*验证密码*/
+        switch (t.valid_pwd(pwd.value)){
+            case 3:
+                errorMsg="密码强度低";
+                break;
+            case 2:
+                errorMsg="密码强度中";
+                errorMsg=false;
+                break;
+            case 1:
+                errorMsg="密码强度较高";
+                errorMsg=false;
+                break;
+            case 0:
+                errorMsg=false;
+                break;
+        }
+        /*两次密码要一致*/
+        if(repwd.value!=pwd.value){
+            feedback.innerHTML="两次密码不一致";
+            return false;
+        }
+        if(t.trim(email.value).length==0){
+            errorMsg="邮箱不得为空";
+            feedback.innerHTML="邮箱不得为空";
+            return false;
+        }else{
+            errorMsg=false;
+        }
+        /*验证邮箱*/
+        if(!t.valid_email(email.value)){
+            errorMsg="邮箱格式错误";
+            return false;
+        }else{
+            errorMsg=false;
+        }
+        /*验证上传图片*/
+        //alert(pic.files[0]);
+        if(typeof pic.files[0]=="undefined"){
+            feedback.innerHTML="必须要上传图片";
+            errorMsg="必须要上传图片";
+            return false;
+        }else{
+            errorMsg=false;
+        }
+        //alert(errorMsg);
+        if(errorMsg){
+            feedback.innerHTML=errorMsg;
+            return false;
+        }
+        //提交时验证用户名是否重复:开始;
+        //alert("blur");
+        var fd3=new FormData();
+        var xhr3=new XMLHttpRequest();
+        //alert(xhr3);
+        xhr3.open('post',"checkUsername.php");
+        feedback.innerHTML="加载中...";
+        //把this.value赋给username,保存在fd2
+        fd3.append("username",username.value);
+        xhr3.send(fd3);
+        xhr3.addEventListener("readystatechange",function(){
+            if(xhr3.readyState==4){
+                if(xhr3.status==200){
+                    //console.log(xhr3.responseText);
+                    if(xhr3.responseText=='taken'){
+                        feedback.innerHTML="用户名已经被占用";
+                        //errorMsg="用户名已经被占用";
+                    }else if(xhr3.responseText=='ok'){
+                        var fd=new FormData();
+                        var xhr=new XMLHttpRequest();
+                        /////////////////////////////////
+                        xhr.open("post","reg.php");
+                        //xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                        feedback.innerHTML="加载中...";
+                        //传递的数据保存在fd对象中
+                        fd.append("username",username.value);
+                        fd.append("pwd",pwd.value);
+                        fd.append("code",code.value);
+                        fd.append("email",email.value);
+                        //把上传文件传给formdata对象
+                        fd.append("pic",pic.files[0]);
+                        xhr.send(fd);
+                        xhr.addEventListener('readystatechange',function(){
+                            if(xhr.readyState==4){
+                                if(xhr.status==200){
+                                    feedback.innerHTML="";
+                                    //console.log(xhr.responseText);
+                                    if(xhr.responseText=="ok"){
+                                        //feedback.innerHTML="注册成功";
+                                        /*把用户信息保存到sessionStorage*/
+                                        sessionStorage.setItem('username',username.value);
+                                        location.href="练习.html";
+                                    }else if(xhr.responseText=="failed"){
+                                        feedback.innerHTML="注册失败";
+                                    }else if(xhr.responseText=="wrongCode"){
+                                        feedback.innerHTML="验证码错误";
+                                    }else{
+                                        alert(xhr.responseText);
+                                    }
+                                }
+                            }
+                        });
+                    }else{
+                        console.log(xhr3.responseText);
+                    }
+                }
+            }
+        });
+    })
+    //console.log(fd);
+</script>
+</body>
+</html>

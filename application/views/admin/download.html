@@ -58,7 +58,7 @@
 				<td>{$value->title}</td>
 				<td>{$value->name}</td>
 				<td title="{$value->url}">{$value->url|truncate:"15":"..."}</td>
-				<td>{$value->description}</td>	
+				<td>{$value->description|truncate:"15":"..."}</td>	
 				<td>{$value->tid}</td>			
 				<td>
 					<a href="?a=download&action=update&id={$value->id}">修改</a>

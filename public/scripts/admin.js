@@ -1,17 +1,22 @@
 $(function(){
-	console.dir($("#subBtn"));
+$("#fold").click(function(){
+	//$(".menu").css({"width":"0px"});
+	//alert($(".menu").css("width"));
+	if($(".menu").css("width")=="0px"){
+		$(".menu").animate({"width":"19%"},300);
+		$(".rightFrame").animate({"width":"80%"},300);
+	}else{
+		$(".menu").animate({"width":"0px"},300);
+		$(".rightFrame").animate({"width":"100%"},300);
+	}
+});
+	//console.dir($("#subBtn"));
 $("#subBtn").click(function(){
 	alert(333);
 	return false;
 });
 /////页面跳转//////////////
 	$(window).load(function(){
-		$("#admin_login").css(
-				{
-					"left":($(window).width()-$("#admin_login").width())/2+"px",
-					"top":($(window).height()-$("#admin_login").height())/2+"px"
-				}
-				);
 		$("#mask").css({"width":$(document).width()+"px","height":$(document).height()+"px","opacity":0.7});
 	});
 	$(".fa-user").click(function(){
@@ -42,10 +47,7 @@ $("#subBtn").click(function(){
 			setTimeout(function(){
 				$("#admin_login .feedback").fadeOut("slow");
 			},2000);
-			for(var i=0;i<5;i++){
-				$("#admin_login").animate({"left":(left-10*i)+"px"},100).animate({"left":(left+10*i)+"px"},100);
-			}
-			$("#admin_login").animate({"left":left+"px"},100);
+			
 		}
 		$.ajax({
 			'url':"?a=index&m=setAdmin_login",
@@ -59,13 +61,10 @@ $("#subBtn").click(function(){
 				//alert(response)
 				if(response=="failed"){
 					$("#admin_login .feedback").css({"display":"block"}).html("用户名或密码错误");
+					
 					setTimeout(function(){
 						$("#admin_login .feedback").fadeOut("slow");
 					},2000);
-					for(var i=0;i<5;i++){
-						$("#admin_login").animate({"left":(left-10*i)+"px"},100).animate({"left":(left+10*i)+"px"},100);
-					}
-					$("#admin_login").animate({"left":left+"px"},100);
 				}else if(response=="ok"){
 					$("#admin_login").css({"display":"none"});
 					location.href='?a=index';

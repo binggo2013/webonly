@@ -8,7 +8,7 @@ class Action{
 		$this->model=Factory::setModel();
 	}
 	protected function page($_total){
-		$page=new Page($_total);
+		$page=new Page($_total,5);
 		$this->model->limit=$page->limit;
 		$this->smarty->assign("num",$page->listRowsBegin());
 		$this->smarty->assign("page",$page->display());
