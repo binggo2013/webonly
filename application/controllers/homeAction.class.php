@@ -27,6 +27,11 @@ class homeAction extends Action{
 			}
 		}
 	}
+	public function img(){
+	    $captcha=new Captcha(90,34);
+	    $captcha->setConfig(array('level'=>5,"isNoise"=>true,'simple'=>false));
+	    $captcha->showCaptcha('public/fonts/ARIALNB.TTF');
+	}
 	public function logout(){		
 			if(Tools::destroySession("oneUser")){
 			    echo "ok";

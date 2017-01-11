@@ -12,6 +12,11 @@ define(['jquery'],function(jquery){
 				}
 			});
 		},
+		refreshCaptcha:function(){
+			$("#captcha").click(function(){
+				$(this).attr("src","?a=home&m=img&num="+Math.random());
+			});
+		},
 		checkDownload:function(){
 			//console.log($(".downloadBar").length);
 			$(".downloadBar").each(function(_index){

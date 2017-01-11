@@ -21,6 +21,7 @@ require(['check',"bootstrap",'comment','header','AjaxPage'],function(check,boots
 	check.checkLogin();
 	check.checkDownload();
 	check.getLogin();
+	check.refreshCaptcha();
 	check.getLogout();
 	comment.post();
 	header.nav();
