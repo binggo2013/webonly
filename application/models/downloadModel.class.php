@@ -1,14 +1,5 @@
 <?php
 class downloadModel extends Model{
-	private $limit;
-	private $id;
-	private $name;
-	private $description;
-	private $tid;
-	private $multiId;
-	private $date;
-	private $title;
-	private $url;
 	public function __set($_key,$_value){
 		$this->$_key=$_value;
 	}
@@ -20,8 +11,7 @@ class downloadModel extends Model{
 	    return parent::getAllResult($_sql);
 	}
 	public function getLatestDownload(){
-	    $_sql="select * from download order by id desc limit 6";
-	    return parent::getAllResult($_sql);
+	    return parent::getAll("download","order by id desc limit 6");
 	}
 	public function updateDownloadNum(){
 	    $_sql="update download

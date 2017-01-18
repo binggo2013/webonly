@@ -1,140 +1,133 @@
 <?php
 /**
- * 模型的父类   
- *   */
+ * 父类
+ * 模型：操作数据库
+ * @author OracleOAEC
+ *  */
 class Model{
-	private $db;
-	/**
-	 * 在构造方法中把pdo对象赋给$db属性；
-	 *   */
-	public function __construct(){
-		try{
-			$this->db=new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER, DB_PWD);
-		}catch (PDOException $e){
-			exit($e->getMessage());
-		}
-		$this->db->query("set names utf8");	
-	}
-	/**
-	 * 获取所有的数据
-	 * @param string $_sql
-	 * @return array  */
-	protected function getAllResult($_sql){
-		$result=$this->db->query($_sql);
-		$data=$result->fetchAll(PDO::FETCH_OBJ);
-		return $data;
-	}
-	/**
-	 * 获取第一条数据
-	 * @param string $_sql
-	 * @return array  */
-	protected function getFirstResult($_sql){
-		$result=$this->db->query($_sql);
-		$data=$result->fetchAll(PDO::FETCH_OBJ);
-		return $data[0];
-	}
-	/**
-	 * 获取总记录数
-	 * @param string $_sql
-	 * @return number  */
-	protected function getTotal($_sql){
-		$result=$this->db->query($_sql);
-		//Tools::dump($result);
-		$total=$result->rowCount();
-		return $total;
-	}
-	/**
-	 * 获取一条数据
-	 * @param string $_sql
-	 * @return mixed  */	
-	protected function getOne($_sql){
-		$result=$this->db->query($_sql);
-		$data=$result->fetchObject();
-		return $data;
-	}
-	/**
-	 * 执行cud
-	 * c:insert into
-	 * u:update
-	 * d:delete
-	 * @param string $_sql
-	 * @return number  */
-	public function cud($_sql){
-		$result=$this->db->exec($_sql);
-		//echo $_sql;
-		return $result;
-	}
-	/**
-	 * 执行多条sql语句
-	 * @param string $_sql
-	 * @return boolean  */
-	protected function multi_query($_sql){
-		$result=$this->db->exec($_sql);
-		return true;
-	}
-	/**
-	 * 获取表的最新插入数据的ID；
-	 * @param string $_tableName  */
-	protected function Auto_increment($_tableName){
-		//获取表的状态信息;
-		$_sql="show table status like '".$_tableName."'";		
-		$result=$this->db->query($_sql);
-		$data=$result->fetchObject();
-		return $data->Auto_increment;
-	}
-	/**
-	 * 根据id选择元素
-	 * @param string $_table:表名
-	 * @param int $_id
-	 * @return mixed
-	 * */
-	protected function getOneDataById($_table,$_id){
-	    $_sql="select * from ".$_table." where id=".$_id;
-	    return $this->getOne($_sql);
-	}
-	protected function deleteOne($_table,$_id){
-	    $_sql="delete from ".$_table." where id=".$_id;
-	    return $this->cud($_sql);
-	}
-	protected function updateData($_table,$array,$_id){
-	    $_sql="update ".$_table." set ";
-	    foreach ($array as $key=>$value){
-	        if (is_int($value)){
-	            $_sql.=$key."=".$value.",";
-	
-	        }else{
-	            $_sql.=$key."='".$value."',";
-	        }
-	    }
-	    $_sql=rtrim($_sql,",");
-	    $_sql.=" where id=".$_id;
-	    //echo $_sql;
-	    return $this->cud($_sql);
-	}
-	protected function addData($_table,$array){
-	    $_key=null;
-	    $_value=null;
-	    foreach ($array as $key=>$value){
-	        $_key.=$key.",";
-	        if(is_int($value)){
-	            $_value.="".$value.",";
-	        }else{
-	            $_value.="'".$value."',";
-	        }
-	    }
-	    $_key=rtrim($_key,",");
-	    $_value=rtrim($_value,",");
-	    $_sql="insert into ".$_table."(".$_key.")values(".$_value.")";
-	    return $this->cud($_sql);
-	}
-	protected function getAll($_table,$_limit=null,$where=null,$order=null){
-	    $_sql="select * from ".$_table." ".$where." order by id desc ".$_limit;
-	    //echo $_sql;
-	    return $this->getAllResult($_sql);
-	}
-	protected function getAllDataTotal($_table,$where=null){
-	    $_sql="select * from ".$_table." ".$where;
-	    return $this->getTotal($_sql);
-	}
+    private $db;
+    public function __construct(){
+        try{
+            $this->db=new PDO('mysql:host='.DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PWD);
+        }catch (PDOException $e){
+            exit($e->getMessage());
+        }
+        //echo 'mysql:host='.HOST.";dbname=".DBNAME;
+        $this->db->query("set names utf8");
+    }
+    protected static $_instance;
+    //获得类的实例
+    public static function getinstance(){
+        //判断我们类的实例是否存在，没有则创建之
+        if(!isset(self::$_instance)){
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+    /**修改时,根据条件获取一条数据  */
+    public function getOne($_table,$_where){
+        //设置sql语句
+        $_sql="select * from ".$_table." ".$_where;
+        //echo $_sql;
+        //pdo执行sql,返回结果集对象
+        $result=$this->db->query($_sql);
+        //echo $_sql;
+        //fetchObject()：从结果集对象中取得数据，
+        //$data=$result->fetchObject();
+        $data=$result->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+    /*添加*/
+    public function add($_table,$array){
+        $_key=null;//空字符串
+        $_value=null;//空字符串
+        foreach ($array as $key=>$value){
+            $_key.=$key.",";
+            if(is_int($value)){
+                $_value.="".$value.",";
+            }else{
+                $_value.="'".$value."',";
+            }
+        }
+        $_key=rtrim($_key,",");
+        $_value=rtrim($_value,",");
+        //return $_key.":::".$_value;
+        //insert into user()values()
+        $sql="insert into ".$_table."(".$_key.")values(".$_value.")";
+        //echo $sql;
+        $result=$this->db->exec($sql);
+        return $result;
+        //echo $sql;
+    }
+    /**
+     * 获取所有的数据
+     * @param string $_table:表名
+     * @param string $_where：sql条件
+     * @param string $_limit：sql limit
+     * @return object:  */
+    public function getAll($_table,$_where=null,$_limit=null){
+        $_sql="select * from ".$_table." ".$_where." ".$_limit;
+        //echo $_sql;
+        $result=$this->db->query($_sql);
+        $data=$result->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+    /**
+     * 从数据库获取总记录数
+     * @param string $_table:表名
+     * @return int  $total:总记录数
+     *   */
+    public function getAllTotal($_table,$where=null){
+        $_sql="select * from ".$_table." ".$where;          //类型分类：$where将type=1，2,3,4传入，为null平时不影响
+        //echo $_sql;
+        $result=$this->db->query($_sql);
+        $total=$result->rowCount();
+        return $total;
+    }
+    /**
+     * 根据条件删除
+     * @param string $_table
+     * @param string $_where  */
+    public function delete($_table,$_where){
+        $_sql="delete from ".$_table." ".$_where;
+        //echo $_sql;
+        $result=$this->db->exec($_sql);
+        return $result;
+    }
+    /*修改*/
+    //update user set username='tom',age=12 where ;
+    public function update($_table,$array,$_where){
+        $_sql="update ".$_table." set ";
+        foreach ($array as $key=>$value){
+            if(is_int($value)){
+                $_sql.=$key."=".$value.",";
+            }else{
+                $_sql.=$key."='".$value."',";
+            }
+        }
+        $_sql=rtrim($_sql,",");
+        $_sql.=" ".$_where;
+        //echo $_sql;
+        $result=$this->db->exec($_sql);
+        return $result;
+    }
+    /*获得新增导航栏数据的id*/
+    public function nextID($_table){
+        $sql="show table status like '".$_table."'";
+        $result=$this->db->query($sql);
+        $data=$result->fetchObject();
+        return $data->Auto_increment;
+    }
+    /*排序*/
+    /*封装了exec方法，返回int类型0/1，sql语句可以是多条，*/
+    /*"update nav set a='tom' where id=2 ;update nav set a='peter' where id=2;update nav set a='mary' where id=2"*/
+    public function exec($sql){
+        $result=$this->db->exec($sql);
+        return $result;
+    }
+
+    
+    
+    
 }
 ?>

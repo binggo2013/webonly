@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>{$oneArticle->title}</title>
-<link href="libs/bootstrap/styles/bootstrap.css" rel="stylesheet">
-<link href="libs/fontawesome/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/common.css" rel="stylesheet">
-<link href="public/styles/header.css" rel="stylesheet">
-<link href="public/styles/detail.css" rel="stylesheet">
-<script src="libs/Require/RequireJS.js" data-main='public/scripts/front'></script>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/detail.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/RequireJS/RequireJS.js" data-main='{$ROOT}/public/scripts/front'></script>
 </head>
 <body>
 {include file="home/common.html"}
@@ -88,7 +87,7 @@
 			<table class="table table-bordered table-striped table-hover table-condensed">
 				<tr><td class="text-center">好 书 推 荐</td></tr>
 				{foreach $recommend as $key=>$value}
-				<tr><td class="text-center"><a href="?a=cart&action=detail&id={$value->id}" target="_blank"><img src="public/uploads/product/{$value->pix}" title="{$value->name}"></a></td></tr>
+				<tr><td class="text-center"><a href="?a=cart&action=detail&id={$value->id}" target="_blank"><img src="{$ROOT}/public/uploads/product/{$value->pix}" title="{$value->name}"></a></td></tr>
 				<tr>	<td class="text-center"><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></td></tr>
 				<tr>	<td class="text-center">{$value->author}&nbsp;&nbsp;&nbsp;&nbsp;¥&nbsp;{$value->price}</td></tr>			
 				{/foreach}

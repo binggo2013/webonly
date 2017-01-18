@@ -1,28 +1,5 @@
 <?php
-class quizModel extends Model{
-	private $id;
-	private $limit;
-	private $title;
-	private $description;
-	private $amount;
-	private $state;
-	private $pid;
-	private $date;
-	private $multiId;
-	private $question;
-	private $a;
-	private $b;
-	private $c;
-	private $d;
-	private $answer;
-	private $operater;
-	private $studentName;
-	private $total;
-	private $ticked;
-	private $right;
-	private $score;
-	private $course_id;	
-	private $uid;	
+class quizModel extends Model{	
 	public function __set($_key,$_value){
 		$this->$_key=$_value;
 	}
@@ -42,8 +19,7 @@ class quizModel extends Model{
 	    return parent::getAllResult($_sql);
 	}
 	public function hotCourse(){
-	    $_sql="select * from course where state=1 order by Rand() limit 3";
-	    return parent::getAllResult($_sql);
+	    return parent::getAll("course","where state=1 order by Rand() limit 3");
 	}
 	public function getAllTitles(){
 	    $_sql="select * from entry where pid=0 order by id desc ";

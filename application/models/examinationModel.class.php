@@ -1,28 +1,5 @@
 <?php
 class examinationModel extends Model{
-	private $id;
-	private $limit;
-	private $title;
-	private $description;
-	private $amount;
-	private $state;
-	private $pid;
-	private $cid;
-	private $date;
-	private $multiId;
-	private $question;
-	private $a;
-	private $b;
-	private $c;
-	private $d;
-	private $answer;
-	private $operater;
-	private $studentName;
-	private $total;
-	private $ticked;
-	private $right;
-	private $score;
-	private $course_id;
 	public function __set($_key,$_value){
 		$this->$_key=$_value;
 	}
@@ -30,8 +7,7 @@ class examinationModel extends Model{
 		return $this->$_key;
 	}
 	public function getUserLeaderboard(){
-	    $_sql="select * from examination order by createdTime desc limit 0,5";
-	    return parent::getAllResult($_sql);
+	    return parent::getAll("examination","order by createdTime desc limit 0,5");
 	}
 	public function getExamByCID(){	  
 	    $_sql="select * from examination where cid=".$this->cid." order by createdTime desc limit 5";

@@ -1,15 +1,5 @@
 <?php
 class navModel extends Model{
-	private $id;
-	private $limit;
-	private $name;
-	private $description;
-	private $pid;
-	private $date;
-	private $picked;
-	private $state;
-	private $multiId;
-	private $sort;
 	public function __set($_key,$_value){
 		$this->$_key=$_value;
 	}
@@ -21,16 +11,14 @@ class navModel extends Model{
 		return parent::getAllResult($_sql);
 	}
 	public function getFrontNav(){
-		$_sql="select * from nav where pid=0 and state=1 order by sort desc limit 10";
-		return parent::getAllResult($_sql);
+		return parent::getAll("nav","where pid=0 and state=1 order by sort desc limit 10");
 	}
 	public function deleteAllNav(){
 		$_sql="delete from nav where id in (".$this->multiId.")";
 		return parent::cud($_sql);
 	}
-	public function getOneNav(){
-		$_sql="select * from nav where id=".$this->id;
-		return parent::getOne($_sql);
+	public function getOneNav($id){
+		return parent::getOne("nav","where id=".$id);
 	}
 	public function updateNav(){
 		$_sql="update     nav

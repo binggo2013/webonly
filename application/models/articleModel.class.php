@@ -1,151 +1,52 @@
 <?php
+/*文章-模型*/
 class articleModel extends Model{
-	private $id;
-	private $limit;
-	private $title;
-	private $thumbnail;
-	private $lead;
-	private $content;
-	private $author;
-	private $source;
-	private $pageview;
-	private $nid;
-	private $cid;
-	private $state;
-	private $attr;
-	private $tag;
-	private $multiId;
-	public function __set($_key,$_value){
-		$this->$_key=$_value;
-	}
-	public function __get($_key){
-		return $this->$_key;
-	}
-	public function updateArticle(){
-		$_sql="update article set pageview=pageview+1 where id=".$this->id;
-		return parent::cud($_sql);
-	}
-	public function getOneArticle(){
-		$_sql="select * from article where id=".$this->id;
-		return parent::getOne($_sql);
-	}
-	public function getArticleNum(){
-	    $_sql="select * from article";
-	    return parent::getTotal($_sql);
-	}
-	public function getAttrArticle($_attr){
-		switch ($_attr){
-			case "headline":
-				$_sql="select * from article where state=1 and attr like '%headline%' order by id desc limit 1";
-				return parent::getOne($_sql);
-				break;
-			case "focus":
-				$_sql="select * from article where state=1 and attr like '%focus%' order by id desc limit 1";
-				return parent::getOne($_sql);
-				break;
-			case "topic":
-				$_sql="select * from article where state=1 and attr like '%topic%' order by id desc limit 1";
-				return parent::getOne($_sql);
-				break;
-			case "recommend":
-				$_sql="select * from article where state=1 and attr like '%recommend%' order by id desc limit 1";
-				return parent::getOne($_sql);
-				break;
-			case "pickup":
-				$_sql="select * from article where state=1 and attr like '%pickup%' order by id desc limit 1";
-				return parent::getOne($_sql);
-				break;
-		}
-	}
-	public function getArticleByNID(){
-		$_sql="select * from article where nid=".$this->nid." ".$this->limit;
-		//echo $_sql;
-		return parent::getAllResult($_sql);
-	}
-	public function getArticleByNIDTotal(){
-		$_sql="select * from article where nid=".$this->nid." ";
-		return parent::getTotal($_sql);
-	}
-	public function deleteArticle(){
-		$_sql="delete from article where id=".$this->id;
-		return parent::cud($_sql);
-	}
-	public function deleteAllArticle(){
-		$_sql="delete from article where id in (".$this->multiId.")";
-		return parent::cud($_sql);
-	}
-	public function getSubNavArticle(){
-		$_sql="select * from article,nav where article.nid=nav.id  order by article.id desc limit 3";
-		echo $_sql;
-		return parent::getAllResult($_sql);
-	}
-	public function getAllArticle(){
-		$_sql="select * from article where nid in (".$this->nid.") order by id desc ".$this->limit;
-		//echo $_sql;
-		return parent::getAllResult($_sql);
-	}
-	public function setState($_flag){
-		$switch=null;
-		if($_flag=='hide'){
-			$switch=0;
-		}elseif($_flag=='show'){
-			$switch=1;
-		}
-		$_sql="update article set state=".$switch." where id=".$this->id;
-		//echo $_sql;
-		return parent::cud($_sql);
-	}
-	public function getAllArticleTotal(){
-		$_sql="select * from article where nid in (".$this->nid.")";
-		return parent::getTotal($_sql);
-	}
-	public function updateOneArticle(){
-		$_sql="update  article
-			   set     title='".$this->title."',
-				       lead='".$this->lead."',
-				       content='".$this->content."',
-				       author='".$this->author."',
-				       tag='".$this->tag."',
-				       thumbnail='".$this->thumbnail."',
-				       nid=".$this->nid.",
-				       source='".$this->source."',
-				       attr='".$this->attr."'
-			  where    id=".$this->id;
-		//echo $_sql;
-		return parent::cud($_sql);
-	}
-	public function addArticle(){
-		$_sql="insert into article(
-									title,
-									lead,
-									content,
-									author,
-									tag,
-									thumbnail,
-									nid,
-		                            cid,
-									source,
-									pageview,
-									state,
-									attr,
-									date
-				)values(
-						'".$this->title."',
-						'".$this->lead."',
-						'".$this->content."',
-						'".$this->author."',
-						'".$this->tag."',
-						'".$this->thumbnail."',
-						'".$this->nid."',
-						'".$this->cid."',
-						'".$this->source."',
-						".$this->pageview.",
-						1,
-						'".$this->attr."',
-						now()
-				)";
-		//echo $_sql;
-		return parent::cud($_sql);
-	}
+    /*添加文章*/
+    public function addArticle($array){
+        return parent::add("article",$array);
+    }
+    /*获取所有数据*/
+    public function getAllArticle($limit){
+        return parent::getAll("article","order by id desc",$limit);
+    }
+    /*获取总记录数*/
+    public function getAllArticleTotal(){
+        return parent::getAllTotal("article");
+    }
+    /*删除*/
+    public function deleteArticle($id){
+        return parent::delete("article","where id=".$id);
+    }
+    /*多项删除*/
+    public function deleteAllArticle($ids){
+        return parent::delete("article","where id in (".$ids.")");
+    }
+    /*根据属性显示文章，在homg.html主页上*/
+    public function getArticleByAttr($attrs,$limit=null) {
+        return parent::getAll("article","where attr in (".$attrs.") and state=1 order by id desc",$limit);
+    }
+    /*编辑修改时，根据id获取一篇文章*/
+    public function getOneArticle($id){
+        return parent::getOne("article","where id=".$id);
+    }
+    /*将修改后的数据，重新上传到数据库*/
+    public function updateArticle($array,$id){
+        return parent::update("article",$array,"where id=".$id);
+    }
+    /*更新用户访问量*/
+    public function updatePageView($array,$id){
+        return parent::update("article",$array,"where id=".$id);
+    }
+    /*获取最新的5篇文章，action在homeAction中*/
+    public function getFiveArticle($limit=5){
+        return parent::getAll("article","order by id desc","limit ".$limit);
+    }
+    /*获取最热的5篇文章，action在homeAction中*/
+    public function getFiveHotted($limit=5){
+        return parent::getAll("article","order by pageview desc","limit ".$limit);
+    }
+    /*设置对应id文章的状态*/
+    public function setArticleState($array,$id){
+        return parent::update("article",$array,"where id=".$id);
+    }
 }
-?>

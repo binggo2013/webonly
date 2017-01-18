@@ -6,14 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="keywords" content="{$smarty.const.KEY_WORDS}">
 <meta name="description" content="{$smarty.const.DESCRIPTION}">
-<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="libs/Require/RequireJS.js" data-main='public/scripts/front'></script>
-<link href="public/styles/home.css" rel="stylesheet">
-<!-- <link href="public/styles/member.css" rel="stylesheet"> -->
-<link href="public/styles/common.css" rel="stylesheet">
-<link href="public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<link href="{$ROOT}/public/styles/home.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
 </head>
 <body id="home">
 {include file="home/common.html"}
@@ -163,11 +164,23 @@
 	<span class="column_title">WebBuzz</span><span class="more pull-right"><a href="#">更多</a></span>
 			<hr>
 		<div class="col-md-8">			
-		{if $headline}
+		{if $headline[0]}
 		<div class="side-corner-tag">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr style="height:33px;"><td rowspan="2" style="width:120px;"><a href="?a=detail&action=detail&id={$topic->id}" target="_blank"><img src="public/uploads/article/{$headline->thumbnail}" class="img-circle"></a></td><td class="newstitle"><h2><a href="?a=detail&action=detail&id={$headline->id}" target="_blank">{$headline->title}</a></h2></td><td style="width:70px;"><span></span></td></tr>
-				<tr><td colspan="2" class="newscontent"><a href="?a=detail&action=detail&id={$topic->id}" target="_blank">{$headline->lead|truncate:120:"..."}</a></td></tr>
+				<tr style="height:33px;">
+					<td rowspan="2" style="width:120px;">
+						<a href="/article/detail/id/{$headline[0]->id}" target="_blank">
+							<img src="{$ROOT}/public/uploads/article/{$headline[0]->thumbnail}" class="img-circle">
+						</a>
+					</td>
+					<td class="newstitle">
+						<h2>
+							<a href="/article/detail/id/{$headline[0]->id}" target="_blank">{$headline[0]->title}</a>
+						</h2>
+					</td>
+					<td style="width:70px;"><span></span></td>
+				</tr>
+				<tr><td colspan="2" class="newscontent"><a href="/article/detail/id/{$headline[0]->id}" target="_blank">{$headline[0]->lead|truncate:120:"..."}</a></td></tr>
 				<p><span>头条</span></p>
 			</table>
 		</div>
@@ -177,11 +190,21 @@
 				<tr><td colspan="2" class="newscontent">文章简介文章简介文章简介文章简介</td></tr>
 			</table>
 		{/if}
-		{if $recommend}
+		{if $recommend[0]}
 		<div class="side-corner-tag">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr style="height:33px;"><td rowspan="2" style="width:120px;"><a href="?a=detail&action=detail&id={$recommend->id}" target="_blank"><img src="public/uploads/article/{$recommend->thumbnail}" class="img-circle"></a></td><td class="newstitle"><h2><a href="?a=detail&action=detail&id={$recommend->id}" target="_blank">{$recommend->title}</a></h2></td><td style="width:70px;"><span></span></td></tr>
-				<tr><td colspan="2" class="newscontent"><a href="?a=detail&action=detail&id={$recommend->id}" target="_blank">{$recommend->lead|truncate:120:"..."}</a></td></tr>
+				<tr style="height:33px;">
+				<td rowspan="2" style="width:120px;">
+				<a href="/article/detail/id/{$recommend[0]->id}" target="_blank">
+				<img src="{$ROOT}/public/uploads/article/{$recommend[0]->thumbnail}" class="img-circle"></a>
+				</td>
+				<td class="newstitle">
+				<h2>
+				<a href="/article/detail/id/{$recommend[0]->id}" target="_blank">{$recommend[0]->title}</a>
+				</h2>
+				</td>
+				<td style="width:70px;"><span></span></td></tr>
+				<tr><td colspan="2" class="newscontent"><a href="/article/detail/id/{$recommend[0]->id}" target="_blank">{$recommend[0]->lead|truncate:120:"..."}</a></td></tr>
 				<p><span>推荐</span></p>
 			</table>
 		</div>
