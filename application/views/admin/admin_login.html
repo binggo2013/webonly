@@ -3,26 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <title>{$smarty.const.SITE_NAME}后台登录</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<script src="{$ROOT}/public/scripts/feedback.js"></script>
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
 </head>
 <body id="loginBody">
-<div id="mask"></div><i class="fa fa-spinner fa-spin loading"></i>
 <!-- 登录界面-->
+<form method="post" action="">
 	<div id="admin_login" class="panel panel-default">
 		<i class="fa fa-times closeBar"></i>
-		<div class="panel-heading">
-		</div>
+		<div class="panel-heading"></div>
 		<div class="alert alert-danger feedback text-danger text-center center-block" role="alert">...</div>
 		<div class="panel-body">
 			<div class="row">
 				<div class="center-block">
-					<img class="img-circle center-block" src="public/images/default.jpg" alt="">
+					<img class="img-circle center-block" src="{$ROOT}/public/images/default.jpg" alt="">
 				</div>
 			</div>
 			<div class="row">
@@ -32,7 +32,7 @@
 							<span class="input-group-addon">
 							<i class="glyphicon glyphicon-user"></i>
 							</span>
-							<input class="form-control" placeholder="用户名"	id="login_username" name="loginname" type="text" autofocus>
+							<input class="form-control" placeholder="用户名"	id="login_username" name="username" type="text" autofocus>
 						</div>
 					</div>
 					<div class="form-group">
@@ -40,21 +40,18 @@
 							<span class="input-group-addon"> <i
 								class="glyphicon glyphicon-lock"></i>
 							</span> <input class="form-control" placeholder="密码"
-								id="login_pwd" name="password" type="password" value="">
+								id="login_pwd" name="pwd" type="password" value="">
 						</div>
 					</div>
-					<!-- <div class="form-group">
-						<input type="submit" class="btn btn-lg btn-primary btn-block"
-							id="loginBtn" value="登 录">
-					</div> -->
 				</div>
 			</div>
 		</div>
 		<div class="panel-footer">
 			<div class="form-group">
-			<input type="submit" class="btn btn-lg btn-primary btn-block" id="loginBtn" value="登 录">
+			<input type="submit" name='send' class="btn btn-lg btn-primary btn-block" id="loginBtn" value="登 录">
 			</div>
 		</div>
 	</div>
+	</form>
 </body>
 </html>

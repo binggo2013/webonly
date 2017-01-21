@@ -14,7 +14,7 @@ $(function(){
         //////获取未读信息数/////////////
         $.ajax({
 			'type':"post",
-			'url':"?a=message&action=msg",
+			'url':"/message/msg",
 			'data':{'uid':sessionStorage.getItem("id")},
 			success:function(response){
 				var str=eval(response);
@@ -36,7 +36,7 @@ $(function(){
 						$(this).click(function(){
 							$.ajax({
 								'type':"post",
-								'url':"?a=message&action=getOne",
+								'url':"/message/getOne",
 								'data':{"id":$(this).attr("data-id")},
 								success:function(response){
 									var str=eval(response);
@@ -84,7 +84,7 @@ $(function(){
 	                    sessionStorage.setItem("icon",str[0].icon);
 	                    $("#userValue").html(str[0].username+'<span class="caret"></span>');
 	                    sessionStorage.setItem("id",str[0].id); 
-	                    $("#memberSpace").attr("href","?a=member&action=show&id="+str[0].id);
+	                    //$("#memberSpace").attr("href","?a=member&action=show&id="+str[0].id);
 	                    if(sessionStorage.getItem("icon")){
 	    		        			$(".dropdown img").attr("src","public/uploads/member/"+sessionStorage.getItem("icon"));
 	    		        		}
@@ -95,7 +95,7 @@ $(function(){
 	                    ///////
 	                    var xhr=new XMLHttpRequest();
 	                    //console.log(xhr);
-	                    xhr.open("post","?a=message&action=msg");
+	                    xhr.open("post","/message/msg");
 	                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	                    xhr.send("uid="+sessionStorage.getItem("id"));
 	                    
@@ -149,5 +149,16 @@ $(function(){
 			}
 		});
 		return true;
+	});
+	//注销
+	$("#logoutBar").click(function(){
+	    $("#userValue").html('');
+	    //移除本地sessionStorage
+	    sessionStorage.removeItem("username");
+	    //console.log(sessionStorage.getItem("username"));
+	    sessionStorage.removeItem("icon");
+	    sessionStorage.removeItem("id");
+	    $(".UIA").css({"display":"inline"});
+	    $(".UIB").css({"display":"none"});
 	});
 });

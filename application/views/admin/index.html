@@ -2,12 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<script src="public/scripts/jquery-1.10.2.js"></script>
-		<script src="public/scripts/bootstrap.js"></script>
-		<link href="public/styles/bootstrap.css" rel="stylesheet" />
-		<link href="public/styles/font-awesome.css" rel="stylesheet" />
-		<script src="public/scripts/admin.js"></script>
-		<link href="public/styles/admin.css" rel="stylesheet">
+		<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+		<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+		<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="{$ROOT}/public/scripts/admin.js"></script>
+		<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
 		<title>{$smarty.const.SITE_NAME}后台首页</title>
 	</head>
 	<body>
@@ -28,15 +28,15 @@
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
-    <li><a href="#">{$smarty.session.oneAdmin->name}</a></li>
+    <li><a href="#">{$smarty.session.admin->name}</a></li>
     <li role="separator" class="divider"></li>
-	<li><a href="#">{$smarty.session.oneAdmin->login_num}次登录</a></li>
+	<li><a href="#">{$smarty.session.admin->login_num}次登录</a></li>
     <li role="separator" class="divider"></li>
-	<li><a href="#">{$smarty.session.oneAdmin->last_time}</a></li>
+	<li><a href="#">{$smarty.session.admin->last_time}</a></li>
 	<li role="separator" class="divider"></li>
-	<li><a href="#">IP:{$smarty.session.oneAdmin->last_ip}</a></li>
+	<li><a href="#">IP:{$smarty.session.admin->last_ip}</a></li>
 	<li role="separator" class="divider"></li>
-    <li><a href="?a=index&action=logout">注销</a></li>
+    <li><a href="/admin/logout">注销</a></li>
   </ul>
 </div>
 </dd>
@@ -60,13 +60,13 @@
     <div id="collapseOne" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=ad&action=show" target="main">广告管理</a></li>
-        	<li><a href="?a=nav&action=showMainNav" target="main">导航管理</a></li>
-        	<li><a href="?a=comment&action=adminShow" target="main">评论管理</a></li>
-        	<li><a href="?a=article&action=show" target="main">文章管理</a></li> 
-        	<li><a href="?a=dict&action=admin" target="main">字典管理</a></li> 
-        		<li><a href="?a=message&action=show" target="main">信息管理</a></li> 
-        	<li><a href="?a=feedback&action=admin" target="main">用户反馈</a></li>         	
+        	<li><a href="/ad/show" target="main">广告管理</a></li>
+        	<li><a href="/nav/showMainNav" target="main">导航管理</a></li>
+        	<li><a href="/comment/adminShow" target="main">评论管理</a></li>
+        	<li><a href="/article/show" target="main">文章管理</a></li> 
+        	<li><a href="/dict/admin" target="main">字典管理</a></li> 
+        		<li><a href="/message/show" target="main">信息管理</a></li> 
+        	<li><a href="/feedback/admin" target="main">用户反馈</a></li>         	
         </ul>
       </div>
     </div>
@@ -78,8 +78,8 @@
     <div id="download" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=topic&action=show" target="main">下载主题</a></li>
-        	<li><a href="?a=download&action=show" target="main">下载内容</a></li>        	     	
+        	<li><a href="/topic/show" target="main">下载主题</a></li>
+        	<li><a href="/download/show" target="main">下载内容</a></li>        	     	
         </ul>
       </div>
     </div>
@@ -92,10 +92,10 @@
     <div id="collapseTwo" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=permission&action=show" target="main">权限管理</a></li>
-        	<li><a href="?a=level&action=show" target="main">等级管理</a></li>
-        	<li><a href="?a=admin&action=show" target="main">管理员管理</a></li>
-        	<li><a href="?a=user&action=show" target="main">前台会员管理</a></li>
+        	<li><a href="/permission/show" target="main">权限管理</a></li>
+        	<li><a href="/level/show" target="main">等级管理</a></li>
+        	<li><a href="/admin/show" target="main">管理员管理</a></li>
+        	<li><a href="/user/show" target="main">前台会员管理</a></li>
         </ul>
       </div>
     </div>
@@ -108,9 +108,9 @@
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=category&action=show" target="main">商品分类</a></li>
-        	<li><a href="?a=product&m=adminShow" target="main">商品管理</a></li>
-        	<li><a href="?a=order&action=show" target="main">订单管理</a></li>
+        	<li><a href="/category/show" target="main">商品分类</a></li>
+        	<li><a href="/product/Show" target="main">商品管理</a></li>
+        	<li><a href="/order/show" target="main">订单管理</a></li>
         </ul>
       </div>
     </div>
@@ -123,10 +123,10 @@
     <div id="collapseFour" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=learning&action=showCourse" target="main">课程管理</a></li>
-        	<li><a href="?a=learning&action=showChoice" target="main">选择题管理</a></li>
-        	<li><a href="?a=learning&action=showJudge" target="main">判断题管理</a></li>
-        	<li><a href="?a=learning&action=showExam" target="main">试卷管理</a></li>
+        	<li><a href="/learning/showCourse" target="main">课程管理</a></li>
+        	<li><a href="/learning/showChoice" target="main">选择题管理</a></li>
+        	<li><a href="/learning/showJudge" target="main">判断题管理</a></li>
+        	<li><a href="/learning/showExam" target="main">试卷管理</a></li>
         </ul>
       </div>
     </div>
@@ -139,8 +139,8 @@
     <div id="collapseFive" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=ask&action=show" target="main">问答管理</a></li>
-        	<li><a href="?a=setting&action=backup" target="main">数据库备份</a></li>
+        	<li><a href="/ask/show" target="main">问答管理</a></li>
+        	<li><a href="/setting/backup" target="main">数据库备份</a></li>
         	<li><a href="#">待定配置</a></li>
         </ul>
       </div>
@@ -154,8 +154,8 @@
     <div id="collapseSix" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=setting&action=config" target="main">网站配置</a></li>
-        	<li><a href="?a=setting&action=backup" target="main">数据库备份</a></li>
+        	<li><a href="/setting/config" target="main">网站配置</a></li>
+        	<li><a href="/setting/backup" target="main">数据库备份</a></li>
         	<li><a href="#">待定配置</a></li>
         </ul>
       </div>
@@ -169,9 +169,9 @@
     <div id="collapseSeven" class="panel-collapse collapse">
       <div class="panel-body">
         <ul>
-        	<li><a href="?a=readme&action=catalogoue" target="main">目录结构</a></li>
-        	<li><a href="?a=readme&action=func" target="main">基本功能</a></li>
-        	<li><a href="?a=readme&action=feature" target="main">KongCMS特色</a></li>
+        	<li><a href="/readme/catalogoue" target="main">目录结构</a></li>
+        	<li><a href="/readme/func" target="main">基本功能</a></li>
+        	<li><a href="/readme/feature" target="main">KongCMS特色</a></li>
         </ul>
       </div>
     </div>
@@ -179,7 +179,7 @@
 </div>
 				</div>
 				<div class="rightFrame">
-				<iframe src="?a=index&action=welcome" name="main" scrolling="yes" id="mainFrame"></iframe>
+				<iframe src="/admin/welcome" name="main" scrolling="yes" id="mainFrame"></iframe>
 				</div>
 			</div>
 			</div>

@@ -41,7 +41,7 @@ $(function(){
 			$(".right div:eq(0) strong").html("");
 			///////
 			$.ajax({
-				'url':"?a=user&m=checkUserName",
+				'url':"/user/checkUserName",
 				'type':"post",
 				'data':{'action':'reg','username':$("#reg_username").val()},
 				beforeSend:function(){
@@ -250,7 +250,7 @@ $(function(){
 		fd.append("email",$("#reg_email").val());
 		$.ajax({
 			type:"post",
-			url:"?a=user&m=checkUserName",
+			url:"/user/checkUserName",
 			data:fd,
 			//fd对象在jquery的设置;
 			processData:false,
@@ -260,14 +260,18 @@ $(function(){
 				$(".submit i").addClass("fa-spinner fa-spin");
 			},
 			success:function(response){
-				var str=eval(response);
-				if(response!="failed"){
-					sessionStorage.setItem("username",str[0].username);
-                    sessionStorage.setItem("id",str[0].id); 
-                    sessionStorage.setItem("icon",str[0].icon); 
-                    sessionStorage.setItem("point",str[0].countdown); 
-					location.href='?a=home';					
+				if(response!='taken'){
+					//console.log(response);
+					var str=eval(response);
+					if(response!="failed"){
+						sessionStorage.setItem("username",str[0].username);
+	                    sessionStorage.setItem("id",str[0].id); 
+	                    sessionStorage.setItem("icon",str[0].icon); 
+	                    sessionStorage.setItem("point",str[0].countdown); 
+						location.href='/home/index';					
+					}
 				}
+				
 			},
 			complete:function(){
 				$(".submit i").removeClass("fa-spinner fa-spin");

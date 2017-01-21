@@ -34,15 +34,16 @@
 }
 .UIB .a-envelope-o{
 	position:relative;
+	border:1px solid red;
 }
 .UIB .bubble{
 	position:absolute;
-	top:20px;
+	top:-9px;
 	left:23px;
 	width:20px;
 	text-align:center;
 	height:20px;
-	line-height:25px;
+	line-height:20px;
 	background:red;
 	color:white;
 	display:inline-block;

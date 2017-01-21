@@ -2,167 +2,249 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="libs/Require/RequireJS.js" data-main="public/scripts/main"></script>
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
+<title>广告</title>
+<link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="libs/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
 <link href="public/styles/admin.css" rel="stylesheet">
+<link href="public/styles/Tools.css" rel="stylesheet">
+<link href="public/styles/page.css" rel="stylesheet">
+<script src="libs/requireJS/require.js" data-main="public/scripts/admin" defer></script>
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
+<!-- 修改广告 -->
+{if $update}
+<div class='row'>
+	<div>
+		<ul class="breadcrumb">
+			<li><a href="?a=admin&m=welcome">后台首页</a></li>
+			<li><a href="?a=ad&action=show">所有广告</a></li>
+			<li class="active">修改广告</li>
+		</ul>
+	</div>
 </div>
-<!--modal模态框结束  -->
-	{if $show}
-	<div class="row">
-		<div class="col-xs-12">
-			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=ad&action=show'>广告管理</a></li>
-					<li class="active">显示广告</li>
-					<li><a href="?a=ad&action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li>
-				</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=ad&action=deleteAll" method="post">
+<div>
+	<div class="col-md-12">
+		<form action="" method="post" enctype='multipart/form-data'> 
+		<table class="table table-bordered table-striped table-hpver">
+			<tr>
+			<input type="hidden" name="thumbnail2" value="{$oneAd->thumbnail}">
+				<td class="text-right">广告类型</td>
+				<td>
+				<!-- //从adaction的update方法 -->
+				<input type="radio" id="banner" name="type" value="1" {$banner}>	
+				<label for="banner">banner广告</label>
+				<input type="radio" id="slider" name="type" value="2" {$slider}>
+				<label for="slider">slider广告</label>
+				<input type="radio" id="fullcolumn" name="type" value="3" {$fullcolumn}>
+				<label for="fullcolumn">fullcolumn广告</label>
+				<input type="radio" id="sidebar" name="type" value="4" {$sidebar}>
+				<label for="sidebar">sidebar广告</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告标题</td>
+				<td>
+					<input type="text" class="form-control" name="title" value={$oneAd->title}>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告链接</td>
+				<td>
+					<input type="text" class="form-control" name="link" value={$oneAd->link}>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告描述</td>
+				<td>
+					<input type="text" class="form-control" name="description" value={$oneAd->description}>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告图片</td>
+				<td>
+					<label for="pic" class="text-primary">上传图片</label>
+					<input type="file" id="pic" name="thumbnail" style="display:none">
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">图像预览</td>
+				<td>
+					{if $oneAd->thumbnail}
+					<img src="public/uploads/ad/{$oneAd->thumbnail}" width="150px" height="90px" class="img-circle" id="preview">
+					{else}
+					<img src="public/images/default.jpg" width="150px" height="90px" class="img-circle" id="preview">
+					{/if}
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input type="submit" value="提 交" name="send" class="btn btn-success">
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+{/if}
+<!-- 显示广告 -->
+{if $show}
+<div class='row'>
+	<div>
+		<ul class="breadcrumb">
+			<li><a href="?a=admin&m=welcome">后台首页</a></li>
+			<li class="active">所有广告</li>
+			<li><a href="?a=ad&action=add">添加广告</a></li>
+		</ul>
+	</div>
+</div>
+<div class='row'>
+	<div class="col-md-12 main" style="margin: 0 0 0 1%;">
+		<form action="" method="post"> 
+		<table class="table table-bordered table-striped table-hover">
+			<tr>
+				<td>广告编号</td>
+				<td>广告标题</td>
+				<td>广告链接</td>
+				<td>广告缩略图</td>
+				<td>广告描述</td>
+				<td>广告类型</td>
+				<td>广告状态</td>
+				<td>创建时间</td>
+				<td>操作</td>
+				<td><input type="checkbox" id="choiceAll">全选/反选</td>
+			</tr>
+			{if $data}
+			{foreach $data as $k=>$v}
 				<tr>
-					<td>编号</td>
-					<td>标题</td>
-					<td>链接</td>
-					<td>类型</td>
-					<td width=80>显示|隐藏</td>
-					<td>描述</td>
-					<td width=80>操作</td>
-					<td><input type="checkbox" id="selectBar">全选</td>
-				</tr>
-				{if $AllAd}
-				{foreach $AllAd as $key=>$value}
-				<tr>
-					<td>{$key+$num}</td>
-					<td>{$value->title}</td>
-					<td>{$value->link}</td>
-					<td>{$value->type}</td>
-					<td>{$value->state}</td>
-					<td>{$value->description|truncate:"10":"..."}</td>
+					<td>{$k}</td>
+					<td>{$v->title}</td>
+					<td>{$v->link}</td>
+					<td>{$v->thumbnail}</td>
+					<td>{$v->description}</td>
+					<td>{$v->type}</td>
+					<td>{$v->state}</td>
+					<td>{$v->date}</td>
 					<td>
-						<a href="?a=ad&action=update&id={$value->id}">修改</a>
-						<a href="?a=ad&action=delete&id={$value->id}" class="deleteBtn" info="">删除</a>
+						<a href="?a=ad&action=update&id={$v->id}"><img src="public/images/user_edit.png"></a> /
+						<a href="?a=ad&action=delete&id={$v->id}"><img src="public/images/trash.png"></a>
 					</td>
-					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+					<!-- 为数组形式 -->
+					<td><input type="checkbox" name="getAll[]" value="{$v->id}"></td>	
 				</tr>
-				{/foreach}
+			{/foreach}
 				<tr>
-					<td colspan="8"><input type="submit" value="全删" class="btn btn-success pull-right" name="send"></td>
+					<td colspan="10" class="text-right">
+					<!--<a href="?a=ad&action=add" class="btn btn-primary">添加广告</a>-->
+					<input type="submit"  name="delete" class="btn btn-danger" value="清除选中" >
+					</td>
 				</tr>
-				{else}
-				<tr><td colspan="7">暂无广告</td></tr>
-				{/if}
-			</form>
-			</table>
-		</div>
-	</div>
-	<div class="row">
-			<div class="col-md-12 text-center">
-				<form action="" method="get" style="display:inline">
-				<input type="hidden" name="action" value="show">
-				<input type="hidden" name="a" value="ad">
-					<select name="kind" class="input-sm">
-						<option value="0" {$all}>所有广告</option>
-						<option value="1" {$fullcolumn}>通栏广告</option>
-						<option value="2" {$banner}>banner广告</option>
-						<option value="3" {$slider}>slider广告</option>
-						<option value="4" {$sidebar}>侧栏广告</option>
-					</select>
-					<input type="submit" name="send" value="提交" class="btn btn-success">
-				</form>
-			{$page}
-			</div>
-	</div>
-	{/if}
-	{if $add}
-		<div class="row">
-			<div class="col-xs-12">
-				<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=ad&action=show'>广告管理</a></li>
-					<li class="active">添加商品</li>
-				</ul>
-				<table class="table table-bordered table-striped table-hover table-condensed">
-				<form action="" method="post" class="form-inline" enctype="multipart/form-data">
-					<tr>
-						<td class="text-right">广告类型</td>
-						<td>
-							<label class="checkbox-inline"><input type="radio" name="type" value="1" class="form-controlo">通栏广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="2" class="form-controlo">Banner广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="3" class="form-controlo">Slider广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="4" class="form-controlo">侧栏广告</label>
-						</td>
-					</tr>
-					<tr><td class="text-right">广告标题</td><td><input type="text" name="title" class="form-control"></td></tr>
-					<tr><td class="text-right">广告链接</td><td><input type="text" name="link" class="form-control"></td></tr>
-					<tr><td class="text-right">广告描述</td><td><textarea name="description" class="form-control"></textarea></td></tr>
-					<tr><td class="text-right">广告图片</td><td><a style='cursor:pointer' id='uploadBar'>点击上传</a><input type="file" name="thumbnail" class="form-control" id="file" style="display:none;"></td></tr>
-	<tr>
-		<td>图像预览</td>
-		<td style="width:800px;height:250px;">
-			<img src="public/images/default.jpg" id="defaultImage" style="max-width:100%;max-height:100%;">
-		</td>
-	</tr>		
-	<tr class="text-center"><td colspan="2"><input type="submit" value="提交" name="send" class="btn btn-success"></td></tr>
-				</form>
-				</table>
-			</div>
-		</div>
-		{/if}
-		{if $update}
-		<div class="row">
-			<div class="col-xs-12">
-				<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=ad&action=show'>广告管理</a></li>
-					<li class="active">修改商品</li>
-				</ul>
-				<table class="table table-bordered table-striped table-hover table-condensed">
-				<form action="" method="post" class="form-inline" enctype="multipart/form-data">
-				<input type="hidden" name="id" value="{$oneAd->id}">
-					<tr>
-						<td class="text-right">广告类型</td>
-						<td>
-							<label class="checkbox-inline"><input type="radio" name="type" value="1" class="form-controlo" {$fullcolumn}>通栏广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="2" class="form-controlo" {$banner}>Banner广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="3" class="form-controlo" {$slider}>Slider广告</label>
-							<label class="checkbox-inline"><input type="radio" name="type" value="4" class="form-controlo" {$sidebar}>侧栏广告</label>
-						</td>
-					</tr>
-					<tr><td class="text-right">广告标题</td><td><input type="text" name="title" class="form-control" value="{$oneAd->title}"></td></tr>
-					<tr><td class="text-right">广告链接</td><td><input type="text" name="link" class="form-control" value="{$oneAd->link}"></td></tr>
-					<tr><td class="text-right">广告描述</td><td><textarea name="description" class="form-control">{$oneAd->description}</textarea></td></tr>
-					<tr><td class="text-right">广告图片</td><td><a style='cursor:pointer' id='uploadBar'>点击上传</a><input type="file" name="thumbnail" class="form-control" id="file" style="display:none;"></td></tr>
+			{else}
+			<tr>
+				<td colspan="10" class="text-center">暂无数据</td>
+			</tr>
+			{/if}
+			<tr></tr>
+			<tr></tr>
+			<tr></tr>
+		</table>
+		</form>
+	</div>	
+</div>
 
-					<tr><td></td><td><img src="public/uploads/ad/{$oneAd->thumbnail}" style="width:600px;" id="defaultImage"></td></tr>
-					<input type="hidden" name="thumbnail2" value="{$oneAd->thumbnail}">
-					<tr class="text-center"><td colspan="2"><input type="submit" value="提交" name="send" class="btn btn-success"></td></tr>
-				</form>
-				</table>
-			</div>
-		</div>
-		{/if}
+<div class='row'>
+<!-- 分页显示 -->
+<div class='page col-md-6 text-right'>{$page}</div>
+<!-- 广告类型进行分类显示 -->
+	<div class="col-md-6 text-left" style="border:1px solid white;padding: 0 0 0 0">
+		<form action="#" method="get">
+			<input type="hidden" name="a" value="ad">
+			<input type="hidden" name="action" value="show">
+			<select name="kind" class="input-sm">
+				<option value=0 {$all}>所有广告</option>
+				<option value=1 {$banner}>banner广告</option>
+				<option value=2 {$slider}>slider广告</option>
+				<option value=3 {$fullcolumn}>fullcolumn广告</option>
+				<option value=4 {$sidebar}>sidebar广告</option>
+			</select>
+			<input class="btn btn-success" type="submit" name="send" value="提交">
+		</form>
+	</div>
+	
+</div>
+
+{/if}
+
+<!-- 添加广告 -->
+{if $add}
+<div class='row'>
+	<div>
+		<ul class="breadcrumb">
+			<li><a href="?a=admin&m=welcome">后台首页</a></li>
+			<li><a href="?a=ad&action=show">所有广告</a></li>
+			<li class="active">添加广告</li>
+		</ul>
+	</div>
+</div>
+<div>
+	<div class="col-md-12">
+		<form action="" method="post" enctype='multipart/form-data'> 
+		<table class="table table-bordered table-striped table-hpver">
+			<tr>
+				<td class="text-right">广告类型</td>
+				<td>
+				<input type="radio" id="banner" name="type" value="1">
+				<label for="banner">banner广告</label>
+				<input type="radio" id="slider" name="type" value="2">
+				<label for="slider">slider广告</label>
+				<input type="radio" id="fullcolumn" name="type" value="3">
+				<label for="fullcolumn">fullcolumn广告</label>
+				<input type="radio" id="sidebar" name="type" value="4">
+				<label for="sidebar">sidebar广告</label>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告标题</td>
+				<td>
+					<input type="text" class="form-control" name="title">
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告链接</td>
+				<td>
+					<input type="text" class="form-control" name="link">
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告描述</td>
+				<td>
+					<input type="text" class="form-control" name="description">
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">广告图片</td>
+				<td>
+					<label for="pic" class="text-primary">上传图片</label>
+					<input type="file" id="pic" name="thumbnail" style="display:none">
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">图像预览</td>
+				<td>
+					<img src="public/images/default.jpg" width="150px" height="90px" class="img-circle" id="preview">
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input type="submit" value="提 交" name="send" class="btn btn-success">
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+
+{/if}
 </body>
 </html>

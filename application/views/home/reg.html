@@ -3,20 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>会员注册</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/home.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/home.js"></script>
-<script src="public/scripts/reg.js"></script>
-<link href="public/styles/reg.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<link href="{$ROOT}/public/styles/home.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/reg.js"></script>
+<link href="{$ROOT}/public/styles/reg.css" rel="stylesheet">
 </head>
 <body id="home">
 {include file="home/common.html"}
 	<div class="container">
-		
 		<div class="row main">
 			<div class="col-md-6 reg">
 			<form class="form-horizontal" id="reg_form">
@@ -56,7 +53,7 @@
 				<div class="form-group">
 					<label for="InputName" class="col-sm-2 control-label">头像</label>
 					<div class="col-sm-10">
-						<img src="public/images/default.jpg" class="img-circle"><a href="javascript:void(0)" id="iconBtn">太丑了，换一张</a>
+						<img src="{$ROOT}/public/images/default.jpg" class="img-circle"><a href="javascript:void(0)" id="iconBtn">太丑了，换一张</a>
 						<input type="file" class="form-control" name="reg_icon" id="reg_icon" accept="image/*">
 					</div>
 				</div>
