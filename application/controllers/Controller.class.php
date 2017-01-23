@@ -86,11 +86,10 @@ class Controller{
              </div>";
         //exit();
     }
-    protected function page($_total){
-        $page=new Page($_total);
+    protected function page($_total,$_listRows=5){
+        $page=new Page($_total,$_listRows);
         $this->model->limit=$page->limit;
-        $this->smarty->assign("num",$page->listRowsBegin());
-        $this->smarty->assign("page",$page->display());
+        $this->smarty->assign("page",$page->display(array(0,1,2,3,4)));
     }
 }
 ?>

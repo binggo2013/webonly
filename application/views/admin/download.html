@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
 <script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script src="public/scripts/download.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
-<script src="public/scripts/choice.js"></script>
+<script src="{$ROOT}/public/scripts/tools.js"></script>
+<script src="{$ROOT}/public/scripts/download.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<!-- <script src="{$ROOT}/public/scripts/choice.js"></script> -->
 </head>
 <body>
 <!--modal模态框开始  -->
@@ -32,37 +32,30 @@
 			</div>
 </div>
 <!--modal模态框结束  -->
-{if $show}
+{if $delete}删除中...{/if}
+{if $topic}
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=download&action=show'>下载内容管理</a></li>
-				<li class="active">显示下载内容</li>
-				<li><a href="?a=download&action=add" title='添加等级'><i class="fa fa-plus-circle"></i></a></li>
+				<li><a href='?a=topic&action=show'>下载主题管理</a></li>
+				<li class="active">显示下载主题</li>
+				<li><a href="?a=topic&action=add" title='添加等级'><i class="fa fa-plus-circle"></i></a></li>
 			</ul>
 			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
 			<tr>
-				<td>编号</td>
 				<td>名称</td>
-				<td>文件</td>
-				<td>URL</td>
-				<td>描述</td>	
-				<td>所属主题</td>			
+				<td>描述</td>				
 				<td>操作</td>
 			</tr>
 			{if $data}
 			{foreach $data as $key=>$value}
 			<tr>
-				<td>{$key+$num}</td>
-				<td>{$value->title}</td>
 				<td>{$value->name}</td>
-				<td title="{$value->url}">{$value->url|truncate:"15":"..."}</td>
-				<td>{$value->description|truncate:"15":"..."}</td>	
-				<td>{$value->tid}</td>			
+				<td>{$value->description}</td>				
 				<td>
-					<a href="?a=download&action=update&id={$value->id}">修改</a>
-					<a href="?a=download&action=delete&id={$value->id}" class="deleteBtn">删除</a>
+					<a href="?a=topic&action=update&id={$value->id}">修改</a>
+					<a href="?a=topic&action=delete&id={$value->id}" class="deleteBtn">删除</a>
 				</td>
 			</tr>
 			{/foreach}
@@ -73,7 +66,49 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">{$page}</div>
+		<div class="col-md-12 text-center page">{$page}</div>
+	</div>
+{/if}
+{if $content}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/download/content'>下载内容管理</a></li>
+				<li><a href="/download/add" title='添加下载'><i class="glyphicon glyphicon-plus"></i></a></li>
+				<li class="active">显示下载内容</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
+			<tr>
+				<td>名称</td>
+				<td>文件</td>
+				<td>URL</td>
+				<td>描述</td>	
+				<td>所属主题</td>			
+				<td>操作</td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$value->title}</td>
+				<td>{$value->name}</td>
+				<td title="{$value->url}">{$value->url|truncate:"15":"..."}</td>
+				<td>{$value->description|truncate:"15":"..."}</td>	
+				<td>{$value->tid}</td>			
+				<td>
+					<a href="/download/update/id/{$value->id}">修改</a>
+					<a href="/download/delete/id/{$value->id}" class="deleteBtn">删除</a>
+				</td>
+			</tr>
+			{/foreach}
+			{else}
+			<tr><td colspan="5">暂无数据</td></tr>
+			{/if}
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center page">{$page}</div>
 	</div>
 {/if}
 {if $update}
@@ -87,7 +122,7 @@
 			<table class="table table-bordered table-striped table-hover table-condensed">
 			<form action="" method="post" enctype="multipart/form-data">
 			<tr>
-				<td class="text-right">等级描述</td>
+				<td class="text-right">主题描述</td>
 				<td>
 					<select id="tid" name="tid" class="form-control" style="width:135px;padding:5px;display:inline-block">
 						<option value="0">选择一个主题</option>{$topic}

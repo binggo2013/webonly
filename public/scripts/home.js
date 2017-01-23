@@ -14,20 +14,22 @@ $(function(){
 		//console.log(_index);
 		$(this).click(function(){
 			$("#downloadBtn").attr("href",$(this).attr("data-href"));
+			$("#downloadBtn").attr("info",$(this).attr("data-id"));
 			$("#title").html($(this).attr("data-title"));
 			$("#count").html($(this).attr("data-count"));
 			$("#time").html($(this).attr("data-time"));
 			$("#description").html($(this).attr("data-description"));
 		});
 	});
-	$("#downloadBtn").click(function(){	
+	$("#downloadBtn").click(function(){
+		//alert($(this).attr("info"));
 		if(sessionStorage.getItem("username")){
 			$.ajax({
 				'type':"post",
-				'url':"?a=download&m=updateNum",
-				'data':{"url":$(this).attr("href")},
+				'url':"/download/updateNum",
+				'data':{"info":$(this).attr("info")},
 				success:function(response){
-					//console.log(response);
+					console.log(response);
 				}
 			});
 		}else{

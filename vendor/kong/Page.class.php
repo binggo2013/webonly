@@ -148,9 +148,9 @@ class Page{
     private function next(){
         $str=null;
         if($this->page==$this->pageNum){
-            $str="<li>".$this->config['next']."</li>";
+            $str="<li class='next'>".$this->config['next']."</li>";
         }else{
-            $str="<li><a href='".$this->url."&page=".($this->page+1)."'>".$this->config['next']."</a></li>";
+            $str="<li class='next'><a href='".$this->url."&page=".($this->page+1)."'>".$this->config['next']."</a></li>";
         }
         return $str;
     }
@@ -182,9 +182,9 @@ class Page{
     private function prev(){
         $str=null;
         if($this->page==1){
-            $str="<li>".$this->config['prev']."</li>";
+            $str="<li class='prev'>".$this->config['prev']."</li>";
         }else{
-            $str="<li><a href='".$this->url."&page=".($this->page-1)."'>".$this->config['prev']."</a></li>";
+            $str="<li class='prev'><a href='".$this->url."&page=".($this->page-1)."'>".$this->config['prev']."</a></li>";
         }
         return $str;
     }

@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+.page ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	margin-left:25%;
+}
+.page ul:after{
+	content:"";
+	clear:both;
+	display:block;
+}
+.page li{
+	float:left;
+	width:35px;
+	height:35px;
+	line-height:35px;
+	margin-left:15px;
+	border:1px solid #ddd;
+}
+.present{
+	color:#fff;
+	background:#428bca;    	
+}
+li.ellipsis{
+	border:0;
+}
+.page li a{
+	width:35px;
+	height:35px;
+	line-height:35px;
+	display:block;
+}
+li.prev,li.prev a,li.next,li.next a{
+	background:#428bca;
+	color:#fff;
+	width:70px;
+	line-height:35px;
+	height:35px;
+}

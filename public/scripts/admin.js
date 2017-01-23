@@ -15,7 +15,7 @@ $("#subBtn").click(function(){
 	alert(333);
 	return false;
 });
-	alert($)
+	//alert($)
 	$("#admin_login .closeBar").click(function(){
 		location.href="/home/index";
 	});

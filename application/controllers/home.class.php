@@ -26,14 +26,6 @@ class home extends Controller{
         //导航
         $nav=new navModel();
         $frontNav=$nav->getFrontNav();
-        // 		foreach ($frontNav as $key=>$value){
-        // 		    $nav->id=$value->id;
-        // 		    $aaa=$nav->getAllSubNavById();
-        // 		    if(!$aaa){
-        // 		        echo "mysql";
-        // 		    }
-        // 		   //Tools::dump($aaa);
-        // 		}
         $this->smarty->assign("frontNav",$frontNav);
         //热门商品
         $product=new productModel();

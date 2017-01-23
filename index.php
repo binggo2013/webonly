@@ -1,7 +1,7 @@
 <?php
 session_start();
-//error_reporting(E_ALL);
-error_reporting(0);
+error_reporting(E_ALL^E_NOTICE);
+//error_reporting(0);
 define("ROOT_PATH",dirname(__FILE__));
 //echo ROOT_PATH."<BR>";
 set_include_path(".".PATH_SEPARATOR."./vendor".

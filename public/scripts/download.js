@@ -1,12 +1,13 @@
 $(function(){
 	//console.log($("#downloadBtn"));
-	$(".downloadBar").click(function(){			
+	$(".downloadBar").click(function(){	
+		alert($(this).attr("href"));
 		$.ajax({
 			'type':"post",
-			'url':"?a=download&m=updateNum",
+			'url':"/download/updateNum",
 			'data':{"url":$(this).attr("href")},
 			success:function(response){
-				//console.log(response);
+				console.log(response);
 			}
 		});
 		return true;
