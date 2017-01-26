@@ -75,7 +75,7 @@ class user extends Controller{
     public function img(){
         $captcha=new Captcha(90,34);
         $captcha->setConfig(array('level'=>5,"isNoise"=>true,'simple'=>false));
-        $captcha->showCaptcha('http://www.webonly.org/public/fonts/ARIALNB.TTF');
+        $captcha->showCaptcha('/public/fonts/ARIALNB.TTF');
     }
 }
 ?>

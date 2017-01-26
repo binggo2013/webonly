@@ -9,7 +9,7 @@ class Controller{
         $this->setURL();
     }
     /*检测登录状态*/
-    protected static function checkLogin($_data){
+    protected function checkLogin($_data){
         if (!isset($_SESSION[$_data])){
             return true;
         }
@@ -33,7 +33,7 @@ class Controller{
 			echo ($_data);
 			echo "</pre>";
 		}else{
-			echo "dump的参数传递错误";
+			echo "未知的dump数据类型";
 		}
 	}
     protected function setURL(){
@@ -90,6 +90,83 @@ class Controller{
         $page=new Page($_total,$_listRows);
         $this->model->limit=$page->limit;
         $this->smarty->assign("page",$page->display(array(0,1,2,3,4)));
+    }
+    /**
+     * 修剪字符串，如果有剩余字符就显示省略号。
+     * @param string $_str
+     * @param number $_length
+     * @param string $_suffix
+     * @param number $_start
+     * @return string  */
+    protected function subString($_str,$_length,$_suffix="...",$_start=0){
+        //mb_substr();修剪多字节的字符串;
+        $num=mb_strlen($_str);
+        //判断修剪字符的启示值与字符长度的关系;
+        if($_start<($num-1)){
+            if($num<$_length){
+                return mb_substr($_str, $_start,$_length,"utf8");
+            }else{
+                return mb_substr($_str, $_start,$_length,"utf8").$_suffix;
+            }
+        }elseif($_start==($num-1)){
+            echo "";
+        }else{
+            return "<span style='color:red'>开始的索引值大于字符串的长度</span>";
+        }
+    }
+    /**
+     * 对内容过滤 <br>
+     * 相应的过滤为数组、对象、字符串;
+     * @param mixed $_data
+     * @return mixed  */
+    protected function filter($_data){
+        if(is_array($_data)){
+            foreach ($_data as $key=>$value){
+                $str[$key]=htmlspecialchars($value);
+            }
+        }elseif(is_object($_data)){
+            foreach ($_data as $key=>$value){
+                $str->$key=htmlspecialchars($value);
+            }
+        }elseif(is_string($_data)){
+            $str=htmlspecialchars($_data);
+        }
+        return $str;
+    }
+    /**
+     * 反过滤
+     * @return mixed  */
+    protected function deFilter($_data){
+        if(is_array($_data)){
+            foreach ($_data as $key=>$value){
+                $str[$key]=htmlspecialchars_decode($value);
+            }
+        }elseif(is_object($_data)){
+            foreach ($_data as $key=>$value){
+                $str->$key=htmlspecialchars_decode($value);
+            }
+        }elseif(is_string($_data)){
+            $str=htmlspecialchars_decode($_data);
+        }
+        return $str;
+    }
+    /**
+     * 判断最小值最大值
+     * @param string $_data
+     * @param number $_length
+     * @param string $_flag
+     * @return boolean  */
+    protected function range($_data,$_length,$_flag){
+        if($_flag=='min'){
+            if(mb_strlen(trim($_data),"utf8")<$_length){
+                return true;
+            }
+        }elseif($_flag=='max'){
+            if(mb_strlen(trim($_data),"utf8")>$_length){
+                return true;
+            }
+        }
+        return false;
     }
 }
 ?>

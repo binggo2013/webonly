@@ -11,8 +11,8 @@ class download extends Controller{
     }
     public function updateNum(){
         $this->model->exec("update download set download_num=download_num+1 where id=".$_POST['info']);
-        echo "update download set download_num=download_num+1 where id=".$_POST['info'];
-        //echo "ok";
+        //echo "update download set download_num=download_num+1 where id=".$_POST['info'];
+        echo "ok";
     }
     public function updateDownloadNum($data=array()){
         $this->model->exec("update download set download_num=download_num+1 where where id=".$data['info']);
@@ -91,7 +91,8 @@ class download extends Controller{
                 'url'=>$url,
                 'description'=>$_POST["description"],
                 'tid'=>$_POST["tid"],
-                'title'=>$_POST["title"]
+                'title'=>$_POST["title"],
+                'date'=>date('Y-m-d H:i:s')
             );
             if($this->model->add('download',$array)){
                 $this->redirect("添加上传内容成功", "/download/content");

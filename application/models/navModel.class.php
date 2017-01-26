@@ -10,9 +10,7 @@ class navModel extends Model{
 		$_sql="select * from nav where name='".$this->name."'";
 		return parent::getAllResult($_sql);
 	}
-	public function getFrontNav(){
-		return parent::getAll("nav","where pid=0 and state=1 order by sort desc limit 10");
-	}
+	
 	public function deleteAllNav(){
 		$_sql="delete from nav where id in (".$this->multiId.")";
 		return parent::cud($_sql);

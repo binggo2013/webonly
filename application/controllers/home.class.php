@@ -12,7 +12,7 @@ class home extends Controller{
         //var_dump($article->getArticleByAttr(1,"limit 1")[0]);1为属性
         $this->assign("headline",$article->getArticleByAttr(1,"limit 1")); 
         //var_dump($article->getArticleByAttr(1,"limit 1"));
-        $this->assign("recommend",$article->getArticleByAttr(2,"limit 1"));
+        $this->assign("recommend",$article->getArticleByAttr("2","limit 1"));
         //商品推荐
         
         //试卷
@@ -24,8 +24,7 @@ class home extends Controller{
         $this->assign("allCourse",$quiz->hotCourse());
         
         //导航
-        $nav=new navModel();
-        $frontNav=$nav->getFrontNav();
+        $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort desc limit 9");
         $this->smarty->assign("frontNav",$frontNav);
         //热门商品
         $product=new productModel();

@@ -2,6 +2,9 @@
  * 登录
  */
 $(function(){
+	$("#captcha").click(function(){
+		$(this).attr("src",$(this).attr('src')+"/num/"+Math.random());
+	});
 	if(sessionStorage.getItem("username")){
         $("#userValue").html(sessionStorage.getItem("username")+'<span class="caret"></span>');        
         $(".point").html(sessionStorage.getItem("point"));

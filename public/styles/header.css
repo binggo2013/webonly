@@ -1,5 +1,38 @@
 @CHARSET "UTF-8";
-
+#captcha{
+	cursor:pointer;
+}
+header{
+	background-color: #0d5caa;
+	color:#fff;
+}
+header a{
+	color:#fff;
+}
+header:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+section.logo{
+	width:10%;
+	float:left;
+}
+section.logo img{
+	width:100%;
+	height:100%;
+	margin-top:5px;
+}
+nav{
+	width:70%;
+	float:left;
+}
+section.login_reg{
+	width:20%;
+	float:right;
+	line-height:55px;
+	text-align:center;
+}
 .inner{
   width: 100%;
   height:5px;
@@ -9,12 +42,11 @@
   background: -ms-linear-gradient(left,rgba(15,166,234,1) 0,rgba(89,204,24,1) 10%,rgba(15,166,234,1) 60%,rgba(15,166,234,1) 100%);
   background: linear-gradient(left,rgba(15,166,234,1) 0,rgba(89,204,24,1) 10%,rgba(15,166,234,1) 60%,rgba(15,166,234,1) 100%);
 }
-.frame{
-	width:1100px;
-	margin:auto;
-}
 .UIA .dropdown",.UIB .dropdown"{
 	margint-top:20px;
+}
+.UIA a:hover,.UIA a:active,.UIB a:hover,.UIB a:active{
+	color:#fff;
 }
 .UIB{
 	font-size:18px;
@@ -90,17 +122,17 @@
 	height:30px;
 }
 .nav{
-	border-top:2px solid red;
+	/*border-top:2px solid red;
 	background-color: #f0f0f0;
 	background-image: -webkit-gradient(linear,left top, left bottom,from(#fefefe), color-stop(0.5,#f0f0f0), color-stop(0.51, #e6e6e6));
 	background-image: -moz-linear-gradient(#fefefe 0%, #f0f0f0 50%, #e6e6e6 51%);
 	background-image: -o-linear-gradient(#fefefe 0%, #f0f0f0 50%, #e6e6e6 51%);
 	background-image: -ms-linear-gradient(#fefefe 0%, #f0f0f0 50%, #e6e6e6 51%);
 	background-image: linear-gradient(#fefefe 0%, #f0f0f0 50%, #e6e6e6 51%);	
-	/* Adding a 1px inset highlight for a more polished efect: */	
+	Adding a 1px inset highlight for a more polished efect:	
 	box-shadow: 1px -1px 0 rgba(255, 255, 255, 0.6) inset;
 	-moz-box-shadow: 1px -1px 0 rgba(255, 255, 255, 0.6) inset;
-	-webkit-box-shadow: 1px -1px 0 rgba(255, 255, 255, 0.6) inset;
+	-webkit-box-shadow: 1px -1px 0 rgba(255, 255, 255, 0.6) inset; */
 }
 .nav a{
 	font-weight:bold;
@@ -113,7 +145,7 @@
 	/*  */
 	display:inline-block;
 	height:55px;
-	width:83px;
+	width:85px;
 	line-height:55px;
 	text-align:center;	
 	transition:background 0.3s ease 0.1s;	
@@ -124,7 +156,7 @@
 	-webkit-animation: slide 1s .1s ease both;
     -moz-animation: slide 1s .1s ease both;
 	position:relative;
-	
+	width:90px;
 }
 .nav dd:hover,.nav dd a:hover{
 	cursor:pointer;

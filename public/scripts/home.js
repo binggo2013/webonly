@@ -172,67 +172,6 @@ $(function(){
         	} 
         });        
     });
-	////////////提交评论///////////////
-/*	$(".commentBtn").click(function(){
-		if($.trim($("#content").length==0)){
-			$("#feedback").css({"display":"block"}).html("内容不得为空");
-			return false;
-		}
-		if($(".user").html()==''){
-			//alert("未登录");
-			//location.href='';
-			//$("#login").css({"left":($(window).width()-$("#login").width())/2+"px","top":-$("#login").height()*2+"px"});
-			$("#login").css({"z-index":15000});
-			$("#login").css({"display":"block"}).animate({"top":(($(window).height()-$("#login").height())/2+$(document).scrollTop())+"px"},250);
-			$("#mask").css({"width":$(document).width()+"px","height":$(document).height()+"px","opacity":0.7});
-			$("#mask").fadeIn("slow");
-			return false;
-		}
-		$.ajax({
-			"url":"?a=comment&action=castVote",
-			'type':"GET",
-			"data":{"action":"add","content":$("#content").val(),"aid":$("#aid").val(),"uid":$("#uid").val(),'icon':$("#icon").val()},
-			beforeSend:function(){
-				$("#mask").css({"display":"block"});
-				$(".loading").css({"display":"block"});
-			},
-			success:function(response){
-				//alert(response);
-				if(response=='failed'){
-					alert("评论添加失败");
-				}else{
-					//$("#content").html(response);
-					$("#showComment").html("");
-					//alert(response);
-					var str=eval(response);
-					//alert(typeof str);
-					//alert(str.length);
-					//str[i].content
-					//console.log(str);
-					for(var i=0;i<str[0].length;i++){
-						///////////////////
-						str[0][i].icon=str[0][i].icon||"default.jpg";
-						$("#showComment").append("<table border=0 width=100% cellspacing=0 cellpadding=0>" +
-								"<tr>" +
-								"<td rowspan='3' class='icon'><img src='public/uploads/member/"+str[0][i].icon+"' class='img-circle'></td><td colspan='2'>"+str[0][i].username+"</td>" +
-								"</tr>" +
-								"<tr>" +
-								"<td colspan='2'>"+str[0][i].content+"</td>" +
-								"</tr>" +
-								"<tr>" +
-								"<td><a href='#'>回复</a></td><td><a href='#'>赞</a>||<a href='#'>踩</a></td><td>"+str[0][i].date+"</td>" +
-								"</tr>" +
-								"</table>");
-					}
-					$("#showComment").append(str[1]);
-				}
-			},
-			complete:function(){
-				$("#mask").css({"display":"none"});
-				$(".loading").css({"display":"none"});
-			}
-		});
-	});*/
 	/////////////////////////////////
 	//console.log($(".item").length);
 	$(".item").each(function(index){
@@ -240,8 +179,9 @@ $(function(){
 		$(".item").removeClass("active");
 		$(this).addClass("active");
 	});
-	$(".nav dd").each(function(index){
-		//console.log($(this).length);
+	
+	$("header .nav dd").each(function(index){
+		console.log($(this).length);
 		$(this).mouseover(function(){
 			$(".nav dd").removeClass("active").eq(index).addClass("active");			
 		});
