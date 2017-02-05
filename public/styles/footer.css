@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+.footer{
+	font-size: 12px;
+	color: gray;
+	background: white;
+	/* border: 1px solid #ddd; */
+}
+.footer dd{
+	margin:15px auto;
+	text-align:center;
+}
+#indicator {
+	list-style: none;
+	position: fixed;
+	right: 15px;
+	bottom:20px;
+	width: 80px;
+	overflow: hidden;
+	display: none;	
+	border: 1px solid #333;
+}
+#indicator li {
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	font-size: 30px;
+	background: #eee;
+	border-bottom: 1px solid #333;
+	cursor: pointer;	
+}

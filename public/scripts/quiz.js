@@ -1,4 +1,6 @@
 $(function(){
+	//alert(sessionStorage.getItem("id"));
+	$("#uid").val(sessionStorage.getItem("id"));
 	///在右边显示选择器的序号
 	for(var i=1;i<=$(".choice a").length;i++){
 		$(".jump .content1").append("<li>"+i+"</li>");

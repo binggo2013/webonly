@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+.productHeader dl{
+	padding-top:10px;
+}
+.productHeader dd{
+	margin-top:10px;
+}
+.productHeader input[type=text]{
+	border:0;
+}

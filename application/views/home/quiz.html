@@ -3,23 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>试卷：{$oneCourse->name}</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/buttons.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/home.js"></script>
-<script src="public/scripts/quiz.js"></script>
-<script src="public/scripts/tools.js"></script>
-<link href="public/styles/quiz.css" rel="stylesheet">
-<link href="public/styles/home.css" rel="stylesheet">
-<link href="public/styles/tools.css" rel="stylesheet">
-<link href="public/styles/header.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="{$smarty.const.KEY_WORDS}">
+<meta name="description" content="{$smarty.const.DESCRIPTION}">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<script src="{$ROOT}/public/scripts/home.js"></script>
+<script src="{$ROOT}/public/scripts/frontnav.js"></script>
+<link href="{$ROOT}/public/styles/home.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/buttons.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/quiz.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<link href="{$ROOT}/public/styles/quiz.css" rel="stylesheet"> 
+<link href="{$ROOT}/public/styles/tools.css" rel="stylesheet">
 </head>
 <body id="home">
+{include file="home/common.html"}
 {include file="home/header.html"}
-<div class="container">
+<div class="container quiz">
 {if $show}
 	<div class="row">	
 		<div class="col-md-10">
@@ -28,8 +36,8 @@
 			<li><a class="text-danger"><b>倒数第{$oneUser->countdown}次</b></a></li>
 			<li><a class="text-primary"><b>试卷：{$oneCourse->name}</b></a></li>
 		</ul>
-		<form method="post" action="?a=quiz&action=result" id="exam">
-		<input type="hidden" name="uid" value="{$id}">
+		<form method="post" action="/quiz/result" id="exam">
+		<input type="hidden" name="uid" value="" id="uid">
 		<input type="hidden" name="cid" value="{$oneCourse->id}">
 			<dl class="choice"><h1>选择题</h1>
 				{foreach $choices as $key=>$value}
@@ -141,7 +149,7 @@
 		</div>
 </div>
 {/if}
-<!-- {include file="home/footer.html"} -->
+{include file="home/footer.html"}
 </div>
 </body>
 </html>

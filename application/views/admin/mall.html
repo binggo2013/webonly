@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>等级管理</title>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/learning.js"></script>
+<link href="{$ROOT}/public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/preview.js"></script>
+</head>
+<body>
+{include file="admin/common.html"}
+{if $showProduct}
+	<div class="row">
+		<div class="col-xs-12">
+			<ul class="breadcrumb">
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/mall/showProduct'>商品管理</a></li>
+					<li class="active">显示商品</li>
+					<li><a href="/mall/addProduct" title='添加商品'><i class="fa fa-plus-circle"></i></a></li>
+				</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+				<tr>
+					<td>名称</td>
+					<td>价格</td>
+					<td>库存</td>
+					<td>分类</td>
+					<td>属性</td>
+					<td>显示|隐藏</td>
+					<td>描述</td>
+					<td>操作</td>
+					<td><input type="checkbox" id="selectBar">全选</td>
+				</tr>
+				{if $allProducts}
+				{foreach $allProducts as $key=>$value}
+				<tr>
+					<td>{$value->name}</td>
+					<td>{$value->price}</td>
+					<td>{$value->inventory}</td>
+					<td>{$value->cid}</td>
+					<td>{$value->attr}</td>
+					<td>{$value->state}</td>
+					<td>{if $value->description}有描述{else}无描述{/if}</td>
+					<td>
+						<a href="/mall/updateProduct/id/{$value->id}">修改</a>|
+						<a href="/mall/deleteProduct/id/{$value->id}" class="deleteBtn">删除</a>						
+					</td>
+					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+				</tr>
+				{/foreach}
+				<tr>
+					<td colspan="9"><input type="submit" value="全删" class="btn btn-success pull-right" name="send"></td>
+				</tr>
+				{else}
+				<tr><td colspan="7">暂无商品</td></tr>
+				{/if}
+			</form>
+			</table>
+		</div>
+	</div>
+<div class="row">
+	<div class="col-md-12 text-center page">
+	<form action="" method="get" style="display: inline-block">
+				<input type="hidden" name="action" value="showChoice"> <input
+					type="hidden" name="a" value="learning"> <select
+					name="kind" class="input-sm">
+					<option value="0" {$all}>所有分类</option> {$category}
+				</select> <input type="submit" name="send" value="提交" class="btn btn-success">
+			</form>
+	{$page}</div>
+</div>
+{/if}
+{if $addProduct}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/mall/showProduct'>商品管理</a></li>
+			<li><a href="/mall/addProduct" title='添加商品'><i class="fa fa-plus-circle"></i></a></li>
+			<li class="active">修改商品</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+<form class="form-horizontal" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">商品分类</label>
+    <div class="col-sm-10">
+      <select name="cid" class="form-control" style="width:120px;">      
+      		{$category}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">商品名称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="name" placeholder="商品名称" name="name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="author" class="col-sm-2 control-label">作者</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="author" placeholder="商品名称" name="author" >
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price" class="col-sm-2 control-label">商品价格</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="price" placeholder="商品价格" name="price">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品属性</label>
+    <div class="col-sm-10">
+      	<input type="checkbox" value="1" name="attr[]" >头条
+		<input type="checkbox" value="2" name="attr[]" >推荐
+		<input type="checkbox" value="focus" name="attr[]" disabled>焦点
+		<input type="checkbox" value="topic" name="attr[]" disabled>专题
+		<input type="checkbox" value="pickup" name="attr[]" disabled>精选
+    </div>
+  </div>  
+  <div class="form-group">
+    <label for="inventory" class="col-sm-2 control-label">商品库存</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inventory" placeholder="商品库存" name="inventory">
+    </div>
+  </div>
+	<div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品图片</label>
+    <div class="col-sm-10">
+      <img src="{$ROOT}/public/uploads/mall/default.jpg" class="product-icon" style='width:100px;' id="aaaa">
+      <label><input type="file" id="product_icon" name="pix" style="display:none">换一张<label>
+      <script>
+      	$(function(){
+      		var reader=new FileReader();
+      		$("#product_icon").change(function(){
+  				//限定图片类型
+  				 if(!/image\/\w+/.test($("#product_icon").get(0).files[0].type)){
+  					 	alert("头像必须是图片格式");
+  						return false;
+  				 }
+  				 //限定图片大小
+  				 if($("#product_icon").get(0).files[0].size>1000000){					 	
+  						alert("图片不能大于1M");						
+  						return false;
+  				 }				 
+  				 reader.readAsDataURL($("#product_icon").get(0).files[0]);
+  					reader.onload=function(){
+  						//console.log(this.result);
+  						$(".product-icon").attr("src",this.result);
+  					}
+  			});
+      		$("#btn").click(function(){      			
+      			$("#product_icon").click();
+      		});
+      	})
+      </script>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品描述</label>
+    <div class="col-sm-10">
+    <script name="description" id="editor" type="text/plain" style="width: 100%"></script>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <input type="submit" class="btn btn-success" name="send" value="添加">
+    </div>
+  </div>
+</form>
+</div>
+</div>
+{/if}
+{if $updateProduct}
+<div class="row">
+	<div class="col-md-12">
+		<ul class="breadcrumb">
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/mall/showProduct'>商品管理</a></li>
+			<li><a href="/mall/addProduct" title='添加商品'><i class="fa fa-plus-circle"></i></a></li>
+			<li class="active">修改商品</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+<form class="form-horizontal" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">商品分类</label>
+    <div class="col-sm-10">
+      <select name="cid" class="form-control" style="width:120px;">      
+      		{$category}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">商品名称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="name" placeholder="商品名称" name="name" value="{$oneProduct->name}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="author" class="col-sm-2 control-label">作者</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="author" placeholder="商品名称" name="author" value="{$oneProduct->author}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price" class="col-sm-2 control-label">商品价格</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="price" placeholder="商品价格" name="price" value="{$oneProduct->price}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品属性</label>
+    <div class="col-sm-10">
+      	<input type="checkbox" value="1" name="attr[]" {$headline}>头条
+		<input type="checkbox" value="2" name="attr[]" {$recommend}>推荐
+		<input type="checkbox" value="focus" name="attr[]" {$focus} disabled>焦点
+		<input type="checkbox" value="topic" name="attr[]" {$topic} disabled>专题
+		<input type="checkbox" value="pickup" name="attr[]" {$pickup} disabled>精选
+    </div>
+  </div>  
+  <div class="form-group">
+    <label for="inventory" class="col-sm-2 control-label">商品库存</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inventory" placeholder="商品库存" name="inventory" value="{$oneProduct->inventory}">
+    </div>
+  </div>
+	<div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品图片</label>
+    <div class="col-sm-10">
+      <img src="{$ROOT}/public/uploads/mall/{$oneProduct->pix}" class="product-icon" style='width:100px;' id="aaaa">
+      <input type="hidden" name="pix2" value="{$oneProduct->pix}">
+      <label><input type="file" id="product_icon" name="pix" style="display:none">换一张<label>
+      <script>
+      	$(function(){
+      		var reader=new FileReader();
+      		$("#product_icon").change(function(){
+  				//限定图片类型
+  				 if(!/image\/\w+/.test($("#product_icon").get(0).files[0].type)){
+  					 	alert("头像必须是图片格式");
+  						return false;
+  				 }
+  				 //限定图片大小
+  				 if($("#product_icon").get(0).files[0].size>1000000){					 	
+  						alert("图片不能大于1M");						
+  						return false;
+  				 }				 
+  				 reader.readAsDataURL($("#product_icon").get(0).files[0]);
+  					reader.onload=function(){
+  						//console.log(this.result);
+  						$(".product-icon").attr("src",this.result);
+  					}
+  			});
+      		$("#btn").click(function(){      			
+      			$("#product_icon").click();
+      		});
+      	})
+      </script>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label">商品描述</label>
+    <div class="col-sm-10">
+    <script name="description" id="editor" type="text/plain"
+							style="width: 100%">{$oneProduct->description}</script>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <input type="submit" class="btn btn-success" name="send" value="修 改">
+    </div>
+  </div>
+</form>
+</div>
+</div>
+{/if}
+	{if $showCategory}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/mall/showCategory'>等级管理</a></li>
+				<li class="active">显示等级</li>
+				<li><a href="/mall/addCategory" title='添加分类'><i class="fa fa-plus-circle"></i></a></li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
+			<tr>
+				<td>名称</td>
+				<td>描述</td>				
+				<td>操作</td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$value->name}</td>
+				<td>{$value->description}</td>				
+				<td>
+					<a href="/mall/updateCategory/id/{$value->id}">修改</a>
+					<a href="/mall/deleteCategory/id/{$value->id}" class="deleteBtn">删除</a>
+				</td>
+			</tr>
+			{/foreach}
+			{else}
+			<tr><td colspan="5">暂无数据</td></tr>
+			{/if}
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center page">{$page}</div>
+	</div>
+	{/if}
+{if $addCategory}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/mall/showCategory'>分类管理</a></li>
+				<li class="active">添加分类</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+			<tr><td class="text-right">分类名称</td><td><input type="text" name="name" class="form-control"></td></tr>
+			<tr><td class="text-right">分类描述</td><td><textarea name="description" class="form-control"></textarea></td></tr>			
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+{if $updateCategory}
+	<div class="row">
+		<div class="col-md-12">
+		<ul class="breadcrumb">
+				<li><a href='/admin//welcome' target="main">后台首页</a></li>
+				<li><a href='/category/showCategory'>分类管理</a></li>
+				<li class="active">添加分类</li>
+			</ul>
+			<table class="table table-bordered table-striped table-hover table-condensed">
+			<form action="" method="post">
+			<tr><td class="text-right">等级名称</td><td><input type="text" name="name" class="form-control" value="{$oneCategory->name}"></td></tr>
+			<tr><td class="text-right">等级描述</td><td><textarea name="description" class="form-control">{$oneCategory->description}</textarea></td></tr>			
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
+			</form>
+			</table>
+		</div>
+	</div>
+{/if}
+<script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
+<script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
+<script>
+	var ue = UE.getEditor("editor");
+</script>
+</body>
+</html>

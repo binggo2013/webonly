@@ -71,12 +71,13 @@
 		<hr>
 		<div class="col-md-8 hotCourse">
 			{foreach $allCourse as $key=>$value}
-			<table class="table table-bordered table-striped table-hover table-condensed">
-				<tr><th>{$value->name}</th></tr>
-				<tr class="intro"><td></td></tr>
-				<tr>
-					<td>
-						<a href="?a=quiz&action=show&cid={$value->id}" class="btn btn-success btn-block takeTest" target="_blank">参 加 考 试</a>
+			<table class="table table-condensed">
+				<tr class="intro">
+					<td style="border:0;">
+						<a href="/quiz/take/cid/{$value->id}" target="_blank" class='takeTest'>
+							<span class="glyphicon glyphicon-edit" title='参加{$value->name}考试'></span>
+						</a><br>
+						<h4>{$value->name}</h4>
 					</td>
 				</tr>
 			</table>
@@ -102,8 +103,8 @@
 		<div class="col-md-8 hotProduct">			
 			{foreach $allProducts as $key=>$value}
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<tr><td><a href="?a=cart&action=detail&id={$value->id}" target="_blank"><img src="public/uploads/product/{$value->pix}" title='{$value->name}'></a></td></tr>
-			<tr><th><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></th></tr>
+			<tr><td><a href="/mall/productDetail/id/{$value->id}" target="_blank"><img src="{$ROOT}/public/uploads/mall/{$value->pix}" title='{$value->name}'></a></td></tr>
+			<tr><th><a href="/mall/productDetail/id/{$value->id}" target="_blank">{$value->name}</a></th></tr>
 			<tr><td class="text-danger">{$value->price}元</td></tr>
 			</table>
 			<!-- <dl>
@@ -120,7 +121,7 @@
 				{foreach $productRecommend as $key=>$value}
 				<tr>
 				<td>{$key+1}</td>
-				<td><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></td>
+				<td><a href="/mall/productDetail/id/{$value->id}" target="_blank">{$value->name}</a></td>
 				<td>{$value->price}元</td>
 				</tr>
 				{/foreach}

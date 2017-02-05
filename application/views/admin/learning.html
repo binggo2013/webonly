@@ -3,103 +3,495 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/lang/zh-cn/zh-cn.js"></script>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script src="public/scripts/learning.js"></script>
-<link href="public/styles/tools.css" rel="stylesheet">
-<link href="public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/learning.js"></script>
+<link href="{$ROOT}/public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/preview.js"></script>
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
-</div>
-<!--modal模态框结束  -->
-{if $showExam}
+	{include file="admin/common.html"} {if $showCourse}
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-md-12">
 			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showExam'>试卷管理</a></li>
-					<li class="active">显示试卷</li>					
-				</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=learning&action=deleteAllExam" method="post">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=learning&action=showCourse'>课程管理</a></li>
+				<li class="active">显示课程</li>
+				<li><a href="/learning/addCourse" title='添加课程'><i
+						class="fa fa-plus-circle"></i></a></li>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed alllevel">
 				<tr>
-					<td>编号</td>
-					<td>课程类型</td>
-					<td>考试者</td>
-					<td>成绩 </td>
-					<td>考试时间</td>
+					<td>课程名称</td>
+					<td>课程描述</td>
+					<td>显示|隐藏</td>
 					<td>操作</td>
-					<td><input type="checkbox" id="selectBar">全选</td>
+					<td>课程创建日期</td>
 				</tr>
-				{if $allExams}
-				{foreach $allExams as $key=>$value}
+				{if $data} {foreach $data as $key=>$value}
 				<tr>
-					<td>{$key+$num}</td>
-					<td style="width:120px;">{$value->cid}</td>
-					<td>{$value->uid}</td>
-					<td>{$value->score}</td>
-					<td>{$value->createdTime}</td>
-					<td>						
-						<a href="?a=learning&action=deleteExam&id={$value->id}" class="deleteBtn">删除</a>						
+					<td>{$value->name}</td>
+					<td>{$value->description}</td>
+					<td>{$value->state}</td>
+					<td><a href="/learning/updateCourse/id/{$value->id}">修改</a>| <a
+						href="/learning/deleteCourse/id/{$value->id}" class="deleteBtn">删除</a>
 					</td>
-					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+					<td>{$value->date}</td>
 				</tr>
-				{/foreach}
+				{/foreach} {else}
 				<tr>
-					<td colspan="10"><input type="submit" value="全删" class="btn btn-success pull-right" name="send"></td>
+					<td colspan="5">暂无数据</td>
 				</tr>
-				{else}
-				<tr><td colspan="10">暂无试卷</td></tr>
 				{/if}
-			</form>
 			</table>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">
-		<form action="" method="get" style="display:inline">
-				<input type="hidden" name="action" value="showExam">
-				<input type="hidden" name="a" value="learning">
-					<select name="kind" class="input-sm">
-						<option value="0" {$all}>所有课程</option>
-							{$course}
-					</select>
-					<input type="submit" name="send" value="提交" class="btn btn-success">
-				</form>
-		{$page}</div>
+		<div class="col-md-12 text-center page">{$page}</div>
 	</div>
-{/if}
-{if $showJudge}
+	{/if} {if $addCourse}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
+				<li><a href='?a=level&action=showCourse'>课程管理</a></li>
+				<li class="active">添加课程</li>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed">
+				<form action="" method="post" enctype="multipart/form-data">
+					<tr>
+						<td class="text-right" width=100>课程名称</td>
+						<td><input type="text" name="name" class="form-control"></td>
+					</tr>
+					<tr>
+						<td class="text-right">课程描述</td>
+						<td><textarea name="description" class="form-control"></textarea></td>
+					</tr>
+					<tr>
+						<td class="text-right">缩略图</td>
+						<td><label><input type="file" id="pic"
+								name="thumbnail" style='display: none'>点击上传</label></td>
+					</tr>
+					<tr>
+						<td class="text-right">缩略图预览</td>
+						<td><img src="{$ROOT}/public/images/default.jpg"
+							width="150px" height="90px" class="img-circle" alt=""
+							id="preview"></td>
+					</tr>
+					<tr class="text-center">
+						<td colspan="2"><input type="submit" value="提交"
+							class="btn btn-success" name="send"></td>
+					</tr>
+				</form>
+			</table>
+		</div>
+	</div>
+	{/if} {if $updateCourse}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='learning/showCourse'>课程管理</a></li>
+				<li class="active">修改课程</li>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed">
+				<form action="" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="id" value="{$oneCourse->id}"> <input
+						type="hidden" name="thumbnail2" value="{$oneCourse->thumbnail}">
+					<tr>
+						<td class="text-right">课程名称</td>
+						<td><input type="text" name="name" class="form-control"
+							value="{$oneCourse->name}"></td>
+					</tr>
+					<tr>
+						<td class="text-right">课程描述</td>
+						<td><textarea name="description" class="form-control">{$oneCourse->description}</textarea></td>
+					</tr>
+					<tr>
+						<td class="text-right">缩略图</td>
+						<td><label><input type="file" id="pic"
+								name="thumbnail" style='display: none'>点击上传</label></td>
+					</tr>
+					<tr>
+						<td class="text-right">缩略图预览</td>
+						<td><img
+							src="{$ROOT}/public/uploads/course/{$oneCourse->thumbnail}"
+							width="150px" height="90px" class="img-circle" alt=""
+							id="preview"></td>
+					</tr>
+					<tr class="text-center">
+						<td colspan="2"><input type="submit" value="提交"
+							class="btn btn-success" name="send"></td>
+					</tr>
+				</form>
+			</table>
+		</div>
+	</div>
+	{/if} {if $detailChoice}
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/learning/showChoice'>选择题管理</a></li>
+				<li class="active">显示选择题</li>
+				<li><a href="/learning/addChoice" title='添加选择题'><i
+						class="fa fa-plus-circle"></i></a></li>
+				<li><a href="{$back}">返回</a></li>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed">
+				<tr>
+					<td class="text-right">所属课程</td>
+					<td><select class="input-sm" name="course">
+							<option>选择一个课程</option> {$course}
+					</select></td>
+				</tr>
+				<tr>
+					<td class="text-right" style="width: 80px;">问题</td>
+					<td><script id="editor" type="text/plain" style="width: 100%"
+							name="question">{$oneChoice->question}</script></td>
+				</tr>
+				<tr>
+					<td class="text-right">答案A</td>
+					<td>{$oneChoice->a}</td>
+				</tr>
+				<tr>
+					<td class="text-right">答案B</td>
+					<td>{$oneChoice->b}</td>
+				</tr>
+				<tr>
+					<td class="text-right">答案C</td>
+					<td>{$oneChoice->c}</td>
+				</tr>
+				<tr>
+					<td class="text-right">答案D</td>
+					<td>{$oneChoice->d}</td>
+				</tr>
+				<tr>
+					<td class="text-right">正确答案</td>
+					<td>{$oneChoice->answer}</td>
+				</tr>
+				<tr>
+					<td class="text-right">解答</td>
+					<td><script id="editor2" type="text/plain" style="width: 100%"
+							name="tips">{$oneChoice->tips}</script></td>
+				</tr>
+				<tr>
+					<td class="text-right">参加者</td>
+					<td>{$oneChoice->operater}</td>
+				</tr>
+				<tr class="text-center">
+					<td colspan="2"><a href="{$back}" class="btn btn-success"
+						name="send">返回</a></td>
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div>
+	{/if} {if $showChoice}
 	<div class="row">
 		<div class="col-xs-12">
 			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showJudge'>判断题管理</a></li>
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/learning/showChoice'>选择题管理</a></li>
+				<li class="active">显示选择题</li>
+				<li><a href="/learning/addChoice" title='添加选择题'><i
+						class="fa fa-plus-circle"></i></a></li>
+				<form method="post" action="/learning/search"
+					style="display: inline; margin-left: 25px; position: relative;">
+					<select name="kind" class="input-sm"> {$course}
+					</select> <input type="hidden" name="type" value="choice"> <input
+						name="search" type="text"
+						style="border-radius: 15px; border: 1px solid #ddd; height: 32px; padding: 5px;">
+					<span class="glyphicon glyphicon-search"
+						style="cursor: pointer; font-size: 20px; position: absolute; right: 15px; top: -3px;"
+						id="searchBar"></span> <input type="submit" value="submit"
+						style="display: none;" id="searchBtn">
+				</form>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed">
+				<form action="" method="post">
+					<tr>
+						<td>问题</td>
+						<td>答案A</td>
+						<td>答案B</td>
+						<td>答案C</td>
+						<td>答案D</td>
+						<td>正确答案</td>
+						<td>所属课程</td>
+						<td>操作</td>
+						<td><input type="checkbox" id="selectBar">全选</td>
+					</tr>
+					{if $allChoices} {foreach $allChoices as $key=>$value}
+					<tr>
+						<td style="width: 120px;">{$value->question|truncate:15:"...":true:true}</td>
+						<td>{$value->a|truncate:10:"..."}</td>
+						<td>{$value->b|truncate:10:"..."}</td>
+						<td>{$value->c|truncate:10:"..."}</td>
+						<td>{$value->d|truncate:10:"..."}</td>
+						<td>{$value->answer|truncate:10:"..."}</td>
+						<td>{$value->courseName}</td>
+						<td><a href="/learning/updateChoice/id/{$value->id}">修改</a>|
+							<a href="/learning/deleteChoice/id/{$value->id}"
+							class="deleteBtn">删除</a>| <a
+							href="/learning/detailChoice/id/{$value->id}">详细</a></td>
+						<td><input type="checkbox" value="{$value->id}"
+							name="selectAll[]"></td>
+					</tr>
+					{/foreach}
+					<tr>
+						<td colspan="10"><input type="submit" value="全删"
+							class="btn btn-success pull-right" name="send"></td>
+					</tr>
+					{else}
+					<tr>
+						<td colspan="10">暂无选择题</td>
+					</tr>
+					{/if}
+				</form>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center page">
+			<form action="" method="get" style="display: inline-block">
+				<input type="hidden" name="action" value="showChoice"> <input
+					type="hidden" name="a" value="learning"> <select
+					name="kind" class="input-sm">
+					<option value="0"{$all}>所有课程</option> {$course}
+				</select> <input type="submit" name="send" value="提交" class="btn btn-success">
+			</form>
+			{$page}
+		</div>
+	</div>
+	{/if} {if $addChoice}
+	<div class="row addChoice">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/learning/showChoice'>选择题管理</a></li>
+				<li class="active">添加选择题</li>
+			</ul>
+			<form method="post" action="" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-1 control-label">课程：</label>
+					<div class="col-sm-11">
+						<select class="input-sm" name="course" id="course">
+							<option value="0">选择一门课程</option>{$course}
+						</select>(<span class="glyphicon glyphicon-asterisk" style="color: red;"></span>)
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">问题：</label>
+					<div class="col-sm-11">
+						<script id="editor" type="text/plain" style="width: 100%"
+							name="question"></script>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项A：</label>
+					<div class="col-sm-11">
+						<input name="choice_a" type="text" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项B：</label>
+					<div class="col-sm-11">
+						<input name="choice_b" type="text" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项C：</label>
+					<div class="col-sm-11">
+						<input name="choice_c" type="text" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项D：</label>
+					<div class="col-sm-11">
+						<input name="choice_d" type="text" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">正确答案：</label>
+					<div class="col-sm-11">
+						<input name="answer" type="radio" value="A" id="a" /> <label
+							for="a">A:</label> <input name="answer" type="radio" value="B"
+							id="b" /> <label for="b">B:</label> <input name="answer"
+							type="radio" value="C" id="c" /> <label for="c">C:</label> <input
+							name="answer" type="radio" value="D" id="d" /> <label for="d">D:</label>
+						<!--测试 -->
+						<div class="alert alert-danger" style="display: none;">答案不能为空</div>
+						<!--测试   -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">提示：</label>
+					<div class="col-sm-11">
+						<script name="tips" id="editor2" type="text/plain"
+							style="width: 100%"></script>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label"></label>
+					<div class="col-sm-11">
+						<input type="submit" name="send" value="添　加　试　题"
+							class="btn btn-success" id="submitBtn" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{/if} {if $updateChoice}
+	<div class="row addChoice">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/learning/showChoice'>选择题管理</a></li>
+				<li class="active">修改选择题</li>
+			</ul>
+			<form method="post" action="" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-1 control-label">课程：</label>
+					<div class="col-sm-11">
+						<select class="input-sm" name="course" id="course">
+							<option value="0">选择一门课程</option>{$course}
+						</select>(<span class="glyphicon glyphicon-asterisk" style="color: red;"></span>)
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">问题：</label>
+					<div class="col-sm-11">
+						<script id="editor" type="text/plain"
+							style="width: 100%; height: 380px;" name="question">{$oneChoice->question}</script>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项A：</label>
+					<div class="col-sm-11">
+						<input name="choice_a" type="text" class="form-control"
+							value="{$oneChoice->a}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项B：</label>
+					<div class="col-sm-11">
+						<input name="choice_b" type="text" class="form-control"
+							value="{$oneChoice->b}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项C：</label>
+					<div class="col-sm-11">
+						<input name="choice_c" type="text" class="form-control"
+							value="{$oneChoice->c}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">选项D：</label>
+					<div class="col-sm-11">
+						<input name="choice_d" type="text" class="form-control"
+							value="{$oneChoice->d}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">正确答案：</label>
+					<div class="col-sm-11">
+						<input name="answer" type="radio" value="A" id="a" {$A}/> <label
+							for="a">A:</label> <input name="answer" type="radio" value="B"
+							id="b" {$B}/> <label for="b">B:</label> <input name="answer"
+							type="radio" value="C" id="c" {$C}/> <label for="c">C:</label> <input
+							name="answer" type="radio" value="D" id="d" {$D}/> <label
+							for="d">D:</label>
+						<!--测试 -->
+						<div class="alert alert-danger" style="display: none;">答案不能为空</div>
+						<!--测试   -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">提示：</label>
+					<div class="col-sm-11">
+						<script name="tips" id="editor2" type="text/plain"
+							style="width: 100%">{$oneChoice->tips}</script>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label"></label>
+					<div class="col-sm-11">
+						<input type="submit" name="send" value="修改试题"
+							class="btn btn-success" id="submitBtn" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{/if} {if $searchResult}
+	<div class="row">
+		<div class="col-xs-12">
+			<ul class="breadcrumb">
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/learning/showChoice'>选择题管理</a></li>
+				<li><a href="/learning/addChoice" title='添加选择题'><i
+						class="fa fa-plus-circle"></i></a></li>
+				<li><a href='/learning/showJudge'>判断题管理</a></li>
+				<li><a href="/learning/addJudge" title='添加判断题'><i
+						class="fa fa-plus-circle"></i></a></li>
+				<li class="active">显示搜索结果</li>
+				<li><a href="{$back}">返回</a></li>
+			</ul>
+			<table
+				class="table table-bordered table-striped table-hover table-condensed">
+				<tr>
+					<td>问题</td>
+					<td>所属课程</td>
+					<td>操作</td>
+				</tr>
+				{if $data} {foreach $data as $key=>$value}
+				<tr>
+					<td style="width: 620px;">{$value->question}</td>
+					<td>{$value->course_id}</td>
+					<td>{if $choice} 
+					<a href="/learning/updateChoice/id/{$value->id}">修改</a>| 
+					<a href="/learning/detailChoice/id/{$value->id}">详细</a>
+						{/if} 
+						{if $judge} 
+						<a href="/learning/updateJudge/id/{$value->id}">修改</a>| 
+						<a href="/learning/detailJudge/id/{$value->id}">详细</a> 
+						{/if}
+					</td>
+				</tr>
+				{/foreach} 
+				{else}
+				<tr>
+					<td colspan="4" class="text-danger">没有查询到结果</td>
+				</tr>
+				{/if}
+			</table>
+		</div>
+	</div>
+	{/if}
+	{if $showJudge}
+	<div class="row">
+		<div class="col-xs-12">
+			<ul class="breadcrumb">
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/learning/showJudge'>判断题管理</a></li>
 					<li class="active">显示判断题</li>
-					<li><a href="?a=learning&action=addJudge" title='添加判断题'><i class="fa fa-plus-circle"></i></a></li>
-					<form method="post" action="?a=learning&action=search" style="display:inline;margin-left:25px;position:relative;">
+					<li><a href="/learning/addJudge" title='添加判断题'><i class="fa fa-plus-circle"></i></a></li>
+					<form method="post" action="/learning/search" style="display:inline;margin-left:25px;position:relative;">
 						<select name="kind" class="input-sm">							
 							{$course}
 						</select>
@@ -110,9 +502,8 @@
 					</form>
 				</ul>
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=learning&action=deleteAllJudge" method="post">
+			<form action="" method="post">
 				<tr>
-					<td>编号</td>
 					<td>问题</td>
 					<td>正确答案</td>
 					<td>解答</td>
@@ -123,15 +514,14 @@
 				{if $allJudges}
 				{foreach $allJudges as $key=>$value}
 				<tr>
-					<td>{$key+$num}</td>
 					<td title="{$value->question}" style="width:120px;">{$value->question|truncate:10:"..."}</td>
 					<td>{$value->answer|truncate:10:"..."}</td>
 					<td>{$value->tips|truncate:10:"..."}</td>
 					<td>{$value->courseName}</td>
 					<td>
-						<a href="?a=learning&action=updateJudge&id={$value->id}">修改</a>|
-						<a href="?a=learning&action=deleteJudge&id={$value->id}" class="deleteBtn">删除</a>|
-						<a href="?a=learning&action=detailJudge&id={$value->id}">详细</a>					
+						<a href="/learning/updateJudge/id/{$value->id}">修改</a>|
+						<a href="/learning/deleteJudge/id/{$value->id}" class="deleteBtn">删除</a>|
+						<a href="/learning/detailJudge/id/{$value->id}">详细</a>					
 					</td>
 					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 				</tr>
@@ -147,7 +537,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">
+		<div class="col-md-12 text-center page">
 		<form action="" method="get" style="display:inline">
 				<input type="hidden" name="action" value="showJudge">
 				<input type="hidden" name="a" value="learning">
@@ -160,134 +550,186 @@
 		{$page}</div>
 	</div>
 {/if}
-{if $showCourse}
-<div class="row">
+{if $addJudge}
+	<div class="row">
 		<div class="col-md-12">
-			<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=learning&action=showCourse'>课程管理</a></li>
-				<li class="active">显示课程</li>
-				<li><a href="?a=learning&action=addCourse" title='添加课程'><i class="fa fa-plus-circle"></i></a></li>
-			</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed alllevel">
+		<ul class="breadcrumb">
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/learning/showJudge'>选择题管理</a></li>
+					<li class="active">显示选择题</li>
+					<li><a href="/learning/addChoice" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
+		</ul>
+		<form action='' method="post">
+		<table class="table table-bordered table-striped table-hover table-condensed">
 			<tr>
-				<td>编号</td>
-				<td>课程名称</td>
-				<td>课程描述</td>
-				<td>显示|隐藏</td>
-				<td>操作</td>
-				<td>课程创建日期</td>
-			</tr>
-			{if $data}
-			{foreach $data as $key=>$value}
-			<tr>
-				<td>{$key+$num}</td>
-				<td>{$value->name}</td>
-				<td>{$value->description}</td>
-				<td>{$value->state}</td>
-				<td>
-					<a href="?a=learning&action=updateCourse&id={$value->id}">修改</a>|
-					<a href="?a=learning&action=deleteCourse&id={$value->id}" class="deleteBtn">删除</a>
+				<td class="text-right">所属课程</td>
+				<td><select class="input-sm" name="course">
+							<option>选择一个课程</option>
+								{$course}
+						</select>(<span class="glyphicon glyphicon-asterisk" style="color:red;"></span>)
 				</td>
-				<td>{$value->date}</td>
 			</tr>
-			{/foreach}
-			{else}
-			<tr><td colspan="5">暂无数据</td></tr>
-			{/if}
-			</table>
+			<tr>
+				<td class="text-right">问题</td>
+				<td>
+					<script name="question" id="editor" type="text/plain"
+							style="width: 100%"></script>
+				</td>
+			</tr>
+			<tr><td class="text-right">选项</td><td>A:正确；选项 B:错误</td></tr>
+			<tr>
+				<td class="text-right">正确答案</td>
+				<td>
+					<input name="answer" type="radio" value="1" id="a"/>
+					<label for="a">A:</label>
+					<input name="answer" type="radio" value="0" id="b"/>
+					<label for="b">B:</label>
+					<div class="alert alert-danger" style="display:none;">答案不能为空</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:85px;">解答</td>
+				<td>
+					<script id="editor2" name="tips" type="text/plain" style="width:100%"></script>
+				</td>
+			</tr>
+			<tr class="text-center">
+			<td colspan="2">
+				<input type="submit" name='send' value="添加" class="btn btn-primary">
+			</td>
+			</tr>
+			
+		</table>
+		</form>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-12 text-center">{$page}</div>
-	</div>
 {/if}
-{if $addCourse}
+{if $updateJudge}
 	<div class="row">
 		<div class="col-md-12">
 		<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=level&action=showCourse'>课程管理</a></li>
-				<li class="active">添加课程</li>
-			</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<tr><td class="text-right">课程名称</td><td><input type="text" name="name" class="form-control"></td></tr>
-			<tr><td class="text-right">课程描述</td><td><textarea name="description" class="form-control"></textarea></td></tr>
-			<tr><td class="text-right">等级权限</td><td>待定</td></tr>
-			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
-			</form>
-			</table>
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/learning/showJudge'>选择题管理</a></li>
+					<li class="active">显示选择题</li>
+					<li><a href="/learning/addChoice" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
+		</ul>
+		<form action='' method="post">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<tr>
+				<td class="text-right">所属课程</td>
+				<td><select class="input-sm" name="course">
+							<option>选择一个课程</option>
+								{$course}
+						</select>(<span class="glyphicon glyphicon-asterisk" style="color:red;"></span>)
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">问题</td>
+				<td>
+					<script name="question" id="editor" type="text/plain"
+							style="width: 100%">{$oneJudge->question}</script>
+				</td>
+			</tr>
+			<tr><td class="text-right">选项</td><td>A:正确；选项 B:错误</td></tr>
+			<tr>
+				<td class="text-right">正确答案</td>
+				<td>
+					<input name="answer" type="radio" value="1" id="a" {$one}/>
+					<label for="a">A:</label>
+					<input name="answer" type="radio" value="0" id="b" {$two}/>
+					<label for="b">B:</label>
+					<div class="alert alert-danger" style="display:none;">答案不能为空</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:85px;">解答</td>
+				<td>
+					<script id="editor2" name="tips" type="text/plain" style="width:100%">{$oneJudge->tips}</script>
+				</td>
+			</tr>
+			<tr class="text-center">
+			<td colspan="2">
+				<input type="submit" name='send' value="添加" class="btn btn-primary">
+			</td>
+			</tr>
+			
+		</table>
+		</form>
 		</div>
 	</div>
 {/if}
-{if $updateCourse}
+{if $detailJudge}
 	<div class="row">
 		<div class="col-md-12">
 		<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=level&action=show'>课程管理</a></li>
-				<li class="active">修改课程</li>
-			</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<input type="hidden" name="id" value="{$oneCourse->id}">
-			<tr><td class="text-right">课程名称</td><td><input type="text" name="name" class="form-control" value="{$oneCourse->name}"></td></tr>
-			<tr><td class="text-right">课程描述</td><td><textarea name="description" class="form-control">{$oneCourse->description}</textarea></td></tr>
-			<tr><td class="text-right">课程权限</td><td>待定</td></tr>
-			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
-			</form>
-			</table>
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/learning/showJudge'>选择题管理</a></li>
+					<li class="active">显示选择题</li>
+					<li><a href="/learning/addChoice" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
+		</ul>
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<tr>
+				<td class="text-right">所属课程</td>
+				<td><select class="input-sm" name="course">
+							<option>选择一个课程</option>
+								{$course}
+						</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">问题</td>
+				<td>
+					<script name="question" id="editor" type="text/plain"
+							style="width: 100%">{$oneJudge->question}</script>
+				</td>
+			</tr>
+			<tr><td class="text-right">选项</td><td>选项A： 正确；选项B： 错误</td></tr>
+			<tr>
+				<td class="text-right">正确答案</td>
+				<td>
+					<span {$one}>A</span>
+					<span {$two}>B</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="width:85px;">解答</td>
+				<td>
+					<script id="editor2" type="text/plain" style="width:100%">{$oneJudge->tips}</script>
+				</td>
+			</tr>
+			
+			<tr class="text-center"><td colspan="2"><a href="{$back}" class="btn btn-success" name="send">返回</a></td></tr>
+			
+		</table>
 		</div>
 	</div>
 {/if}
-{if $show}
+{if $showExam}
 	<div class="row">
 		<div class="col-xs-12">
 			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showChoice'>选择题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=learning&action=add" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
-					<form method="post" action="?a=learning&action=search" style="display:inline;margin-left:25px;position:relative;">
-						<select name="kind" class="input-sm">							
-							{$course}
-						</select>
-						<input type="hidden" name="type" value="choice">	
-						<input name="search" type="text" style="border-radius:15px;border:1px solid #ddd;height:32px;padding:5px;">
-						<span class="glyphicon glyphicon-search" style="cursor:pointer;font-size:20px;position:absolute;right:15px;top:-3px;" id="searchBar"></span>
-						<input type="submit" value="submit" style="display:none;" id="searchBtn">
-					</form>
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/learning/showExam'>试卷管理</a></li>
+					<li class="active">显示试卷</li>					
 				</ul>
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=learning&action=deleteAllChoice" method="post">
+			<form action="" method="post">
 				<tr>
-					<td>编号</td>
-					<td>问题</td>
-					<td>答案A</td>
-					<td>答案B</td>
-					<td>答案C</td>
-					<td>答案D</td>
-					<td>正确答案</td>
-					<td>所属课程</td>
+					<td>课程类型</td>
+					<td>考试者</td>
+					<td>成绩 </td>
+					<td>考试时间</td>
 					<td>操作</td>
 					<td><input type="checkbox" id="selectBar">全选</td>
 				</tr>
-				{if $allChoices}
-				{foreach $allChoices as $key=>$value}
+				{if $allExams}
+				{foreach $allExams as $key=>$value}
 				<tr>
-					<td>{$key+$num}</td>
-					<td title="{$value->question}" style="width:120px;">{$value->question|truncate:10:"..."}</td>
-					<td>{$value->a|truncate:10:"..."}</td>
-					<td>{$value->b|truncate:10:"..."}</td>
-					<td>{$value->c|truncate:10:"..."}</td>
-					<td>{$value->d|truncate:10:"..."}</td>
-					<td>{$value->answer|truncate:10:"..."}</td>
-					<td>{$value->courseName}</td>
-					<td>
-						<a href="?a=learning&action=updateChoice&id={$value->id}">修改</a>|
-						<a href="?a=learning&action=deleteChoice&id={$value->id}" class="deleteBtn">删除</a>|
-						<a href="?a=learning&action=detailChoice&id={$value->id}">详细</a>
+					<td style="width:120px;">{$value->cid}</td>
+					<td>{$value->uid}</td>
+					<td>{$value->score}</td>
+					<td>{$value->createdTime}</td>
+					<td>						
+						<a href="/learning/deleteExam/id/{$value->id}" class="deleteBtn">删除</a>						
 					</td>
 					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 				</tr>
@@ -296,16 +738,16 @@
 					<td colspan="10"><input type="submit" value="全删" class="btn btn-success pull-right" name="send"></td>
 				</tr>
 				{else}
-				<tr><td colspan="10">暂无选择题</td></tr>
+				<tr><td colspan="10">暂无试卷</td></tr>
 				{/if}
 			</form>
 			</table>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">
+		<div class="col-md-12 text-center page">
 		<form action="" method="get" style="display:inline">
-				<input type="hidden" name="action" value="showChoice">
+				<input type="hidden" name="action" value="showExam">
 				<input type="hidden" name="a" value="learning">
 					<select name="kind" class="input-sm">
 						<option value="0" {$all}>所有课程</option>
@@ -316,511 +758,11 @@
 		{$page}</div>
 	</div>
 {/if}
-{if $searchResult}
-<div class="row">
-		<div class="col-xs-12">
-			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showChoice'>选择题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=learning&action=add" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>	
-					<li><a href="{$back}">返回</a></li>				
-				</ul>
-			<table class="table table-bordered table-striped table-hover table-condensed">
-				<tr><td>序号</td><td>问题</td><td>所属课程</td><td>操作</td></tr>
-				{if $data}
-				{foreach $data as $key=>$value}
-				<tr>
-					<td>{$key+1}</td>
-					<td style="width:620px;">{$value->question}</td>
-					<td>{$value->course_id}</td>
-					<td>
-					{if $choice}
-						<a href="?a=learning&action=updateChoice&id={$value->id}">修改</a>|
-						<a href="?a=learning&action=detailChoice&id={$value->id}">详细</a>
-					{/if}
-					{if $judge}
-						<a href="?a=learning&action=updateJudge&id={$value->id}">修改</a>|
-						<a href="?a=learning&action=detailJudge&id={$value->id}">详细</a>
-					{/if}
-					</td>
-				</tr>
-				{/foreach}
-				{else}
-				<tr>
-					<td colspan="4">没有查询到结果</td>
-				</tr>
-				{/if}
-			</table>
-			</div>
-</div>
-{/if}
-{if $addJudge}
-<div class="row">
-			<div class="col-md-12">
-			<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=ad&action=showJudge'>判断题管理</a></li>
-				<li class="active">添加判断题</li>
-			</ul>
-				<form method="post" action="?a=learning&action=addJudge" class="form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label">所属课程：</label>
-							<div class="col-sm-10">
-								<select class="input-sm" name="course" id="course">
-									<option value="0">选择一门课程</option>{$course}
-								</select>(<span class="glyphicon glyphicon-asterisk" style="color:red;"></span>)
-							</div>
-						</div>						
-						<div class="form-group">
-							<label class="col-sm-2 control-label">问题：</label>
-							<div class="col-sm-10">	
-								<textarea name="question" type="text" class="form-control" id="tips2" style="display:none;"></textarea>
-								<script id="editor2" type="text/plain" style="width:100%"></script>
-								<script type="text/javascript">    
-									var ue2 = UE.getEditor('editor2');									
-								</script>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">选项：</label>
-							<div class="col-sm-10">A:正确；B:错误</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">正确答案：</label>
-							<div class="col-sm-10">
-								<input name="answer" type="radio" value="1" id="a"/>
-								<label for="a">A:</label>
-								<input name="answer" type="radio" value="0" id="b"/>
-								<label for="b">B:</label>
-								<div class="alert alert-danger" style="display:none;">答案不能为空</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">提示：</label>
-							<div class="col-sm-10">
-								<textarea name="tips" class="form-control" id="tips" style="display:none;"></textarea>
-								<script id="editor" type="text/plain" style="width:100%"></script>
-									<script type="text/javascript">    
-									    var ue = UE.getEditor('editor');
-									    $(function(){
-									    	$("#course").change(function(){
-								    			$(".glyphicon-asterisk").html("");
-								    		});
-									    	$("#submitBtn").click(function(){
-									    		$("#tips2").val(ue2.getContent());
-									    		$("#tips").val(UE.getEditor('editor').getContent());
-									    		if($("#course").val()==0){
-									    			$(".glyphicon-asterisk").html('必须选择一门课程');
-									    			return false;
-									    		}
-									    		if(!$("input[name=answer]").is(":checked")){
-									    			$(".alert-danger").fadeIn("slow");
-									    			setTimeout(function(){									    				
-									    				$(".alert-danger").fadeOut("slow");
-									    			},2000);
-									    			return false;
-									    		}
-									    		return true;
-									    	});
-									    });
-									</script>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label class="col-sm-2 control-label"></label>
-							<div class="col-sm-10">
-								<input type="submit" name="send" value="添　加　试　题" class="btn btn-success" id="submitBtn"/>
-							</div>
-						</div>
-				</form>
-			</div>
-</div>
-{/if}
-{if $add}
-<div class="row">
-			<div class="col-md-12">
-			<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=ad&action=show'>选择题管理</a></li>
-				<li class="active">添加选择题</li>
-			</ul>
-				<form method="post" action="?a=learning&action=add" class="form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label">所属课程：</label>
-							<div class="col-sm-10">
-								<select class="input-sm" name="course" id="course">
-									<option value="0">选择一门课程</option>{$course}
-								</select>(<span class="glyphicon glyphicon-asterisk" style="color:red;"></span>)
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">问题：</label>
-							<div class="col-sm-10">
-								<textarea name="question" type="text" class="form-control" id="tips2" style="display:none;"></textarea>
-								<script id="editor2" type="text/plain" style="width:100%"></script>
-								<script type="text/javascript">    
-									var ue2 = UE.getEditor('editor2');									
-								</script>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">选项A：</label>
-							<div class="col-sm-10"><input name="choice_a" type="text" class="form-control"/></div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">选项B：</label>
-							<div class="col-sm-10"> <input name="choice_b" type="text" class="form-control"/></div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">选项C：</label>
-							<div class="col-sm-10"> <input name="choice_c" type="text" class="form-control"/></div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">选项D：</label>
-							<div class="col-sm-10"> <input name="choice_d" type="text" class="form-control"/></div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">正确答案：</label>
-							<div class="col-sm-10"> 
-								<input name="answer" type="radio" value="A" id="a"/> 
-								<label for="a">A:</label>
-								<input name="answer" type="radio" value="B" id="b"/> 
-								<label for="b">B:</label>
-								<input name="answer" type="radio" value="C" id="c"/> 
-								<label for="c">C:</label>
-								<input name="answer" type="radio"	value="D" id="d"/>
-								<label for="d">D:</label>	
-								<!--测试 -->
-								<div class="alert alert-danger" style="display:none;">答案不能为空</div>
-								<!--测试   -->							
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">提示：</label>
-							<div class="col-sm-10">
-								<textarea name="tips" class="form-control" id="tips" style="display:none;"></textarea>
-								    <script id="editor" type="text/plain" style="width:100%"></script>
-									<script type="text/javascript">    
-									    var ue = UE.getEditor('editor');
-									    $(function(){									    	
-									    	$("#course").change(function(){
-								    			$(".glyphicon-asterisk").html("");
-								    		});
-									    	$("#submitBtn").click(function(){
-									    		//console.log($("input[name=answer]:checked").val());									    											    		
-									    		$("#tips2").val(ue2.getContent());
-									    		//alert(ue2.getContent());
-									    		$("#tips").val(UE.getEditor('editor').getContent());
-									    		if($("#course").val()==0){
-									    			$(".glyphicon-asterisk").html('必须选择一门课程');
-									    			return false;
-									    		}
-									    		if(!$("input[name=answer]").is(":checked")){
-									    			$(".alert-danger").fadeIn("slow");
-									    			setTimeout(function(){									    				
-									    				$(".alert-danger").fadeOut("slow");
-									    			},2000);
-									    			return false;
-									    		}
-									    		return true;
-									    	});
-									    });
-									</script>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label class="col-sm-2 control-label"></label>
-							<div class="col-sm-10">
-								<input type="submit" name="send" value="添　加　试　题" class="btn btn-success" id="submitBtn"/>
-							</div>
-						</div>
-				</form>
-			</div>
-</div>
-{/if}
-{if $detailJudge}
-	<div class="row">
-		<div class="col-md-12">
-		<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=admin&action=showJudge'>选择题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=admin&action=add" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
-		</ul>
-		<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<tr>
-				<td class="text-right">问题</td>
-				<td>
-					<!-- <input type="text" name="question" class="form-control" value="{$oneJudge->question}" disabled> -->
-					<textarea name="question" class="form-control" disabled>{$oneJudge->question}</textarea>
-				</td>
-			</tr>
-			<tr><td class="text-right">选项</td><td>选项A： 正确；选项B： 错误</td></tr>
-			<tr>
-				<td class="text-right">正确答案</td>
-				<td>
-					A:<input name="answer" type="radio" value="1" {$one} disabled/>
-					B:<input name="answer" type="radio" value="0" {$two} disabled/>
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right" style="width:85px;">解答</td>
-				<td>
-					<textarea class="form-control" name="tips" id="tips" style="display:none">{$oneJudge->tips}</textarea>
-					<script id="editor" type="text/plain" style="width:100%"></script>
-				<script type="text/javascript"> 
-					var ue = UE.getEditor('editor');					
-					$("#editor").html($("#tips").val());					
-				</script>
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right">所属课程</td>
-				<td><select class="input-sm" name="course" disabled>
-							<option>选择一个课程</option>
-								{$course}
-						</select></td>
-			</tr>
-			<tr class="text-center"><td colspan="2"><a href="{$back}" class="btn btn-success" name="send">返回</a></td></tr>
-			</form>
-		</table>
-		</div>
-	</div>
-{/if}
-{if $updateJudge}
-	<div class="row">
-		<div class="col-md-12">
-		<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showJudge'>判断题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=learning&action=addJudge" title='添加判断题'><i class="fa fa-plus-circle"></i></a></li>
-		</ul>
-		<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<input type="hidden" name="id" value="{$oneJudge->id}">
-			<tr>
-				<td class="text-right">所属课程</td>
-				<td><select class="input-sm" name="course">
-							<option>选择一个课程</option>
-								{$course}
-						</select>(<span class="glyphicon glyphicon-asterisk text-danger"></span>)
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right" style="width:80px;">问题</td>
-				<td>				
-					<textarea type="text" name="question" class="form-control" id="tips2">{$oneJudge->question}</textarea>
-					<script id="editor2" type="text/plain" style="width:100%"></script>
-					<script type="text/javascript">    
-						 var ue2 = UE.getEditor('editor2');	
-						 $(function(){							 
-							 ue2.addListener("ready", function () {
-							        // editor准备好之后才可以使用
-							        ue2.setContent($("#tips2").val());							 
-							  });
-						 });
-					</script>
-				</td>
-			</tr>
-			<tr><td class="text-right">选项</td><td>A:正确；B:错误</td></tr>
-			<tr>
-				<td class="text-right">正确答案</td>
-				<td>
-					<input name="answer" type="radio" value="1" {$one} id="a"/>
-					<label for="a">A:</label>
-					<input name="answer" type="radio" value="0" {$two} id="b"/>
-					<label for="b">B:</label>
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right">解答</td>
-				<td>
-					<textarea class="form-control" name="tips" id="tips" style="display:none">{$oneJudge->tips}</textarea>
-					<script id="editor" type="text/plain" style="width:100%"></script>
-					<script type="text/javascript">    
-						 var ue = UE.getEditor('editor');
-						 //alert($("#tips").val());						
-						 $(function(){
-							 ue.addListener("ready", function () {
-							        // editor准备好之后才可以使用
-							        ue.setContent($("#tips").val());							 
-							  });
-						    	$("#submitBtn").click(function(){
-						    		$("#tips2").val(ue2.getContent());
-						    		$("#tips").val(UE.getEditor('editor').getContent());
-						    	});
-						    });
-					</script>
-				</td>
-			</tr>			
-			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send" id="submitBtn"></td></tr>
-			</form>
-		</table>
-		</div>
-	</div>
-{/if}
-{if $updateChoice}
-	<div class="row">
-		<div class="col-md-12">
-		<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=learning&action=showChoice'>选择题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=learning&action=add" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
-		</ul>
-		<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<input type="hidden" name="id" value="{$oneChoice->id}">
-			<tr>
-				<td class="text-right">所属课程</td>
-				<td><select class="input-sm" name="course">
-							<option>选择一个课程</option>
-								{$course}
-						</select>(<span class="glyphicon glyphicon-asterisk text-danger"></span>)
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right" style="width:80px;">问题</td>
-				<td>
-					<textarea type="text" name="question" class="form-control" id="tips2">{$oneChoice->question}"</textarea>
-					<script id="editor2" type="text/plain" style="width:100%"></script>
-					<script type="text/javascript">    
-						 var ue2 = UE.getEditor('editor2');	
-						 $(function(){
-							 ue2.addListener("ready", function () {
-							        // editor准备好之后才可以使用
-							        ue2.setContent($("#tips2").val());							 
-							  });
-						 });						
-					</script>
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right">答案A</td>
-				<td><input type="text" name="choice_a" value="{$oneChoice->a}" class="form-control"></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案B</td>
-				<td><input type="text" name="choice_b" value="{$oneChoice->b}" class="form-control"></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案C</td>
-				<td><input type="text" name="choice_c" value="{$oneChoice->c}" class="form-control"></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案D</td>
-				<td><input type="text" name="choice_d" value="{$oneChoice->d}" class="form-control"></td>
-			</tr>
-			<tr>
-				<td class="text-right">正确答案</td>
-				<td>
-					<input name="answer" type="radio" value="A" {$A} id="a"/> 
-					<label for="a">A:</label>
-					<input name="answer" type="radio" value="B" {$B} id="b"/> 
-					<label for="b">B:</label>
-					<input name="answer" type="radio" value="C" {$C} id="c"/> 
-					<label for="c">C:</label>
-					<input name="answer" type="radio"	value="D" {$D} id="d"/>
-					<label for="d">D:</label>					
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right">解答</td>
-				<td>
-					<textarea class="form-control" name="tips" id="tips" style="display:none;">{$oneChoice->tips}</textarea>
-					<script id="editor" type="text/plain" style="width:100%"></script>
-					<script type="text/javascript">    
-						 var ue = UE.getEditor('editor');
-						 //alert($("#tips").val());
-						 $(function(){
-							 ue.addListener("ready", function () {
-							        // editor准备好之后才可以使用
-							        ue.setContent($("#tips").val());							 
-							  });
-						    	$("#submitBtn").click(function(){
-						    		$("#tips2").val(ue2.getContent());
-						    		$("#tips").val(UE.getEditor('editor').getContent());						    		
-						    		return true;
-						    	});						    	
-						    });						
-					</script>
-				</td>
-			</tr>			
-			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send" id="submitBtn"></td></tr>
-			</form>
-		</table>
-		</div>
-	</div>
-{/if}
-{if $detailChoice}
-	<div class="row">
-		<div class="col-md-12">
-		<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=admin&action=show'>选择题管理</a></li>
-					<li class="active">显示选择题</li>
-					<li><a href="?a=admin&action=add" title='添加选择题'><i class="fa fa-plus-circle"></i></a></li>
-					<li><a href="{$back}">返回</a></li>	
-		</ul>
-		<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
-			<input type="hidden" name="id" value="{$oneChoice->id}" disabled>
-			<tr>
-				<td class="text-right" style="width:80px;">问题</td>
-				<td><input type="text" name="question" class="form-control" value="{$oneChoice->question}" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案A</td>
-				<td><input type="text" name="choice_a" value="{$oneChoice->a}" class="form-control" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案B</td>
-				<td><input type="text" name="choice_b" value="{$oneChoice->b}" class="form-control" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案C</td>
-				<td><input type="text" name="choice_c" value="{$oneChoice->c}" class="form-control" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">答案D</td>
-				<td><input type="text" name="choice_d" value="{$oneChoice->d}" class="form-control" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">正确答案</td>
-				<td><textarea class="form-control" name="answer" disabled>{$oneChoice->answer}</textarea></td>
-			</tr>
-			<tr>
-				<td class="text-right">解答</td>
-				<td>
-				<textarea class="form-control" name="tips" disabled id="tips" style="display:none;">{$oneChoice->tips}</textarea>
-				<script id="editor" type="text/plain" style="width:100%"></script>
-				<script type="text/javascript"> 
-					var ue = UE.getEditor('editor');					
-					$("#editor").html($("#tips").val());					
-				</script>
-				</td>
-			</tr>
-			<tr>
-				<td class="text-right">参加者</td>
-				<td><input type="text" class="form-control" value="{$oneChoice->operater}" name="operater" disabled></td>
-			</tr>
-			<tr>
-				<td class="text-right">所属课程</td>
-				<td><select class="input-sm" name="course" disabled>
-							<option>选择一个课程</option>
-								{$course}
-						</select></td>
-			</tr>
-			<tr class="text-center"><td colspan="2"><a href="{$back}" class="btn btn-success" name="send">返回</a></td></tr>
-			</form>
-		</table>
-		</div>
-	</div>
-{/if}
+	<script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
+	<script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
+	<script>
+		var ue = UE.getEditor("editor");
+		var ue2 = UE.getEditor("editor2");
+	</script>
 </body>
 </html>

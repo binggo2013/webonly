@@ -37,7 +37,8 @@ class admin extends Controller{
                 $this->model->update("admin", $array,"where id=".$oneAdmin[0]->id);
                 $this->redirect("登录成功，页面跳转中...", '/admin/index');
             }else{
-                $this->feedback("用户名或密码错误");
+                //$this->feedback("用户名或密码错误");
+                $this->redirect("用户名或密码错误",'/admin/index',0);
             }   
         }
         $this->view("admin/admin_login.html");

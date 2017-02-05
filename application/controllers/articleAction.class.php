@@ -1,47 +1,8 @@
 <?php
 /*文章-方法*/
 class articleAction extends Action{
-    public function main(){
-        /*检测判断是否登录，未登录直接跳转*/
-        if (Tools::checkLogin("admin")){
-            //echo "未登录";
-            header("location:?a=user&m=login");             //未登录跳转login.html
-        }
-
-        //登入后，权限检测登入用户权限是否足够start
-        //权限的id等于等级的PID
-        //登入后，求出user的level_id时level的id;user/level/permission相关联
-        //var_dump($_SESSION['admin']);
-        $level=new levelModel();
-        //根据等级名称获取一条等级数据
-        $oneLevel=$level->getOneLevelByName($_SESSION['admin']->level_id)[0];
-        //获取对应等级的权限
-        //var_dump(explode(",",$oneLevel->pid));
-        $allPermission=explode(",",$oneLevel->pid);
-        $p="2";     //假设文章为1
-        if (!in_array($p,$allPermission)){
-            //如果不具有权限，就显示权限不足页面
-            $this->smarty->display("admin/denied.html");
-            exit();     //终止
-        }
-        //权限检测end
-
-        switch ($_GET['action']){
-            case "add":
-                $this->add();break;
-            case "show":
-                $this->show();break;
-            case "delete":
-                $this->delete();break;
-            case "update":
-                $this->update();break;
-            case "state":
-                $this->state();break;
-        }
-        $this->smarty->display("admin/article.html");
-    }
     /*添加文章*/
-    private function add(){
+    public function add(){
         //var_dump($_POST);
         $this->nav();           //调用nav方法
         $transfer=new Transfer(array("fieldName"=>"thumbnail","path"=>"public/uploads/article"));     //实例化，新建上传类文件，并赋路径

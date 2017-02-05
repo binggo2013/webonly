@@ -28,12 +28,12 @@ class Controller{
 			echo "<pre>";
 			var_dump($_data);
 			echo "</pre>";
-		}else if(is_numeric($_data)){
+		}else if(is_numeric($_data)||is_int($_data)||is_integer($_data)){
 			echo "<pre>";
 			echo ($_data);
 			echo "</pre>";
 		}else{
-			echo "未知的dump数据类型";
+			var_dump($_data."未知的dump数据类型");
 		}
 	}
     protected function setURL(){
@@ -61,19 +61,19 @@ class Controller{
 	 * 重定向方法
 	 * @param string $_msg要传递的信息
 	 * @param string $_url要跳转的URL
-	 * @param number $_flag:1是成功，2是失败;
+	 * @param number $_flag:1是成功，0是失败;
 	 * @param number $_t  */
     protected  function redirect($_msg,$_url,$_flag=1,$_t=1){
         if($_flag==1){
             $_color="green";
-        }else if($_flag==2){
+        }else if($_flag==0){
             $_color="red";
         }
         echo "<div class='redirect modal-content'>
                 <div class='modal-header'><span class='modal-title' style='color:".$_color."'>".$_msg."</span></div>
                 <div class='modal-body' style='padding-bottom:0'>
                     <dl>
-                        <dd id='msg' info=".$_t." url=".$_url.">
+                        <dd id='msg' info=".$_t." url=".$_url." flag=".$_flag.">
                             <div class='progress'>
                       <div class='progress-bar progress-bar-striped active' style='width:1%'>
                                 </div>
@@ -167,6 +167,27 @@ class Controller{
             }
         }
         return false;
+    }
+    protected function setState($data=array(),$table,$template){
+        //$this->dump($data);
+        if(isset($data['id'])){
+            $oneNav=$this->model->getOne($table, "where id=".$data['id']);
+            $switch=null;
+            if($data['flag']=='hide'){
+                $switch=0;
+            }elseif($data['flag']=='show'){
+                $switch=1;
+            }
+            $array=array(
+                'state'=>$switch
+            );
+            if($this->model->update($table, $array,"where id=".$data['id'])){
+                $this->redirect("成功",$_SERVER['HTTP_REFERER']);
+            }else{
+                $this->redirect("失败","",0);
+            }
+        }
+        $this->view($template);
     }
 }
 ?>

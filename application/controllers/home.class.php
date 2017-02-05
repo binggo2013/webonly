@@ -15,21 +15,25 @@ class home extends Controller{
         $this->assign("recommend",$article->getArticleByAttr("2","limit 1"));
         //商品推荐
         
-        //试卷
-        $examination=new examinationModel();
-        $userLeaderboard=$examination->getUserLeaderboard();
+        //考试成绩列表
+        $userLeaderboard=$this->model->getAll("examination","order by createdTime desc limit 0,5");
+        //$this->dump($userLeaderboard);
+        foreach ($userLeaderboard as $key=>$value){
+            $oneUser=$this->model->getOne("user","where id=".$value->uid);
+            $value->uid=$oneUser[0]->username;
+            $oneCourse=$this->model->getOne("course","where id=".$value->cid);
+            $value->cid=$oneCourse[0]->name;
+        }
         $this->assign("newExam",$userLeaderboard);
         //测试
-        $quiz=new quizModel();
-        $this->assign("allCourse",$quiz->hotCourse());
+        $this->assign("allCourse",$this->model->getAll("course","where state=1 order by Rand() limit 3"));
         
         //导航
-        $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort desc limit 9");
-        $this->smarty->assign("frontNav",$frontNav);
+        $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort asc limit 9");
+        $this->assign("frontNav",$frontNav);
         //热门商品
-        $product=new productModel();
-		$HotProducts=$product->getHotProducts();	
-		$this->assign("productRecommend",$product->getHottedProducts());
+		$HotProducts=$this->model->getAll("product","where state=1 order by Rand() limit 3");
+		$this->assign("productRecommend",$this->model->getAll("product","where attr like '%1%' and state=1 order by id desc limit 6"));
 		$this->assign("allProducts",$HotProducts);
         $this->view("home/home.html");
     }

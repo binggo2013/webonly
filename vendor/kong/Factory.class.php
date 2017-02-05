@@ -50,10 +50,10 @@ class Factory{
             //$c = new self::$controller;
             $c = new self::$controller;
         }else{
-            throw new Exception('控制器文件不存在');
+            exit(self::$controller.'控制器文件不存在');
         }
     if(!self::$method){
-        self::$method="main";
+        self::$method="index";
     }
         //执行方法
     if(method_exists($c,self::$method)){

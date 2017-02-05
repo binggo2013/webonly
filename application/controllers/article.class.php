@@ -1,5 +1,41 @@
 <?php
 class article extends Controller{
+    /*添加文章*/
+    public function add(){
+        //var_dump($_POST);
+        $this->nav();           //调用nav方法
+        $transfer=new Transfer(array("fieldName"=>"thumbnail","path"=>"public/uploads/article"));  
+        if (isset($_POST['send'])){
+            if($_POST['nid']==null){
+                $this->redirect("文章栏目不能为空","",0);
+                return false;
+            }
+            if ($transfer->upload()){
+                $array=array(                       
+                    'title'=>$_POST['title'],
+                    'author'=>$_POST['author'],
+                    'tag'=>$_POST['tag'],
+                    'thumbnail'=>$transfer->getNewFile(),
+                    'lead'=>$_POST['lead'],
+                    'source'=>$_POST['source'],
+                    'content'=>$_POST['content'],
+                    'state'=>1,
+                    'date'=>date('Y-m-d H:i:s'),
+                    "attr"=>implode(",",$_POST['attr']),
+                    "nid"=>$_POST['nid']
+                );
+                if ($this->model->add("article",$array)){
+                    $this->redirect("添加成功","/article/show");
+                }else{
+                    //$this->redirect("添加失败","/article/add",0);
+                }
+            }else{
+                $this->redirect($transfer->getErrorMsg(),"",0);
+            }
+        }
+        $this->assign("add",true);
+        $this->view("admin/article.html");
+    }
     /*显示文章所在页面方法*/
     public function detail($data=array()){
         if ($data["id"]){

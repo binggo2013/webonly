@@ -196,7 +196,19 @@ dd.lead{
 	text-align:center;
 }
 .hotCourse .intro{
-	height:120px;
+	height:150px;
+}
+.intro td{
+	text-align:center;
+	
+}
+.intro td span{
+	font-size:55px;
+	color: #428bca;
+	margin-top:40px;
+}
+.intro span:hover{
+	color:red;
 }
 .hotProduct table{
 	width:25%;
@@ -571,6 +583,9 @@ ul{
 }
 .side-corner-tag p {
    display: inline;
+}
+.side-corner-tag table{
+	width:703px;
 }
 .side-corner-tag p span {
     position: absolute;

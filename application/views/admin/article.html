@@ -8,7 +8,7 @@
 	<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
 	<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
 	<script src="public/scripts/admin.js"></script>
-	<script src="{$ROOT}/public/scripts/tools.js"></script>
+	<script src="{$ROOT}/public/scripts/redirect.js"></script>
 	<script src="{$ROOT}/public/scripts/download.js"></script>
 	<script src="{$ROOT}/public/scripts/preview.js"></script>
 	<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
@@ -107,7 +107,7 @@
     <div class="col-md-12" style="margin: 0;">
         <ul class="breadcrumb">
             <li><a href="?a=admin&m=welcome">后台首页</a></li>
-            <li><a href="?a=article&action=add" target="main">添加文章</a></li>
+            <li><a href="/article/add" title='添加文章'><i class="glyphicon glyphicon-plus"></i></a></li>
             <li class="active">文章导航</li>
         </ul>
     </div>
@@ -174,8 +174,8 @@
 <div class='row'>
     <div class="col-md-12">
         <ul class="breadcrumb">
-            <li><a href="?a=admin&m=welcome">后台首页</a></li>
-            <li><a href="?a=article&action=show">文章导航</a></li>
+            <li><a href="/admin/welcome">后台首页</a></li>
+            <li><a href="/article/show">文章导航</a></li>
             <li class="active">添加文章</li>
         </ul>
     </div>
@@ -185,7 +185,7 @@
         <form action="" method="post" enctype="multipart/form-data">
         <table class="table table-bordered table-striped table-hover">
             <tr>
-                <td class="text-right" width=23%>文章栏目</td>
+                <td class="text-right">文章栏目</td>
                 <td>
                     <select name="nid" class="form-control input-sm" style="width: 23%;">
                         <option value="">必须选择一个栏目</option>
@@ -226,7 +226,7 @@
             </tr>
             <tr>
                 <td class="text-right">缩略图预览</td>
-                <td><img src="public/images/default.jpg" width="150px" height="90px" class="img-circle" alt="" id="preview" ></td>
+                <td><img src="{$ROOT}/public/images/default.jpg" width="150px" height="90px" class="img-circle" alt="" id="preview" ></td>
             </tr>
             <tr>
                 <td class="text-right">导语</td>
@@ -234,7 +234,7 @@
             </tr>
             <tr>
                 <td class="text-right">文章</td>
-                <td width=600>
+                <td width=900>
                     <!--<textarea name="content"></textarea>-->
                     <script id="commentEditor" name="content" style="width:100%"></script>
                 </td>

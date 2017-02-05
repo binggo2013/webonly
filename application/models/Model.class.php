@@ -57,7 +57,7 @@ class Model{
         //echo $sql;
         $result=$this->db->exec($sql);
         return $result;
-        //echo $sql;
+        
     }
     /**
      * 获取所有的数据

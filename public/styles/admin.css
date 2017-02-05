@@ -1,4 +1,10 @@
 @CHARSET "UTF-8";
+.addChoice .col-sm-11{
+	padding-left:0;
+}
+.addChoice .col-sm-1{
+	padding-right:0;
+}
 #fold{
 	font-size:22px;
 	cursor:pointer;
@@ -64,11 +70,9 @@
 	z-index:9999;
 	display:none;
 }
-.confirm .body{
-	height:105px;
-}
-.confirm .body dl{
-	margin:0;
+.confirm .modal-body{
+	padding-top:20px;
+	margin-top:20px;
 }
 .confirm .modal-title{
 	font-size:18px;
@@ -226,8 +230,7 @@ body{
 	color:white;
 }
 #loginBody{
-	background:url(../images/loginbg.jpg);
-	background-size:cover;
+	background: #0077b5 linear-gradient(45deg, #0077b5, #008891) repeat fixed 0 0;
 }
 #admin_login{
 	width:300px;

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$oneProduct->name}</title>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<script src="{$ROOT}/public/scripts/home.js"></script>
+<script src="{$ROOT}/public/scripts/frontnav.js"></script>
+<link href="{$ROOT}/public/styles/footer.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<link href="{$ROOT}/public/styles/quiz.css" rel="stylesheet"> 
+<link href="{$ROOT}/public/styles/tools.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/cart.css" rel="stylesheet">
+</head>
+<body id="home">
+{include file="home/common.html"}
+{include file="home/header.html"}
+<div class="container">
+{if $productDetail}
+	<div class="row productHeader">
+	<div class="col-md-2">
+	<img src="{$ROOT}/public/uploads/mall/{$oneProduct->pix}" style="width:150px;height:200px;">
+	</div>
+	<div class="col-md-8">
+	<form method="post" action="/mall/addCart">
+	<input type="hidden" name="id" value="{$oneProduct->id}">
+		<dl>
+			<dt><input type='text' name='name' value='{$oneProduct->name}'></dt>
+			<dd>价格:<input type='text' name='price' value='{$oneProduct->price}元'></dd>
+			<dd>库存:<input type='text' name='inventory' value='{$oneProduct->inventory}件'></dd>
+			<dd>购买数量:<input type='number' name='amount' min='1' max='{$oneProduct->inventory}' value='1' style='width:50px;'></dd>
+			<dd><input type="submit" name="send" value="放入购物车" class="btn btn-danger"></dd>
+		</dl>
+	</form>
+	</div>
+	<div class="col-md-2">
+	右边广告
+	</div>
+	</div>
+{/if}
+{if $showCart}
+<div class="row">
+	<div class="col-md-12 cart">
+	<table class="table table-bordered table-striped table-hover">
+{foreach $cart as $key=>$value}
+<tr>
+	<td>{$value->name}</td>
+	<td>
+		<a class="btn btn-primary glyphicon glyphicon-chevron-up" onclick='location.href="?a=cart&action=update&type=plus&id={$value->id}"'></a>
+			[{$value->num}]
+		<a class="btn btn-primary glyphicon glyphicon-chevron-down" onclick='location.href="?a=cart&action=update&type=minus&id={$value->id}"'></a>
+	</td>
+	<td>{$value->price}</td>
+	<td>{$value->price*$value->num}</td>
+	<td><a href="?a=cart&action=removeProduct&id={$value->id}&num=removeOne" class="btn btn-danger">移除商品</a></td>
+</tr>
+{/foreach}
+<tr>
+	<td align="right" colspan="5">
+	<a href="?a=cart&action=removeProduct&num=removeAll" class="btn btn-info">清空购物车</a>&nbsp;&nbsp;
+	<a href="?" class="btn btn-warning">继续购物</a>
+	<a href="?a=cart&action=placeOrder" class="btn btn-success">提交订单</a>
+	总计：{$sum}
+	</td>
+</tr>
+</table>
+{/if}
+{include file="home/footer.html"}
+</div>
+
+</body>
+</html>

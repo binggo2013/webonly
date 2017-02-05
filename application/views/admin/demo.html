@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="" method='post'>
+	<script id="container" name="content" type="text/plain">
+        这里写你的初始化内容
+    </script>
+    <hr>
+    <script id="container2" name="tips" type="text/plain">
+        这里写你的初始化内容2
+    </script>
+    <input type="submit" name="send" value="demo">
+</form>
+<script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
+<script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
+<script>
+	//var ue=UE.getEditor("editor");
+	var ue=UE.getEditor("container");
+	var ue2=UE.getEditor("container2");
+	//var ue2=UE.getEditor("editor2");
+</script>
+</body>
+</html>
