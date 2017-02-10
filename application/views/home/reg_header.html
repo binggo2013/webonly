@@ -1,0 +1,33 @@
+<header>
+	<section class="logo">
+		<a href="?"><img src='{$ROOT}/public/images/logo.png' title='webonly.org'></a>
+	</section>
+	<nav>
+		<dl class="nav navList">
+			<dd class="active"><a href="/home/index">Home</a></dd>
+			{if $frontNav}
+			{foreach $frontNav as $key=>$value}
+			{if $value->hasChild eq 0}
+			<dd><a href="{$value->url}" target="_blank" target="_blank">{$value->name}</a></dd>
+			{else}
+			<dd><a href="/subnav/show&id/{$value->id}" target="_blank">{$value->name}</a></dd>
+			{/if} 
+			<!-- <dd><a href="?a=subnav&action=show&id={$value->id}" target="_blank">{$value->name}</a></dd> -->
+			{/foreach}
+			{else}
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd><a href="javascript:void(0)">关于我们</a></dd>
+			<dd style="border:0"><a href="#">关于我们</a></dd>
+			{/if}
+			<div class="clearfix"></div>
+		</dl>
+	</nav>
+	<section class="login_reg">
+		
+	</section>
+</header>
+<div class="inner"></div>

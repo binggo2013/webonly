@@ -3,46 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <title>管理员管理</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/learning.js"></script>
+<link href="{$ROOT}/public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/preview.js"></script>
+<script src="{$ROOT}/public/scripts/administrator.js"></script>
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
-</div>
-<!--modal模态框结束  -->
+{include file="admin/common.html"}
 {if $show}
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=admin&action=show'>管理员管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/administrator/show'>管理员管理</a></li>
 			<li class="active">显示管理员</li>
-			<li><a href="?a=admin&action=add" title='添加管理员'><i class="fa fa-plus-circle"></i></a></li>
+			<li><a href="/administrator/add" title='添加管理员'><i class="fa fa-plus-circle"></i></a></li>
 		</ul>
 		<table class="table table-bordered table-striped table-hover table-condensed">
-		<form action="?a=admin&action=deleteAll" method="post">
+		<form action="" method="post">
 		<tr>
-			<td>编号</td>
 			<td>名称</td>
 			<td>等级</td>
 			<td>登录次数</td>
@@ -54,13 +42,12 @@
 		{if $data}
 		{foreach $data as $key=>$value}
 		<tr>
-			<td>{$key+$num}</td>
 			<td>{$value->username}</td>
-			<td>{$value->name}</td>
+			<td>{$value->level_id}</td>
 			<td>{$value->login_num}</td>
 			<td>{$value->last_ip}</td>
 			<td>{$value->last_time}</td>
-			<td><a href="?a=admin&action=update&id={$value->id}">修改</a><a href="?a=admin&action=delete&id={$value->id}" class="deleteBtn">删除</a></td>
+			<td><a href="/administrator/update/id/{$value->id}">修改</a>|<a href="/administrator/delete/id/{$value->id}" class="deleteBtn">删除</a></td>
 			<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 		</tr>
 		{/foreach}
@@ -75,10 +62,9 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 text-center">
+	<div class="col-md-12 text-center page">
 	<form method="get" style="display:inline">
-		<input type="hidden" name="action" value="show">
-		<input type="hidden" name="a" value="admin">
+		<input type="hidden" name="administrator" value="show">
 		<select name="level" class="input-sm">
 			<option value="0" {$all}>所有等级</option>
 			{$level}
@@ -123,10 +109,10 @@
 	<div class="row">
 		<div class="col-md-12">
 		<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=admin&action=show'>广告管理</a></li>
-					<li class="active">显示广告</li>
-					<li><a href="?a=admin&action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li>
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/administrator/show'>管理员管理</a></li>
+					<li class="active">显示管理员</li>
+					<li><a href="/administrator/add" title='添加管理员'><i class="fa fa-plus-circle"></i></a></li>
 		</ul>
 		<table class="table table-bordered table-striped table-hover table-condensed">
 			<form action="" method="post">
@@ -135,13 +121,13 @@
 			<tr>
 				<td class="text-right">管理员等级</td>
 				<td>
-					<select class="input-sm" name="level">
+					<select class="input-sm" id="level" name="level">
 					<option>选择等级</option>
 					{$level}
 					</select>
 				</td>
 			</tr>
-			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success" name="send"></td></tr>
+			<tr class="text-center"><td colspan="2"><input type="submit" value="提交" class="btn btn-success administratorBtn" name="send"></td></tr>
 			</form>
 		</table>
 		</div>

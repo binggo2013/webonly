@@ -1,10 +1,18 @@
 @CHARSET "UTF-8";
+.float{
+	position:fixed;
+	top:0;
+	width:100%;
+	z-index:9000;
+}
 #captcha{
 	cursor:pointer;
 }
 header{
 	background-color: #0d5caa;
 	color:#fff;
+	height:55px;
+	/*overflow:hidden;*/
 }
 header a{
 	color:#fff;

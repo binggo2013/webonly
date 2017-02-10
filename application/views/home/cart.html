@@ -16,9 +16,9 @@
 <link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
 <script src="{$ROOT}/public/scripts/redirect.js"></script>
 <script src="{$ROOT}/public/scripts/login.js"></script>
-<link href="{$ROOT}/public/styles/quiz.css" rel="stylesheet"> 
 <link href="{$ROOT}/public/styles/tools.css" rel="stylesheet">
 <link href="{$ROOT}/public/styles/cart.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/cart.js"></script>
 </head>
 <body id="home">
 {include file="home/common.html"}
@@ -50,24 +50,28 @@
 <div class="row">
 	<div class="col-md-12 cart">
 	<table class="table table-bordered table-striped table-hover">
+	<tr><td>商品名称</td><td>商品数量</td><td>商品单价</td><td>商品总价</td><td>操作</td></tr>
 {foreach $cart as $key=>$value}
 <tr>
 	<td>{$value->name}</td>
 	<td>
-		<a class="btn btn-primary glyphicon glyphicon-chevron-up" onclick='location.href="?a=cart&action=update&type=plus&id={$value->id}"'></a>
+		<a class="btn btn-warning glyphicon glyphicon-chevron-up" onclick='location.href="/mall/update/type/plus/id/{$value->id}"'></a>
 			[{$value->num}]
-		<a class="btn btn-primary glyphicon glyphicon-chevron-down" onclick='location.href="?a=cart&action=update&type=minus&id={$value->id}"'></a>
+		<a class="btn btn-warning glyphicon glyphicon-chevron-down" onclick='location.href="/mall/update/type/minus/id/{$value->id}"'></a>
 	</td>
 	<td>{$value->price}</td>
 	<td>{$value->price*$value->num}</td>
-	<td><a href="?a=cart&action=removeProduct&id={$value->id}&num=removeOne" class="btn btn-danger">移除商品</a></td>
+	<td><a href="/mall/removeProduct/id/{$value->id}/num/removeOne" class="btn btn-danger">移除商品</a></td>
 </tr>
 {/foreach}
 <tr>
 	<td align="right" colspan="5">
-	<a href="?a=cart&action=removeProduct&num=removeAll" class="btn btn-info">清空购物车</a>&nbsp;&nbsp;
-	<a href="?" class="btn btn-warning">继续购物</a>
-	<a href="?a=cart&action=placeOrder" class="btn btn-success">提交订单</a>
+	<a href="/mall/removeProduct/num/removeAll" class="btn btn-info">清空购物车</a>&nbsp;&nbsp;
+	<a href="/home/index" class="btn btn-warning">继续购物</a>
+	<form method="post" action="/mall/placeOrder" style="display:inline;">
+		<input type="hidden" name="id" id="uid">
+		<input type="submit" name="send" value="提交订单" class="btn btn-success orderBtn">
+	</form>
 	总计：{$sum}
 	</td>
 </tr>

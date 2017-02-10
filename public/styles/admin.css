@@ -57,7 +57,7 @@
 	font-weight:bold;
 }
 /*确认框*/
-.confirm{
+.confirm,#msgModal{
 	width:420px;
 	height:220px;
 	position:absolute;
@@ -70,11 +70,14 @@
 	z-index:9999;
 	display:none;
 }
-.confirm .modal-body{
+#msgModal{
+	height:180px;
+}
+.confirm .modal-body,#msgModal .modal-body{
 	padding-top:20px;
 	margin-top:20px;
 }
-.confirm .modal-title{
+.confirm .modal-title,#msgModal .modal-title{
 	font-size:18px;
 	font-weight:bold;
 }

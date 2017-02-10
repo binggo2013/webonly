@@ -8,10 +8,11 @@ $(function(){
 	if(sessionStorage.getItem("username")){
         $("#userValue").html(sessionStorage.getItem("username")+'<span class="caret"></span>');        
         $(".point").html(sessionStorage.getItem("point"));
-        $("#memberSpace").attr("href","?a=member&action=show&id="+sessionStorage.getItem("id"));
+        $("#memberSpace").attr("href","/user/space/id/"+sessionStorage.getItem("id"));
         if(sessionStorage.getItem("icon")){
-        	$(".dropdown img").attr("src","public/uploads/member/"+sessionStorage.getItem("icon"));
-        }        
+        	$(".dropdown img").attr("src","public/uploads/user/"+sessionStorage.getItem("icon"));
+        }
+        $("#uid").val(sessionStorage.getItem("id"));
         $(".UIA").css({"display":"none"});
         $(".UIB").css({"display":"inline"});
         //////获取未读信息数/////////////
@@ -86,10 +87,12 @@ $(function(){
 	                    sessionStorage.setItem("username",str[0].username);  
 	                    sessionStorage.setItem("icon",str[0].icon);
 	                    $("#userValue").html(str[0].username+'<span class="caret"></span>');
-	                    sessionStorage.setItem("id",str[0].id); 
+	                    sessionStorage.setItem("id",str[0].id);
+	                    $("#memberSpace").attr("href","/user/space/id/"+str[0].id);
+	                    $("#uid").val(str[0].id);
 	                    //$("#memberSpace").attr("href","?a=member&action=show&id="+str[0].id);
 	                    if(sessionStorage.getItem("icon")){
-	    		        			$(".dropdown img").attr("src","public/uploads/member/"+sessionStorage.getItem("icon"));
+	    		        			$(".dropdown img").attr("src","public/uploads/user/"+sessionStorage.getItem("icon"));
 	    		        		}
 	                    $(".point").html(str[0].countdown);
 	                    sessionStorage.setItem("point",str[0].countdown);                    
@@ -124,7 +127,7 @@ $(function(){
 		        								$(this).click(function(){
 		        									$.ajax({
 		        										'type':"post",
-		        										'url':"?a=message&action=getOne",
+		        										'url':"/message/getOne",
 		        										'data':{"id":$(this).attr("data-id")},
 		        										success:function(response){
 		        											var str=eval(response);
@@ -156,6 +159,7 @@ $(function(){
 	//注销
 	$("#logoutBar").click(function(){
 	    $("#userValue").html('');
+	    $("#uid").val("");
 	    //移除本地sessionStorage
 	    sessionStorage.removeItem("username");
 	    //console.log(sessionStorage.getItem("username"));

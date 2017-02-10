@@ -359,6 +359,63 @@
 		</div>
 	</div>
 {/if}
+{if $showOrder}
+<div class='row'>
+    <div class="col-md-12">
+        <ul class="breadcrumb">
+            <li><a href="/admin/welcome">后台首页</a></li>
+            <li><a href="/article/show">订单导航</a></li>
+            <li class="active">显示订单</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+	<table class="table table-bordered table-striped table-hover table-condensed">
+		<form action='' method="post">
+			<tr>
+				<td>订单号</td>
+				<td>商品</td>
+				<td>总价</td>
+				<td>付款状态</td>
+				<td>发货状态</td>
+				<td>订购者</td>
+				<td>订单时间</td>
+				<td>操作</td>
+				<td><input type="checkbox" id="selectBar">全选</td>
+			</tr>
+			{if $data}
+			{foreach $data as $key=>$value}
+			<tr>
+				<td>{$value->orderId}|<a href='/mall/orderDetail/id/$value->id'>详细</a></td>
+				<td>{$value->pid}</td>
+				<td>{$value->total}</td>
+				<td>{$value->payed}</td>
+				<td>{$value->sent}</td>
+				<td>{$value->uid}</td>
+				<td>{$value->orderTime}</td>
+				<td>
+					<a href="/mall/delete/id/{$value->id}" class="deleteBtn">删除</a>
+				</td>
+				<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
+			</tr>
+			{/foreach}
+			<tr class="text-right">
+				<td colspan="9"><input type="submit" value="排序" class="btn btn-success" name="send"><input type="submit" value="全删" class="btn btn-success deleteAll" name="send"></td>
+			</tr>
+			{else}
+			<tr>
+				<td colspan="9">暂无数据</td>
+			</tr>
+			{/if}
+		</form>
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-center page">{$page}</div>
+</div>
+{/if}
 <script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
 <script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
 <script>

@@ -3,20 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>下载首页</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet" />
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/buttons.css" rel="stylesheet">
-<link href="public/styles/home.css" rel="stylesheet">
-<link href="public/styles/member.css" rel="stylesheet">
-<link href="public/styles/download.css" rel="stylesheet">
-<link href="public/styles/tools.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/member.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script src="public/scripts/download.js"></script>
-<script src="public/scripts/home.js"></script>
-<link href="public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<script src="{$ROOT}/public/scripts/home.js"></script>
+<script src="{$ROOT}/public/scripts/frontnav.js"></script>
+<link href="{$ROOT}/public/styles/home.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/footer.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/scrollBack.js"></script>
+<script src="{$ROOT}/public/scripts/download.js"></script>
+<link href="{$ROOT}/public/styles/download.css" rel="stylesheet">
 </head>
 <body id="home">
 {include file="home/header.html"}
@@ -37,7 +40,7 @@
 		{foreach $temp as $key=>$value}
 			<div class="tab panel panel-default">
 				<div class="panel-body">
-						<p class="text-right"><a href="?a=download&m=all&name={$key}" class="text-danger">所有{$key}</a></p>
+						<p class="text-right"><a href="/download/all/name/{$key}" class="text-danger">所有{$key}</a></p>
 				</div>
 			{if $value }
 			{foreach $value as $v}				
@@ -47,10 +50,12 @@
 						<td  style='width:35px;'>
 							{if $v->name}
 							<i class="fa fa-download" style="color:gray;"></i>
-							<a href="?a=download&m=updateDownloadNum&name={$v->name}&id={$v->id}" class="downloadBtn">下载</a>							
+							<!-- <a href="/download/updateDownloadNum/id/{$v->id}/name/{$v->name}" class="downloadBtn">下载</a> -->
+							<a href='{$ROOT}/public/uploads/download/{$v->name}' class="downloadBtn">下载</a>							
 							{else}
 							<i class="fa fa-download" style="color:gray;"></i>
-							<a href="{$v->url}" info="{$v-id}" target="_blank" class="downloadBtn">下载</a>							
+							<!-- <a href="{$v->url}" info="{$v-id}" target="_blank" class="downloadBtn">下载</a> -->	
+							<a href='{$v->url}' class="downloadBtn">下载</a>						
 							{/if}
 						</td>
 						<td style='width:45px;'>下载次数:{$v->download_num}</td>
@@ -58,10 +63,12 @@
 					</tr>
 					<tr>
 						<td style='width:90px;' colspan="4">描述:{$v->description}</td>
-					</tr>						
-										
-			</table>									
+					</tr>			
+			</table>				
 			{/foreach}
+			<div class="row">
+				<div class="col-md-12 text-center page">{$page}</div>
+			</div>
 			{else}
 				<table class="table table-bordered table-striped table-hover" style="border:1px solid #ddd;margin-bottom:25px;">
 					<tr>				
@@ -84,24 +91,27 @@
 		</div>
 		{$page}
 		<div class="col-md-4">
-			<dl class="board">
-				<dt class="text-center">热门下载</dt>
+			<table class="table table-striped table-hover table-condensed" style="border:1px solid #ddd">
+				<tr><th style="text-align:center;" colspan="3">热 门 下 载</th></tr>
 				{if $downloadLeaderboard}
 				{foreach $downloadLeaderboard as $key=>$value}
-				<dd>
-					<span>{$key+1}</span>
-					<a href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->title|truncate:25:"..."}</a>
-					&nbsp;&nbsp;{$value->download_num}次
-				</dd>
+				<tr>
+					<td>{$key+1}</td>
+					<td>
+						{if $value->name}
+						<a href="{$ROOT}/public/uploads/download/{$v->name}" id="downloadBtn">{$value->title|truncate:20:""}</a>
+						<!-- ?a=download&m=updateDownloadNum&name={$value->name}&id={$value->id} 
+						<a data-id="{$value->id}" data-description="{$value->description}" data-time="{$value->date}"  data-count='{$value->download_num}' data-href="/public/uploads/download/{$value->name}" href="#" info="{$value-id}"  class="downloadBar" target="_blank" data-toggle="modal" data-target="#downloadModal" data-title="{$value->title}">{$value->title|truncate:20:""}</a>	-->					
+						{else}
+						<!-- {$value->url} -->
+						<a data-id="{$value->id}" data-description="{$value->description}"    data-time="{$value->date}"  data-count='{$value->download_num}' data-href='{$value->url}' href="#" class="downloadBar" info="{$value-id}" target="_blank" data-toggle="modal" data-target="#downloadModal" data-title="{$value->title}">{$value->title|truncate:20:""}</a>							
+						{/if}
+					</td>
+					<td>{$value->download_num}次</td>
 				{/foreach}	
-				{else}			
-				<dd><span>1</span><a href="javascript:void(0)">最佳前端入门方法</a></dd>
-				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">CSS权威指南如何？</a></dd>
-				<dd><span>3</span><a href="javascript:void(0)">JavaScript红宝书在哪儿有卖？</a></dd>
-				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">锋利的jQuery锋利在哪儿？</a></dd>
-				<dd><span>5</span><a href="javascript:void(0)">PHP核心模块这边书有价值吗？</a></dd>				
+				{else}
 				{/if}
-			</dl>
+			</table>
 		</div>
 	</div>
 	{/if}
@@ -113,7 +123,7 @@
 			<table class="table table-bordered table-striped table-hover" style="border:1px solid #ddd;margin-bottom:5px;">
 					<tr>				
 						<td style='width:90px;'>名称:{$v->title}</td>
-						<td  style='width:35px;'>{if $v->name}<i class="fa fa-download" style="color:gray;"></i><a href="?a=download&m=updateDownloadNum&name={$v->name}&id={$v->id}" id="downloadBtn">下载</a>{else}暂无下载{/if}</td>
+						<td  style='width:35px;'>{if $v->name}<i class="fa fa-download" style="color:gray;"></i><a href="{$ROOT}/public/uploads/download/{$v->name}" id="downloadBtn">下载</a>{else}<a href="{$v->url}" target="_blank">下载</a>{/if}</td>
 						<td style='width:45px;'>下载次数:{$v->download_num}</td>
 						<td style='width:90px;'>发布时间:{$v->date}</td>
 					</tr>
@@ -122,30 +132,39 @@
 					</tr>									
 			</table>						
 			{/foreach}
-			<div>{$page}</div>
+			<div class="text-center page">{$page}</div>
+			<style>
+				.page ul{
+					margin-left:5px;
+				}
+			</style>
 	</div>
 		<div class="col-md-4">
-			<dl class="board">
-				<dt class="text-center">热门下载</dt>
+		<table class="table table-striped table-hover table-condensed" style="border:1px solid #ddd">
+				<tr><th style="text-align:center;" colspan="3">热 门 下 载</th></tr>
 				{if $downloadLeaderboard}
 				{foreach $downloadLeaderboard as $key=>$value}
-				<dd>
-					<span>{$key+1}</span>
-					<a href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->title|truncate:25:"..."}</a>
-					&nbsp;&nbsp;{$value->download_num}次
-				</dd>
+				<tr>
+					<td>{$key+1}</td>
+					<td>
+						{if $value->name}
+						<a href="{$ROOT}/public/uploads/download/{$v->name}" id="downloadBtn">{$value->title|truncate:20:""}</a>
+						<!-- ?a=download&m=updateDownloadNum&name={$value->name}&id={$value->id} 
+						<a data-id="{$value->id}" data-description="{$value->description}" data-time="{$value->date}"  data-count='{$value->download_num}' data-href="/public/uploads/download/{$value->name}" href="#" info="{$value-id}"  class="downloadBar" target="_blank" data-toggle="modal" data-target="#downloadModal" data-title="{$value->title}">{$value->title|truncate:20:""}</a>	-->					
+						{else}
+						<!-- {$value->url} -->
+						<a data-id="{$value->id}" data-description="{$value->description}"    data-time="{$value->date}"  data-count='{$value->download_num}' data-href='{$value->url}' href="#" class="downloadBar" info="{$value-id}" target="_blank" data-toggle="modal" data-target="#downloadModal" data-title="{$value->title}">{$value->title|truncate:20:""}</a>							
+						{/if}
+					</td>
+					<td>{$value->download_num}次</td>
 				{/foreach}	
-				{else}			
-				<dd><span>1</span><a href="javascript:void(0)">最佳前端入门方法</a></dd>
-				<dd class="bg-gray"><span>2</span><a href="javascript:void(0)">CSS权威指南如何？</a></dd>
-				<dd><span>3</span><a href="javascript:void(0)">JavaScript红宝书在哪儿有卖？</a></dd>
-				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">锋利的jQuery锋利在哪儿？</a></dd>
-				<dd><span>5</span><a href="javascript:void(0)">PHP核心模块这边书有价值吗？</a></dd>				
+				{else}
 				{/if}
-			</dl>
+			</table>
 		</div>
 	</div>
 	{/if}
+	{include file="home/footer.html"}
 </div>
 </body>
 </html>

@@ -10,7 +10,7 @@
 			{if $value->hasChild eq 0}
 			<dd><a href="{$value->url}" target="_blank" target="_blank">{$value->name}</a></dd>
 			{else}
-			<dd><a href="/subnav/show&id/{$value->id}" target="_blank">{$value->name}</a></dd>
+			<dd><a href="/subnav/show/id/{$value->id}" target="_blank">{$value->name}</a></dd>
 			{/if} 
 			<!-- <dd><a href="?a=subnav&action=show&id={$value->id}" target="_blank">{$value->name}</a></dd> -->
 			{/foreach}
@@ -34,7 +34,7 @@
 		<span class="UIB">
 		<ul class="list-inline unstyled">
 			<li class="dropdown">
-              <img src="public/images/default.jpg" class="img-circle" id="defaultUser">
+              <img src="{$ROOT}/public/images/default.jpg" class="img-circle" id="defaultUser">
             </li>
             <!--未读信息  -->
 			<li class="dropdown" id="msglist">
@@ -46,7 +46,7 @@
             </li>
             <!--会员中心  -->
             <li class="dropdown">
-              <a id="userValue"  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <a uid='' id="userValue"  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="userValue">
               	<i class="fa fa-caret-up"></i>
                 <li role="presentation"><a href="#">点数:<span class="point"></span></a></li>

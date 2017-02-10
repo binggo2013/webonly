@@ -218,6 +218,125 @@ class mall extends Controller{
         $this->assign("showProduct",true);
         $this->view("admin/mall.html");
     }
+    public function placeOrder($data=array()){
+        if(isset($_POST['send'])){
+            $pList='';
+            foreach ($_SESSION['cart'] as $key=>$value){
+                $pList.=$value->id.",";
+            }
+            $pList=rtrim($pList,",");
+            $orderId="order".date("Ymdhis").rand(100,999);
+            $array=array(
+                'orderId'=>$orderId,
+                'pid'=>$pList,
+                'total'=>$_SESSION['sum'],
+                'orderTime'=>date('Y-m-d H:i:s'),
+                'uid'=>$_POST['id']
+            );
+            $result=$this->model->add("orders",$array);
+            if($result){
+                unset($_SESSION['cart']);
+                unset($_SESSION['sum']);
+                //unset($_SESSION['cart']);
+                //echo "提交订单成功";
+                $this->redirect("提交订单成功", "/home/index");
+            }else{
+                //echo "提交订单失败";
+                $this->redirect("提交订单失败", "",0);
+            }
+        }
+        $this->assign("showCart", true);
+        $this->view("home/cart.html");
+    }
+    public function delete($data=array()){
+        if($data['id']){
+            $result=$this->model->delete("orders","where id=".$data['id']);
+            if($result){
+                $this->redirect("删除成功", '/mall/showOrder');
+            }else{
+                $this->redirect("删除失败", '',0);
+            }
+        }
+        $this->assign("showOrder",true);
+        $this->view("admin/mall.html");
+    }
+    public function showOrder(){
+        $this->page($this->model->getAllTotal("orders"));
+        $data=$this->model->getAll("orders","order by id desc",$this->model->limit);
+        //$this->dump($data);
+        foreach ($data as $value){
+            $arr=explode(",", $value->pid);
+            $str=null;
+            foreach ($arr as $k){
+                $oneProduct=$this->model->getOne("product", "where id=".$k);
+                $str.=$oneProduct[0]->name."<br>";
+            }
+            $value->pid=rtrim($str,"<br>");
+            $oneUser=$this->model->getOne("user","where id=".$value->uid);
+            $value->uid=$oneUser[0]->username;
+            //echo $value->state="hello";
+            switch ($value->payed){
+                case 0:
+                    $value->payed="<span style='color:red;'>[未付]</span>
+							<a href='/mall/payed/flag/show/id/".$value->id."'>已付</a>";
+                    break;
+                case 1:
+                    $value->payed="<span style='color:green;'>[已付]</span>
+							<a href='/mall/payed/flag/hide/id/".$value->id."'>未付</a>	";
+                    break;
+            }
+            switch ($value->sent){
+                case 0:
+                    $value->sent="<span style='color:red;'>[未发]</span>
+							<a href='/mall/sent/flag/show/id/".$value->id."'>已发</a>";
+                    break;
+                case 1:
+                    $value->sent="<span style='color:green;'>[已发]</span>
+							<a href='/mall/sent/flag/hide/id/".$value->id."'>未发</a>	";
+                    break;
+            }
+        }
+        $this->assign("data",$data);
+        $this->assign("showOrder",true);
+        $this->view("admin/mall.html");
+    }
+    public function payed($data=array()){
+        $this->setState($data,"orders","admin/mall.html","payed");
+    }
+    public function sent($data=array()){
+        $this->setState($data,"orders","admin/mall.html","sent");
+    }
+    public function removeProduct($data=array()){
+        if($data['num']=='removeOne'){
+            unset($_SESSION['cart'][$data['id']]);
+            //header("Location:?a=product&m=cart");
+            if(count($_SESSION['cart'])==0){
+                header("Location:/home/index");
+            }else{
+                header("Location:/mall/showCart");
+            }
+        }else if($data['num']=='removeAll'){
+            unset($_SESSION['cart']);
+            header("Location:/home/index");
+            //Tools::dump($_SESSION['cart']);
+        }
+    }
+    public function update($data=array()){
+        if($data['type']=='plus'){
+            $_SESSION['cart'][$data['id']]->num++;
+            //不能超过库存
+            if($_SESSION['cart'][$data['id']]->num>=$_SESSION['cart'][$data['id']]->inventory){
+                $_SESSION['cart'][$data['id']]->num=$_SESSION['cart'][$data['id']]->inventory;
+            }
+        }else if($data['type']=='minus'){
+            $_SESSION['cart'][$data['id']]->num--;
+            //不能小于0;
+            if($_SESSION['cart'][$data['id']]->num<=0){
+                $_SESSION['cart'][$data['id']]->num=0;
+            }
+        }
+        header('Location:/mall/showCart');
+    }
     public function showProduct(){
         $allCategory=$this->model->getAll("category");
         $categoryStr=null;

@@ -3,21 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <title>会员中心</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet" />
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/home.css" rel="stylesheet">
-<link href="public/styles/member.css" rel="stylesheet">
-<link href="public/styles/tools.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="libs/echarts/echarts.js"></script>
-<script src="public/scripts/member.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script src="public/scripts/home.js"></script>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/login.js"></script>
+<script src="{$ROOT}/public/scripts/home.js"></script>
+<script src="{$ROOT}/public/scripts/frontnav.js"></script>
+<link href="{$ROOT}/public/styles/home.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/common.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/header.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/footer.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/scrollBack.js"></script>
+<script src="{$ROOT}/vendor/echarts/echarts.js"></script>
+<script src="{$ROOT}/public/scripts/member.js"></script>
+<link href="{$ROOT}/public/styles/member.css" rel="stylesheet">
 </head>
 <body id="home">
+{include file="home/common.html"}
+{include file="home/header.html"}
 <div class="container">
-{if $show}
+{if $space}
 	<div class="row">
 		<div class="col-md-12">		
 		<dl class="memberTitle">
@@ -45,7 +53,7 @@
 				<td style='width:90px;' class="text-right">邮箱</td><td><input type="text" name="email" value="{$oneUser->email}" class="form-control"></td>
 			</tr>
 			<tr>
-				<td style='width:90px;' class="text-right">头像</td><td><img src="public/uploads/member/{$oneUser->icon}" class='icon img-circle'>&nbsp;&nbsp;<a href='javascript:void();' id="changeBtn">换一张</a></td>
+				<td style='width:90px;' class="text-right">头像</td><td><img src="public/uploads/user/{$oneUser->icon}" class='icon img-circle'>&nbsp;&nbsp;<a href='javascript:void();' id="changeBtn">换一张</a></td>
 			</tr>
 			<input type="text" name="newpic"  value="{$oneUser->icon}" style="display:none;">
 			<input type="file" id="pic" name="pic" style="display:none;">			
@@ -110,7 +118,7 @@
 		<div class="tab panel panel-default">			
 				<div class="panel-heading">我的成绩</div>
 				<div class="panel-body">
-				<p><a href="?" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有成绩</a></p>
+				<p><a href="/home/index" class="btn btn-success pull-left">首页</a><a href="javascript:void(0);" class="pull-right">所有成绩</a></p>
 	
 				</div>
 				<table class="table table-bordered table-striped table-hover">

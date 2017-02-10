@@ -31,7 +31,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
     <li><a href="#">{$smarty.session.admin->name}</a></li>
     <li role="separator" class="divider"></li>
-	<li><a href="#">{$smarty.session.admin->login_num}次登录</a></li>
+	<li><a href="#">{$smarty.session.admin->login_num+1}次登录</a></li>
     <li role="separator" class="divider"></li>
 	<li><a href="#">{$smarty.session.admin->last_time}</a></li>
 	<li role="separator" class="divider"></li>
@@ -95,7 +95,7 @@
         <ul>
         	<li><a href="/permission/show" target="main">权限管理</a></li>
         	<li><a href="/level/show" target="main">等级管理</a></li>
-        	<li><a href="/admin/show" target="main">管理员管理</a></li>
+        	<li><a href="/administrator/show" target="main">管理员管理</a></li>
         	<li><a href="/user/show" target="main">前台会员管理</a></li>
         </ul>
       </div>

@@ -16,7 +16,7 @@ class download extends Controller{
     }
     public function updateDownloadNum($data=array()){
         $this->model->exec("update download set download_num=download_num+1 where where id=".$data['info']);
-        header("location:public/uploads/download/".$data['name']);
+        //header("location:public/uploads/download/".$data['name']);
     }
     public function delete($data=array()){
         if($data['id']){
@@ -116,6 +116,29 @@ class download extends Controller{
             $str.="<option value='".$value->id."' ".$selected.">".$value->name."</option>";
         }
         $this->assign("topic",$str);
+    }
+    public function AllDownload(){
+        $allTopic=$this->model->getAll("topic");
+        $temp=array();
+        foreach ($allTopic as $key=>$value){
+            $allDownlad=$this->model->getAll("download","where tid=".$value->id." order by date desc limit 0,10");
+            $temp[$value->name]=$allDownlad;
+        }
+        $this->assign("downloadLeaderboard",$this->model->getAll("download","order by download_num desc limit 0,5"));
+        //$this->dump($temp);
+        $this->assign("temp",$temp);
+        $this->assign("show",true);
+        $this->view("home/download.html");
+    }
+    public function all($data=array()){
+        $this->assign("downloadLeaderboard",$this->model->getAll("download","order by download_num desc limit 0,5"));
+        $oneTopic=$this->model->getOne("topic","where name='".$data['name']."'");
+        $this->assign("oneTopic",$oneTopic[0]);
+        $this->page($this->model->getAllTotal("download","where tid=".$oneTopic[0]->id));
+        $allDownload=$this->model->getAll("download","where tid=".$oneTopic[0]->id." order by id desc ",$this->model->limit);
+        $this->assign("allDownload",$allDownload);
+        $this->assign("back","/download/AllDownload");
+        $this->view("home/download.html");
     }
 }
 ?>

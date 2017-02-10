@@ -3,46 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>权限管理</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/learning.js"></script>
+<link href="{$ROOT}/public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/preview.js"></script>
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
-</div>
-<!--modal模态框结束  -->
+{include file="admin/common.html"}
 	{if $show}
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
-				<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-				<li><a href='?a=permission&action=show'>权限管理</a></li>
+				<li><a href='/admin/welcome' target="main">后台首页</a></li>
+				<li><a href='/permission/show'>权限管理</a></li>
 				<li class="active">显示权限</li>
-				<li><a href="?a=permission&action=add" title='添加权限'><i class="fa fa-plus-circle"></i></a></li>
+				<li><a href="/permission/add" title='添加权限'><i class="fa fa-plus-circle"></i></a></li>
 			</ul>
 		<table class="table table-bordered table-striped table-hover table-condensed">
-		<form action="?a=permission&action=deleteAll" method="post">
+		<form action="" method="post">
 			<tr>
-				<td>编号</td>
 				<td>名称</td>
 				<td>描述</td>
 				<td>操作</td>
@@ -51,10 +38,9 @@
 			{if $data}
 			{foreach $data as $key=>$value}
 			<tr>
-				<td>{$key+$num}</td>
 				<td>{$value->name}</td>
 				<td>{$value->description}</td>
-				<td><a href="?a=permission&action=update&id={$value->id}">修改</a><a href="?a=permission&action=delete&id={$value->id}" class="deleteBtn">删除</a></td>
+				<td><a href="/permission/update/id/{$value->id}">修改</a><a href="/permission/delete/id/{$value->id}" class="deleteBtn">删除</a></td>
 				<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 			</tr>
 			{/foreach}
@@ -69,7 +55,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">
+		<div class="col-md-12 text-center page">
 			{$page}
 		</div>
 	</div>

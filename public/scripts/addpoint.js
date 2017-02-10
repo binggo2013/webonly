@@ -3,7 +3,7 @@ $(function(){
 		$(this).click(function(){			
 			//alert($("input[type=text]:eq("+_index+")").val());
 			$.ajax({
-				'url':"?a=quiz&m=addPoint",
+				'url':"/user/addPoint",
 				'type':"post",
 				"data":{"point":$("input[type=text]:eq("+_index+")").val(),"id":$(this).attr("info")},
 				success:function(response){

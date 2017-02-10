@@ -36,7 +36,7 @@
 			<li><a class="text-danger"><b>倒数第{$oneUser->countdown}次</b></a></li>
 			<li><a class="text-primary"><b>试卷：{$oneCourse->name}</b></a></li>
 		</ul>
-		<form method="post" action="/quiz/result" id="exam">
+		<form method="post" action="/learning/result" id="exam">
 		<input type="hidden" name="uid" value="" id="uid">
 		<input type="hidden" name="cid" value="{$oneCourse->id}">
 			<dl class="choice"><h1>选择题</h1>
@@ -115,7 +115,7 @@
 	<div class="col-md-8">
 	<div class="alert alert-success">
 		<b>共{$total}道题，做了{$ticked}道题，<span style='color:green;'>对了{$resultNum+$resultNum2}题，得分{$score}分</span></b>
-		<a href="?a=quiz&action=show&cid={$oneCourse->id}"><b style="color:red">再做一次</b></a>&nbsp;&nbsp;<a href="?a=member&action=show&id={$smarty.session.oneUserName->id}"><b style="color:green;">查看历史成绩</b></a>
+		<a href="/learning/take/cid/{$oneCourse->id}"><b style="color:red">再做一次</b></a>&nbsp;&nbsp;<a href="?a=member&action=show&id={$smarty.session.oneUserName->id}"><b style="color:green;">查看历史成绩</b></a>
 	</div>
 	<dl><h1>选择题</h1>
 		{$choiceOutput}

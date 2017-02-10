@@ -168,7 +168,7 @@ class Controller{
         }
         return false;
     }
-    protected function setState($data=array(),$table,$template){
+    protected function setState($data=array(),$table,$template,$fieldName='state'){
         //$this->dump($data);
         if(isset($data['id'])){
             $oneNav=$this->model->getOne($table, "where id=".$data['id']);
@@ -179,7 +179,7 @@ class Controller{
                 $switch=1;
             }
             $array=array(
-                'state'=>$switch
+                $fieldName=>$switch
             );
             if($this->model->update($table, $array,"where id=".$data['id'])){
                 $this->redirect("成功",$_SERVER['HTTP_REFERER']);

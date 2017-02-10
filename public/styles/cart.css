@@ -8,3 +8,7 @@
 .productHeader input[type=text]{
 	border:0;
 }
+.glyphicon-chevron-up,.glyphicon-chevron-down{
+	padding-left:10px;
+	padding-right:25px;
+}

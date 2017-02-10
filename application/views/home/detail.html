@@ -5,6 +5,7 @@
 <title>{$oneArticle->title}</title>
 <link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
 <script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
 <script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
 <script src="{$ROOT}/public/scripts/login.js"></script>
@@ -20,17 +21,18 @@
 <script src="{$ROOT}/public/scripts/login.js"></script>
 <link href="{$ROOT}/public/styles/quiz.css" rel="stylesheet"> 
 <link href="{$ROOT}/public/styles/tools.css" rel="stylesheet">
-
 <link href="{$ROOT}/public/styles/detail.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/footer.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/scrollBack.js"></script>
 </head>
 <body>
 {include file="home/common.html"}
 {include file="home/header.html"}
-<div class="container">
-	<div class="row">
+<div class="container" style='margin-top:5px;'>
+	<div class="row" style='margin-top:0;'>
 		<div class="col-md-12" id="breadcrumb">
 			<ul class="breadcrumb" style="background:url(public/images/topbar_bg.gif)">
-				<li><a href='index.php'>首页</a></li>
+				<li><a href='/home/index'>首页</a></li>
 			{if $mainNav}
 				<li><a href='?a=subnav&action=show&id={$mainNav->id}'>{$mainNav->name}</a></li>
 				<li><a href="?a=subnavdetail&action=show&name={$subNav->name}&father={$mainNav->name}&fid={$mainNav->id}">{$subNav->name}</a></li>
@@ -101,8 +103,8 @@
 			<table class="table table-bordered table-striped table-hover table-condensed">
 				<tr><td class="text-center">好 书 推 荐</td></tr>
 				{foreach $recommend as $key=>$value}
-				<tr><td class="text-center"><a href="?a=cart&action=detail&id={$value->id}" target="_blank"><img src="{$ROOT}/public/uploads/product/{$value->pix}" title="{$value->name}"></a></td></tr>
-				<tr>	<td class="text-center"><a href="?a=cart&action=detail&id={$value->id}" target="_blank">{$value->name}</a></td></tr>
+				<tr><td class="text-center"><a href="/mall/productDetail/id/{$value->id}" target="_blank"><img src="{$ROOT}/public/uploads/mall/{$value->pix}" title="{$value->name}"></a></td></tr>
+				<tr>	<td class="text-center"><a href="/mall/productDetail/id/{$value->id}" target="_blank">{$value->name}</a></td></tr>
 				<tr>	<td class="text-center">{$value->author}&nbsp;&nbsp;&nbsp;&nbsp;¥&nbsp;{$value->price}</td></tr>			
 				{/foreach}
 			</table>

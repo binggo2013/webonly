@@ -3,36 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>前台会员管理</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<link href="public/styles/admin.css" rel="stylesheet">
-<link href="public/styles/tools.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script src="public/scripts/addpoint.js"></script>
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/learning.js"></script>
+<link href="{$ROOT}/public/styles/learning.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
+<script src="{$ROOT}/public/scripts/preview.js"></script>
+<script src="{$ROOT}/public/scripts/addpoint.js"></script>
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
-</div>
-<!--modal模态框结束  -->
-<!--modal消息模态框开始  -->
+{include file="admin/common.html"}
 <div class="msg modal-content" id="myModal2" aria-labelledby='myModalLabel2' style="height:auto;">
 				<div class="modal-header">
 				<h4 class="modal-title text-primary" id="myModalLabel">您现在的操作</h4>
@@ -44,20 +30,17 @@
 					<a href="http://www.webonly.org" target="_blank" class="h3 text-primary">www.webonly.org</a>					
 			</div>
 </div>
-<!--modal模态框结束  -->
 {if $show}
 <div class="row">
 	<div class="col-md-12">
 	<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=article&action=show'>前台管理员管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/user/show'>前台管理员管理</a></li>
 			<li class="active">显示前台管理员</li>
-			<li><a href="?a=article&a=article&action=add" title='添加前台管理员'><i class="fa fa-plus-circle"></i></a></li>
 	</ul>
 <table class="table table-bordered table-striped table-hover table-condensed">
-		<form action="?a=user&action=deleteAll" method="post">
+		<form action="" method="post">
 			<tr>
-				<td>编号</td>
 				<td>用户名</td>
 				<td>邮箱</td>
 				<!-- <td>头像</td> -->
@@ -73,7 +56,6 @@
 			{if $data}
 			{foreach $data as $key=>$value}
 			<tr>
-				<td>{$key+$num}</td>
 				<td title="{$value->username}">{$value->username|truncate:10:".."}</td>
 				<td>{$value->email}</td>
 				<!-- <td><img src="public/uploads/member/{$value->icon}" style="width:50px;height:50px;"></td> -->
@@ -100,7 +82,7 @@
 		</table>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-center">{$page}</div>
+		<div class="col-md-12 text-center page">{$page}</div>
 	</div>
 </div>
 {/if}

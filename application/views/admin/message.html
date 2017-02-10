@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/bootstrap-theme.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="libs/ueditor/ueditor.config.js"></script>
-<script src="libs/ueditor/ueditor.all.js"></script>
-<script src="public/scripts/tools.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<script src="{$ROOT}/public/scripts/nav.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
 </head>
 <body>
 {if $add}
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/message/show'>信息管理</a></li>
 			<li class="active">添加信息</li>
 		</ul>
 	</div>
@@ -59,10 +60,7 @@
 				<td class="text-right" style="width:120px;">信息内容</td>
 				<td>
 					<!-- 加载编辑器的容器 -->
-<script id="container" name="content" type="text/plain" style="width:100%">初始化内容</script>
-    					<script type="text/javascript">
-				        var ue = UE.getEditor('container');
-				    </script>
+<script id="editor" name="content" type="text/plain" style="width:100%">初始化内容</script>
 				</td>
 			</tr>
 			<tr>
@@ -78,8 +76,8 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/message/show'>信息管理</a></li>
 			<li class="active">修改信息</li>
 		</ul>
 	</div>
@@ -91,16 +89,16 @@
 			<tr>
 				<td class="text-right">信息类型</td>
 				<td>
-					<input type="radio" value="1" name="type" id="one" {$oneMsg->one}><label for="one">公告</label>
-					<input type="radio" value="2" name="type" id="two" {$oneMsg->two}><label for="two">通知</label>
-					<input type="radio" value="3" name="type" id="three" {$oneMsg->three}><label for="three">用户提示</label>
+					<input type="radio" value="1" name="type" id="one" {$one}><label for="one">公告</label>
+					<input type="radio" value="2" name="type" id="two" {$two}><label for="two">通知</label>
+					<input type="radio" value="3" name="type" id="three" {$three}><label for="three">用户提示</label>
 				</td>
 			</tr>
 			<tr>
 				<td class="text-right">信息范围</td>
 				<td>
-					<input type="radio" value="1" name="range" id="all"><label for="all">全站</label>
-					<input type="radio" value="2" name="range" id="some"><label for="some">特定用户</label>
+					<input type="radio" value="1" name="range" id="all" {$all}><label for="all">全站</label>
+					<input type="radio" value="2" name="range" id="some" {$some}><label for="some">特定用户</label>
 				</td>
 			</tr>
 			<tr>
@@ -119,10 +117,8 @@
 				<td class="text-right" style="width:120px;">信息内容</td>
 				<td>
 					<!-- 加载编辑器的容器 -->
-<script id="container" name="content" type="text/plain" style="width:100%">{$oneMsg->content}</script>
-    					<script type="text/javascript">
-				        var ue = UE.getEditor('container');
-				    </script>
+<script id="editor" name="content" type="text/plain" style="width:100%">{$oneMsg->content}</script>
+    					
 				</td>
 			</tr>
 			<tr>
@@ -138,10 +134,10 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=message&action=show'>信息管理</a></li>
+			<li><a href='/admin/welcome'>后台首页</a></li>
+			<li><a href='/message/show'>信息管理</a></li>
 			<li class="active">显示信息</li>
-			<li><a href="?a=message&action=add" title='添加信息'><i class="fa fa-plus-circle"></i></a></li>
+			<li><a href="/message/add" title='添加信息'><i class="fa fa-plus-circle"></i></a></li>
 		</ul>
 	</div>
 </div>
@@ -167,8 +163,8 @@
 				<td>{$value->readStatus}</td>
 				<td>{$value->state}</td>
 				<td>
-					<a href="?a=message&action=update&id={$value->id}">修改</a>|
-				删除
+					<a href="/message/update/id/{$value->id}">修改</a>|
+					<a href="/message/delete/id/{$value->id}">删除</a>
 				</td>
 				<td>{$value->date}</td>
 			</tr>
@@ -181,8 +177,13 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 text-center">{$page}</div>
+	<div class="col-md-12 text-center page">{$page}</div>
 </div>
 {/if}
+<script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
+<script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
+<script>
+	var ue=UE.getEditor("editor");
+</script>
 </body>
 </html>

@@ -104,7 +104,7 @@ $(function(){
     if(sessionStorage.getItem("username")){
         $("#userValue").html(sessionStorage.getItem("username"));        
         $(".point").html(sessionStorage.getItem("point"));
-        $("#memberSpace").attr("href","?a=member&action=show&id="+sessionStorage.getItem("id"));
+        $("#memberSpace").attr("href","/user/space//id/"+sessionStorage.getItem("id"));
         if(sessionStorage.getItem("icon")){
         	$(".dropdown img").attr("src","public/uploads/member/"+sessionStorage.getItem("icon"));
         }        
@@ -115,188 +115,23 @@ $(function(){
         $(".UIA").css({"display":"block"});
         $(".UIB").css({"display":"none"});
     }
-	///////////////登录//////////////////////////		
-	$("#loginBtn").click(function(){		
-		//////////////////
-		$.ajax({
-			'url':"?a=home&m=login",
-			'type':"post",
-			'data':{'action':'login','username':$("#login_username").val(),'pwd':$("#login_pwd").val()},
-			beforeSend:function(){
-				$("#loginBtn").val("登录中...");
-			},
-			success:function(data){				
-				if(data=='failed'){
-					$(".feedback").css({"display":"block"}).html("用户名或密码错误");
-					setTimeout(function(){
-						$(".feedback").fadeOut("slow");
-					},2000);
-				}else{
-					var str=eval(data);
-					console.log(str[0]);
-					if(str[0]){
-						$("#myModal").modal("hide");
-	                    sessionStorage.setItem("username",str[0].username);  
-	                    sessionStorage.setItem("icon",str[0].icon);
-	                    $("#userValue").html(str[0].username);
-	                    sessionStorage.setItem("id",str[0].id); 
-	                    $("#memberSpace").attr("href","?a=member&action=show&id="+str[0].id);
-	                    $(".point").html(str[0].countdown);
-	                    sessionStorage.setItem("point",str[0].countdown);                    
-	                    $(".UIA").css({"display":"none"});
-	                    $(".UIB").css({"display":"block"}); 
-					}
-					                  							
-				}
-			},
-			complete:function(){
-				$("#loginBtn").val("登录");
-			}
-		});
-		return true;
-	});	
-	///////注销/////////////////////
-    $("#logoutBar").click(function(){
-        $("#userValue").html('');
-        //移除本地sessionStorage
-        sessionStorage.removeItem("username");
-        sessionStorage.removeItem("icon");
-        sessionStorage.removeItem("id");
-        $(".UIA").css({"display":"block"});
-        $(".UIB").css({"display":"none"});
-        $.ajax({
-        	"url":"?a=home&m=logout",
-        	'type':"get",
-        	success:function(data){
-        		console.log(data);
-        	} 
-        });        
-    });
-	/////////////////////////////////
 	//console.log($(".item").length);
 	$(".item").each(function(index){
 		//console.log(index);
 		$(".item").removeClass("active");
 		$(this).addClass("active");
 	});
-	
-	$("header .nav dd").each(function(index){
-		console.log($(this).length);
-		$(this).mouseover(function(){
-			$(".nav dd").removeClass("active").eq(index).addClass("active");			
-		});
-	});
 	$(".carousel-indicators li").each(function(index){
 		//console.log(index);
 		$(".carousel-indicators li").removeClass("active");
 		$(this).addClass("active");
 	});
-	//console.log($(".vote input[type=radio]").length);
-	$(".vote input[type=radio]").each(function(index){
-		$(this).click(function(){
-			$(".vote i").removeClass("fa-check-circle").addClass("fa-dot-circle-o");
-			$(".vote i").eq(index).removeClass("fa-dot-circle-o").addClass("fa-check-circle");
-		});
-	});
-	////////////////////////////////
-	$("#showBtn").click(function(){
-		//alert($(this).attr("href").indexOf("showResult"));
-		if($(this).attr("href").indexOf("showResult")==-1){
-			$("#voteFeedback").css({"display":"block"}).html("必须先投票");
-			setTimeout(function(){
-				$("#voteFeedback").fadeOut("slow")
-			},1000);
-			return false;
-		}
-	});
-	///////////////////////////////////
-//	$("#voteBtn").click(function(){
-//		//alert($(".vote input[type=radio]:checked").attr("id"));
-//		if($(".vote input[type=radio]:checked").attr("id")==undefined){
-//			$("#voteFeedback").css({"display":"block"}).html("必须选择投票项");
-//			setTimeout(function(){
-//				$("#voteFeedback").fadeOut("slow")
-//			},1000);
-//			return false;
-//		}
-//		$.ajax({
-//			'url':"?a=home",
-//			'type':"get",
-//			'data':{"id":$(".vote input[type=radio]:checked").attr("id"),'action':"vote"},
-//			beforeSend:function(){
-//				$("#mask").css({"display":"block"});
-//				$(".loading").css({"display":"block"});
-//			},
-//			success:function(response){
-//				//alert(response);
-//				//console.log(response);
-//				if(response=='ok'){
-//					url=$("#showBtn").attr("url");
-//					$("#showBtn").attr("href",url);
-//					$("#voteFeedback").css({"display":"block"}).html("投票成功");
-//					//alert("投票成功");
-//					setTimeout(function(){
-//						$("#voteFeedback").fadeOut("slow")
-//					},2000);
-//				}else if(response=='failed'){
-//					alert("投票失败");
-//				}else if(response=='repeat'){
-//					$("#voteFeedback").css({"display":"block"}).html("同一地址一天投一票");
-//					//alert("投票成功");
-//					setTimeout(function(){
-//						$("#voteFeedback").fadeOut("slow")
-//					},1000);
-//				}
-//			},
-//			complete:function(){
-//				$("#mask").css({"display":"none"});
-//				$(".loading").css({"display":"none"});
-//			}
-//		});
-//		return false;
-//	});
     ////////////////////////////
     $(".progress-bar").each(function(index){
     	//alert($(".progress-bar").eq(index).width())
     	(".progress-bar").eq(index).animate({"width":$(this).width()},2000,"linear");
     });
-///////回到顶部//////
-    var scrollTop=$("html").scrollTop()||$("body").scrollTop();
-	var mouseoverTimer=[];
-	var mouseoutTimer=[];
-	//console.log($("#indicator li").length);
-	//鼠标滑动到不同的li上，滑入相应的提示
-	//移开，提示消失
-	$("#indicator li").each(function(index){
-		$(this).hover(function(){
-			clearTimeout(mouseoutTimer[index]);
-			mouseoverTimer[index]=setTimeout(function(){
-				$("#indicator li span:eq("+index+")").animate({"left":"0px"},250);
-			},200);
-
-		},function(){
-			clearTimeout(mouseoverTimer[index]);
-			mouseoutTimer[index]=setTimeout(function(){
-				$("#indicator li span:eq("+index+")").animate({"left":"-90px"},250);
-			},200);
-		});
-	});
-	//点击回到顶部
-	$("#up").click(function(){
-		$("html").animate({scrollTop:"0px"},500);
-		$("body").animate({scrollTop:"0px"},500);
-	});
-	//滑动到一定的长度，出现右下角的提示;
-	$(window).scroll(function(){
-		//外部的变量都不到，就重新定义;
-		scrollTop=$("html").scrollTop()||$("body").scrollTop();
-		if(scrollTop<20){
-		$("#indicator").css({"display":"none"});
-		}else{
-			$("#indicator").css({"display":"block"});
-		}
-	});
-	///feedback//////
+	///用户提交反馈//////
 	$("#feedbackBar").click(function(){
 		$("#reportModal").modal("hide");
 		$.ajax({

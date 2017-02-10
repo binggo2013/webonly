@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+$(function(){
+	$("#yes").click(function(){
+		$("#msgModal").fadeOut("slow");
+	});
+	$("#no").click(function(){
+		$("#msgModal").fadeOut("slow");
+	});
+	$(".administratorBtn").click(function(){
+		if($("#level").val()=="选择等级"){
+			$("#msgModal").css({"display":"block"});
+			$(".content").html("必须选择等级");
+			setTimeout(function(){
+				$("#msgModal").fadeOut("slow");
+			},2000);
+			return false;
+		}
+	});
+});

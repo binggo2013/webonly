@@ -186,9 +186,9 @@ class cartAction extends Action{
 	    }
 	    header('Location:?a=cart&action=cart');
 	}
-	private function placeOrder(){
+	private function placeOrder($data=array()){
 	    $product=new productModel();
-        if($_GET['action']=="placeOrder"){
+        if($data['action']=="placeOrder"){
             $pList='';
             foreach ($_SESSION['cart'] as $key=>$value){
                 $pList.=$value->id.",";
@@ -200,6 +200,7 @@ class cartAction extends Action{
             $product->totalNum=$_SESSION['sum'];
             $product->uid=$_SESSION['oneUserName']->id;
             $result=$product->placeOrder();
+            $result=$this->model->
             if($result){
                 Tools::destroySession("cart");
                 Tools::destroySession("sum");

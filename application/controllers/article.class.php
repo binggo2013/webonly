@@ -36,9 +36,15 @@ class article extends Controller{
         $this->assign("add",true);
         $this->view("admin/article.html");
     }
+    private function showNav(){
+        $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort asc limit 9");
+        //$this->dump($frontNav);
+        $this->assign("frontNav",$frontNav);
+    }
     /*显示文章所在页面方法*/
     public function detail($data=array()){
         if ($data["id"]){
+            $this->showNav();
             $oneArticle=$this->model->getOne("article","where id=".$data['id']);
             $nav->id=$oneArticle[0]->nid;
             $subNav=$this->model->getOne("nav","where id=".$nav->id);
@@ -46,7 +52,7 @@ class article extends Controller{
             $nav->id=$subNav[0]->pid;
             $mainNav=$this->model->getOne("nav","where id=".$oneArticle[0]->nid);
             $this->assign("mainNav",$mainNav[0]);
-            $recommend=$this->model->getAll("products","where  cid=".$oneArticle[0]->cid." order by id desc limit 3");
+            $recommend=$this->model->getAll("product","where attr like '%1%' and state=1 order by id desc limit 6");
             $this->assign("recommend",$recommend);
             $this->model->exec("update article set pageview=pageview+1 where id=".$data['id']);
             $this->assign("oneArticle",$oneArticle[0]);
