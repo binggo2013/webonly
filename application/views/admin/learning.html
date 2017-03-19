@@ -223,19 +223,19 @@
 				class="table table-bordered table-striped table-hover table-condensed">
 				<form action="" method="post">
 					<tr>
-						<td>问题</td>
-						<td>答案A</td>
-						<td>答案B</td>
-						<td>答案C</td>
-						<td>答案D</td>
-						<td>正确答案</td>
-						<td>所属课程</td>
-						<td>操作</td>
-						<td><input type="checkbox" id="selectBar">全选</td>
+						<th>问题</th>
+						<th>答案A</th>
+						<th>答案B</th>
+						<th>答案C</th>
+						<th>答案D</th>
+						<th>正确答案</th>
+						<th>所属课程</th>
+						<th>操作</th>
+						<th><input type="checkbox" id="selectBar">全选</th>
 					</tr>
 					{if $allChoices} {foreach $allChoices as $key=>$value}
 					<tr>
-						<td style="width: 120px;">{$value->question|truncate:15:"...":true:true}</td>
+						<td style="width: 120px;" title="{$value->question}">{$value->question|truncate:24:"..."}</td>
 						<td>{$value->a|truncate:10:"..."}</td>
 						<td>{$value->b|truncate:10:"..."}</td>
 						<td>{$value->c|truncate:10:"..."}</td>
@@ -275,7 +275,8 @@
 			{$page}
 		</div>
 	</div>
-	{/if} {if $addChoice}
+	{/if} 
+	{if $addChoice}
 	<div class="row addChoice">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
@@ -347,14 +348,15 @@
 				<div class="form-group">
 					<label class="col-sm-1 control-label"></label>
 					<div class="col-sm-11">
-						<input type="submit" name="send" value="添　加　试　题"
+						<input type="submit" name="send" value="添加试题"
 							class="btn btn-success" id="submitBtn" />
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
-	{/if} {if $updateChoice}
+	{/if} 
+	{if $updateChoice}
 	<div class="row addChoice">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
@@ -504,19 +506,19 @@
 			<table class="table table-bordered table-striped table-hover table-condensed">
 			<form action="" method="post">
 				<tr>
-					<td>问题</td>
-					<td>正确答案</td>
+					<td width=300>问题</td>
+					<td width=80>正确答案</td>
 					<td>解答</td>
-					<td>所属课程</td>
-					<td>操作</td>
-					<td><input type="checkbox" id="selectBar">全选</td>
+					<td width=80>所属课程</td>
+					<td width=80>操作</td>
+					<td width=50><input type="checkbox" id="selectBar">全选</td>
 				</tr>
 				{if $allJudges}
 				{foreach $allJudges as $key=>$value}
 				<tr>
-					<td title="{$value->question}" style="width:120px;">{$value->question|truncate:10:"..."}</td>
+					<td title="{$value->question}" style="width:120px;">{$value->question|truncate:27:"..."}</td>
 					<td>{$value->answer|truncate:10:"..."}</td>
-					<td>{$value->tips|truncate:10:"..."}</td>
+					<td>{$value->tips|truncate:30:"..."}</td>
 					<td>{$value->courseName}</td>
 					<td>
 						<a href="/learning/updateJudge/id/{$value->id}">修改</a>|
@@ -712,7 +714,7 @@
 					<li class="active">显示试卷</li>					
 				</ul>
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="" method="post">
+			<form action="/learning/deleteAll" method="post">
 				<tr>
 					<td>课程类型</td>
 					<td>考试者</td>

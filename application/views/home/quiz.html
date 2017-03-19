@@ -124,19 +124,26 @@
 		{$judgeOutput}
 	</dl>
 	</div>
-	<div class="col-md-4">			
-			<dl class="board text-center">
-			<h3 class="text-center">成绩排行</h3>
+	<div class="col-md-4">	
+	<table class="table table-striped table-hover table-condensed" style="border:1px solid #ddd">
+				<tr><th style="text-align:center;" colspan="3">{$course_name}成绩排行</th></tr>
 				{if $arr}
 				{foreach $arr as $key=>$value}
-				<dt class="text-center userLeaderboard">{$key}</dt>
-				{/foreach}
+				<tr>
+					<td>{$key+1}</td>
+					<td>
+						{$value->name}
+					</td>
+					<td>{$value->score}分</td>
+				{/foreach}	
+				{else}
+				{/if}
+			</table>		
+			<!-- <dl class="board text-center">
+			<h3 class="text-center">{$course_name}成绩排行</h3>
+				{if $arr}
 				{foreach $arr as $key=>$value}
-				<div class="boardContent text-left">
-					{foreach $value as $k=>$v}						
-					<dd><span>{$k+1}</span><a>{$v->uid}</a>&nbsp;&nbsp;&nbsp;{$v->score}分</dd>
-					{/foreach}
-				</div>	
+				{$value->name}
 				{/foreach}					
 				{else}			
 				<dd><span>1</span><a href="javascript:void(0)">Tom</a></dd>
@@ -145,7 +152,7 @@
 				<dd class="bg-gray"><span>4</span><a href="javascript:void(0)">Mike</a></dd>
 				<dd><span>5</span><a href="javascript:void(0)">Grace</a></dd>
 				{/if}
-			</dl>
+			</dl> -->
 		</div>
 </div>
 {/if}

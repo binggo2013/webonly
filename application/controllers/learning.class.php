@@ -33,14 +33,6 @@ class learning extends Controller{
         if(isset($_POST['send'])){
             $oneCourse=$this->model->getOne("course", "where id=".$_POST['cid']);
             $this->assign("oneCourse",$oneCourse[0]);
-            //$this->dump($oneCourse);
-            //$user=new userModel();
-            //Tools::dump($_SESSION);
-            //$user->id=$_SESSION['oneUser']->id;
-            //$oneUser=$user->getOneUserByID();
-            //Tools::dump($oneUser);
-            //$this->smarty->assign("oneUser",$oneUser);
-            //$user->updateCountdown();
             $num=0;
             $str.="";
             $resultNum=0;
@@ -61,7 +53,7 @@ class learning extends Controller{
                     if($_POST['choice'][$_POST['choice'.($i)]]!=''){
                         $str.="<dd class='failed'><b style='color:green;'>正确答案是：".$oneChoice[0]->answer."</b>，";
                         $str.="<span class='wrong'>您选择的是：".$_POST['choice'][$_POST['choice'.($i)]]."。<span></dd>";
-                        $str.="<dd style='margin-bottom:3px;' class='alert alert-danger'><b style='color:red'>提示:</b>".$oneChoice->tips."</dd>";
+                        $str.="<dd style='margin-bottom:3px;' class='alert alert-danger'><b style='color:red'>提示:</b>".$oneChoice[0]->tips."</dd>";
                     }else{
                         $str.="<dd class='wrong'>您未答此题</dd>";
                     }
@@ -107,7 +99,7 @@ class learning extends Controller{
                         }
                         $str2.="<dd><span class='wrong'>正确答案是：".$answer."</span>，";
                         $str2.="<span class='wrong'>您选择的是：".$answer2."。<span></dd>";
-                        $str2.="<dd style='margin-bottom:3px;' class='alert alert-danger'><b style='color:red'>提示:</b>".$oneJudge->tips."</dd>";
+                        $str2.="<dd style='margin-bottom:3px;' class='alert alert-danger'><b style='color:red'>提示:</b>".$oneJudge[0]->tips."</dd>";
                     }else{
                         $str2.="<dd class='wrong'>您未答此题</dd>";
                     }
@@ -115,23 +107,20 @@ class learning extends Controller{
                     $str2.= "B.错误</dd></div>";
                 }
             }
-            //
-            $userLeaderboard=$this->model->getAll("examination","order by createdTime desc limit 0,5");
+            //echo $_POST['cid'];
+            $userLeaderboard=$this->model->getAll("examination","where cid=".$_POST['cid']." order by createdTime desc limit 0,10");
             //$allCourse=$course->getFrontCourse();
-            $allCourse=$this->model->getAll("course","where state=1 order by id desc");
+            //$this->dump($userLeaderboard);
+            $this->assign("course_name", $oneCourse[0]->name);
+            /* $allCourse=$this->model->getAll("course","where state=1 order by id desc"); */
+            
             $arr=array();
-            foreach ($allCourse as $key=>$value){
-                $hotExam=$this->model->getAll("examination","where cid=".$value->id." order by createdTime desc limit 5");
-                foreach ($hotExam as $k=>$v){
-                    //$user->id=$v->uid;
-                    //$oneUser=$user->getOneUserByID();
-                    $oneUser=$this->model->getOne("user", "where id=".$v->uid);
-                    $v->uid=$oneUser->username;
-                }
-                $arr[$value->name]=$hotExam;
+            foreach ($userLeaderboard as $key=>$value){
+                $oneUser=$this->model->getOne("user","where id=".$value->uid);
+                $value->name=$oneUser[0]->username;
             }
             //Tools::dump($arr);
-            $this->assign("arr",$arr);
+            $this->assign("arr",$userLeaderboard);
             $this->model->uid=$_POST['uid'];
             $this->model->cid=$_POST['cid'];
             $this->model->total=$_POST['choiceNum']+$_POST['judgeNum'];
@@ -160,6 +149,19 @@ class learning extends Controller{
         $this->assign("score",number_format(($resultNum+$resultNum2)/($_POST['choiceNum']+$_POST['judgeNum'])*100,2));
         $this->assign("result",true);
         $this->view("home/quiz.html");
+    }
+    public function deleteAll(){
+        if(isset($_POST['send'])){
+            $multiId=implode(",", $_POST['selectAll']);
+            //echo $multiId;
+            if($this->model->delete("examination","where id in (".$multiId.")")){
+                $this->redirect("多删成功","/learning/showExam");
+            }else{
+                $this->redirect("多删失败","",0);
+            }
+        }
+        $this->assign("showExam",true);
+        $this->view("admin/learning.html");
     }
     public function showCourse(){
         $this->page($this->model->getAllTotal("course"));
@@ -334,6 +336,8 @@ class learning extends Controller{
         foreach ($allJudges as $k=>$v){
             $oneCourse=$this->model->getOne("course", "where id=".$v->course_id);
             $v->courseName=$oneCourse[0]->name;
+            $v->question=strip_tags($v->question);
+            $v->tips=strip_tags($v->tips);
         }
         $this->assign("allJudges",$allJudges);
         $this->assign("showJudge",true);
@@ -384,7 +388,9 @@ class learning extends Controller{
         $this->view("admin/learning.html");
     }
     public  function addChoice(){
-        if(isset($_POST['send'])){
+        if($_POST['send']=='添加试题'){
+            //var_dump($_POST);
+            //$this->dump($_POST['send']);
             $array=array(
                 'course_id'=>$_POST["course"],
                 'question'=>$_POST["question"],
@@ -440,6 +446,7 @@ class learning extends Controller{
             $oneCourse=$this->model->getOne("course","where id=".$v->course_id);
             //echo $oneCourse->name."<br>";
             $v->courseName=$oneCourse[0]->name;
+            $v->question=strip_tags($v->question);
         }
         //$this->dump($allChoices);
         $this->assign("allChoices",$allChoices);
