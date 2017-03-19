@@ -11,12 +11,9 @@ class user extends Controller{
              $oneUser=$this->model->getOne("user", "where username='".$_POST['username']."' and pwd='".md5($_POST['pwd'])."'");
              //$this->dump($oneUser);
              if($oneUser[0]){
-                 $array=array(
-                     'login_num'=>$oneUser[0]->login_num+1,
-                     'last_ip'=>$_SERVER['REMOTE_ADDR']
-                 );
-                 $this->model->update("user", $array,"where id=".$oneUser[0]->id);
-                 $_SESSION['oneUser']=$oneUser[0];
+                 $sql="update user set last_time=now(),login_num=login_num+1,last_ip='".$_SERVER['REMOTE_ADDR']."' where id=".$oneUser[0]->id;
+                 $this->model->exec($sql);
+                 //echo $sql;
                  //exit("ok");
                  echo '['.json_encode($oneUser[0]).']';
              }else{
@@ -75,6 +72,35 @@ class user extends Controller{
             }
             
         }
+    }
+    public function add(){
+        //$this->dump($_POST);
+        if(isset($_POST['send'])){
+            $oneUser=$this->model->getOne("user","where username='".$_POST['username']."'");
+            if($oneUser[0]){
+              $this->redirect("用户名已经存在，请重试","",0);
+            }else{
+                $array=array(
+                    'username'=>$_POST['username'],
+                    'pwd'=>md5($_POST['pwd']),
+                    'login_num'=>1,
+                    'last_ip'=>$_SERVER['REMOTE_ADDR'],
+                    'last_time'=>date('Y-m-d H:i:s'),
+                    'regTime'=>date('Y-m-d H:i:s'),
+                    'icon'=>"default.jpg",
+                    'email'=>$_POST['email'],
+                    'countdown'=>5,
+                    'state'=>1
+                );
+                if($this->model->add("user",$array)){
+                    $this->redirect("成功",$_SERVER['HTTP_REFERER']);
+                }else{
+                    $this->redirect("失败","",0);
+                }
+            }
+        }
+        $this->assign("add",true);
+        $this->view("admin/user.html");
     }
     public function img(){
         $captcha=new Captcha(90,34);
@@ -211,14 +237,17 @@ class user extends Controller{
         $this->assign("show",true);
         $this->view("admin/user.html");
     }
-    private function delete(){
-        if(isset($_GET['id'])){
-            $this->model->id=$_GET['id'];
-            if($this->model->deleteUser()){
-                //header("Location:?a=user&action=show");
-                Tools::Redirect("ok",$_SERVER['HTTP_REFERER'],1,1);
+    public function delete($data=array()){
+        if(isset($data['id'])){
+            if($this->model->delete("user","where id=".$data['id'])){
+                $this->redirect("删除成功",$_SERVER['HTTP_REFERER']);
+            }else{
+                $this->redirect("删除失败",$_SERVER['HTTP_REFERER']);
             }
         }
+        $this->assign('data',$data);
+        $this->assign("show",true);
+        $this->view("admin/user.html");
     }
 }
 ?>

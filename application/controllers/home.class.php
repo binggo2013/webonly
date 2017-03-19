@@ -2,8 +2,23 @@
 class home extends Controller{
     public function index($data = array()){
         //问答
-        $this->assign("AllAsk",false);
-        $this->assign("askLeaderboard",false);
+        $AllAsk=$this->model->getAll("ask","where pid=0 order by id desc limit 0,3");
+        //$this->dump($AllAsk);
+        foreach ($AllAsk as $key=>$value){
+            $oneUser=$this->model->getOne("user","where id=".$value->uid);
+            $value->uid=$oneUser[0]->username;
+            $value->topic=strip_tags($value->topic);
+            $value->reponse_num=$this->model->getAllTotal("ask","where pid=".$value->id);
+            //$this->assign(,$value->reponse_num);
+        }
+        $this->assign("AllAsk",$AllAsk);
+        $askLeaderboard=$this->model->getAll("ask","where pid=0 order by id desc limit 0,7");
+        foreach ($askLeaderboard as $k=>$v){
+            $oneUser=$this->model->getOne("user","where id=".$v->uid);
+            $v->topic=strip_tags($v->topic);
+            $v->uid=$oneUser[0]->username;
+        }
+        $this->assign("askLeaderboard",$askLeaderboard);
         //下载
         $download=new downloadModel();
         $this->assign("downloadLeaderboard",$download->getLatestDownload());

@@ -80,7 +80,7 @@
 	border-radius:5px;
 	padding:15px;
 	z-index:500;
-	width:200px;
+	width:294px;
 }
 .jump li{
 	float:left;
@@ -91,6 +91,7 @@
 	text-align:center;
 	margin-right:3px;
 	cursor:pointer;
+	margin-bottom:2px;
 }
 .highlight{
 	background:#369;

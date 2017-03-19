@@ -9,6 +9,16 @@ $(function(){
 			return false;
 		}
 	});
+	$(".askBtn").click(function(){
+		if(!sessionStorage.getItem("username")){
+			$("#msgModal .msg").html("请先登录");
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
+			return false;
+		}
+	});
 	//console.log($(".downloadBar").length);
 	$(".downloadBar").each(function(_index){
 		//console.log(_index);

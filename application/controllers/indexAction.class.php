@@ -36,14 +36,14 @@ class indexAction extends Action{
 	    $userNum=$user->getAllUserTotal();
 	    $examination=new examinationModel();
 	    $examNum=$examination->getExamNum();
-	    $this->smarty->assign("aaa",$dict->getAllEntryTotal2());
-	    $this->smarty->assign("rrr",$dict->getAllReportWordsTotal2());
+	    $this->assign("aaa",$dict->getAllEntryTotal2());
+	    $this->assign("rrr",$dict->getAllReportWordsTotal2());
 	    //Tools::dump($feedback->getAllNewFeedbackTotal());
-	    $this->smarty->assign("fff",$feedback->getAllNewFeedbackTotal());
-	    $this->smarty->assign("examNum",$examNum);
-	    $this->smarty->assign("userNum",$userNum);
-	    $this->smarty->assign("articleNum",$articleNum);
-		$this->smarty->display("admin/welcome.html");
+	    $this->assign("fff",$feedback->getAllNewFeedbackTotal());
+	    $this->assign("examNum",$examNum);
+	    $this->assign("userNum",$userNum);
+	    $this->assign("articleNum",$articleNum);
+		$this->display("admin/welcome.html");
 		exit();
 	}
 	private function logout(){

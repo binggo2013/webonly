@@ -127,6 +127,7 @@ class quiz extends Controller{
             $this->model->ticked=count($_POST['judge'])+count($_POST['choice']);
             $this->model->rightNum=$resultNum+$resultNum2;
             //$this->model->score=$resultNum*10+$resultNum2*10;
+            //$this->model->score=$resultNum+$resultNum2;
             $this->model->score=number_format(($resultNum+$resultNum2)/($_POST['choiceNum']+$_POST['judgeNum'])*100,2);
             //$this->model->createExam();
             $array=array(

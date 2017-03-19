@@ -98,13 +98,12 @@ $(function(){
 	                    sessionStorage.setItem("point",str[0].countdown);                    
 	                    $(".UIA").css({"display":"none"});
 	                    $(".UIB").css({"display":"inline"}); 
-	                    ///////
+	                    ///处理信息////
 	                    var xhr=new XMLHttpRequest();
 	                    //console.log(xhr);
 	                    xhr.open("post","/message/msg");
 	                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	                    xhr.send("uid="+sessionStorage.getItem("id"));
-	                    
 	                    xhr.addEventListener('readystatechange',function(){
 		                    	if (xhr.readyState==4){
 		                    		if (xhr.status==200){

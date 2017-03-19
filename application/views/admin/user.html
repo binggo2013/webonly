@@ -35,7 +35,8 @@
 	<div class="col-md-12">
 	<ul class="breadcrumb">
 			<li><a href='/admin/welcome' target="main">后台首页</a></li>
-			<li><a href='/user/show'>前台管理员管理</a></li>
+			<li><a href='/user/show'>前台会员管理</a></li>
+			<li><a href="/user/add" title='添加会员'><i class="glyphicon glyphicon-plus"></i></a></li>
 			<li class="active">显示前台管理员</li>
 	</ul>
 <table class="table table-bordered table-striped table-hover table-condensed">
@@ -68,7 +69,7 @@
 				<td>{$value->last_time}</td>
 				<td>{$value->regTime}</td>
 				<td>{$value->state}</td>
-				<td><a href="?a=user&action=delete&id={$value->id}" class="deleteBtn">删除</a></td>
+				<td><a href="/user/delete/id/{$value->id}" class="deleteBtn">删除</a></td>
 				<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 			</tr>
 			{/foreach}
@@ -86,12 +87,40 @@
 	</div>
 </div>
 {/if}
+{if $add}
+<div class="col-md-12">
+	<ul class="breadcrumb">
+		<li><a href='/admin/welcome' target="main">后台首页</a></li>
+		<li><a href='/user/show'>前台会员管理</a></li>
+		<li><a href="/user/add" title='添加会员'><i class="glyphicon glyphicon-plus"></i></a></li>
+		<li class="active">显示前台管理员</li>
+	</ul>
+</div>
+<div class="col-md-12">
+<form action="" method="post">
+<table class="table table-bordered table-striped table-hover table-condensed">
+	<tr>	
+		<td class="text-right">用户名</td>
+		<td><input type="text" name="username" class="form-control"></td>
+	</tr>
+	<tr>	
+		<td class="text-right">密码</td>
+		<td><input type="text" name="pwd" class="form-control"></td>
+	</tr>
+	<tr>	
+		<td class="text-right">邮箱</td>
+		<td><input type="text" name="email" class="form-control"></td>
+	</tr>
+	<tr>	
+		<td class="text-right"></td>
+		<td><input type="submit" name="send" value="提交" class="btn btn-success"></td>
+	</tr>
+</table>
+</form>
+</div>
 
 
 
-
-
-
-
+{/if}
 </body>
 </html>

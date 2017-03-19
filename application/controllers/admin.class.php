@@ -18,6 +18,7 @@ class admin extends Controller{
         //$this->dump($_SESSION);
     }
     public function welcome(){
+        $this->assign("rrr",$this->model->getAllTotal("reportWords"," where state=0"));
         $this->view("admin/welcome.html");
     }
     public function login(){

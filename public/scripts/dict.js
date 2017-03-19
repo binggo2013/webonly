@@ -10,7 +10,7 @@ $(function(){
 	$("#reportBar").click(function(){
 		$("#reportModal").modal("hide");
 		$.ajax({
-			'url':"?a=dict&action=report",
+			'url':"/dict/report",
 			"type":"post",
 			'data':{
 				"username":$("#username").val(),
@@ -43,7 +43,7 @@ $(function(){
 		//alert($(this).val());
 		$.ajax({
 			type:"post",
-			url:"?a=dict&action=result",
+			url:"/dict/result",
 			data:{"keyword":keyword},
 			//开始交互
 			beforeSend:function(){
@@ -94,7 +94,7 @@ $(function(){
 		if($.trim($("#search").val()).length!=0){
 			$.ajax({
 				type:"post",
-				url:"?a=dict&action=result2",
+				url:"/dict/result2",
 				data:{"keyword":$("#search").val()},
 				//开始交互
 				beforeSend:function(){
@@ -119,7 +119,7 @@ $(function(){
 						content+="<td style='min-width:100px;'>释义</td><td colspan=5>"+str[0].paraphrase+"</td>";
 						content+="</tr>"
 						content+="<tr>"
-						content+="<td colspan=6 class='text-center'><a href='http://www.webonly.org/index.php?a=product&m=show' target='_blank'>最有用的IT书籍</a></td>";
+						content+="<td colspan=6 class='text-center'><a href='http://www.webonly.org/home/index' target='_blank'>最有用的IT书籍</a></td>";
 						//content+="<td>示例</td><td colspan=5>"+str[0].example+"</td>";
 						content+="</tr>"
 						content+="</table>";

@@ -214,21 +214,34 @@
 		</div>		
 	</div>	
 <div class="row middle">
-	<span class="column_title">Ask</span><span class="more pull-right"><a href="?a=ask&m=AllAsk" target="_blank">更多</a></span>
+	<span class="column_title">Ask</span><a href="/ask/showTopic" class="btn btn-success askBtn" target="_blank">我要提问</a><span class="more pull-right"><a href="?a=ask&m=AllAsk" target="_blank">更多</a></span>
 			<hr>
 		<div class="col-md-8">								
 			{if $AllAsk}
 				{foreach $AllAsk as $key=>$value}
-				<table border="0" cellspacing="0" cellpadding="0">
-				<tr style="height:33px;" class='tr'>
-					<td rowspan="2" style="width:100px;text-align:center;" class="bg-primary"><a href="?a=ask&action=detail&id={$value->id}" style="color:white;" target="_blank">{$value->answerNum}<br>回复</a></td>
-					 <td><h2><a href="?a=ask&action=detail&id={$value->id}" class="question_title">{$value->topic|truncate:40:"..."}</a></h2></td>
-					<td style="width:70px;padding-right:5px;"><a href="?a=ask&m=addTopic" class="btn btn-success" target="_blank">我要提问</a></td>				
+				<table class="table table-bordered table-striped table-hover">
+				<tr>
+					<td><a href="/ask/detail/id/{$value->id}">{$value->topic|truncate:40:"..."}</a></td>
+					<td width=100>
+					{if $value->reponse_num}
+					<a  href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->reponse_num}条回复</a>
+					{else}
+					暂无回复
+					{/if}
+					</td>
+					<td width=50>
+					<a href="/ask/respond/id/{$value->id}" target="_blank">
+						<i class="fa fa-reply btn btn-primary askBtn"></i>
+					</a>
+					</td>				
 				</tr>
-				<tr><td colspan="2" style="padding-left:5px;border-top:1px dashed #ddd;color:#999;">				
-				{$value->username}于{$value->date}
-				<a href='?a=ask&m=respond&id={$value->id}&pid={$value->id}&cid={$value->cid}' target="_blank">回复</a>
-				</td></tr>
+				<tr>
+				<td colspan='3'>	
+				<!-- <a href='?a=ask&m=respond&id={$value->id}&pid={$value->id}&cid={$value->cid}' target="_blank"> -->			
+				{$value->uid}于{$value->date}的提问
+				<!-- </a> -->
+				</td>
+				</tr>
 				</table>
 				{/foreach}				
 				{else}
@@ -274,8 +287,13 @@
 				{foreach $askLeaderboard as $key=>$value}
 				<tr>
 					<td>{$key+1}</td>
-					<td><a href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->topic|truncate:25:"..."}</a></td>
-					<td>提问者</td>
+					<td><a class='ask_title' href="?a=ask&action=detail&id={$value->id}" target="_blank">{$value->topic|truncate:25:"..."}</a></td>
+					<td>{$value->uid}</td>
+					<style>
+						.ask_title p{
+								margin:0;
+						}
+					</style>
 				</tr>
 				{/foreach}	
 				{else}	

@@ -41,6 +41,18 @@ class article extends Controller{
         //$this->dump($frontNav);
         $this->assign("frontNav",$frontNav);
     }
+    public function delete($data=array()){
+        if($data['id']){
+            $result=$this->model->delete("article","where id=".$data['id']);
+            if($result){
+                $this->redirect("删除成功",$_SERVER['HTTP_REFERER']);
+            }else{
+                $this->redirect("删除失败","",0);
+            }
+        }
+        $this->assign("show",true);
+        $this->view("admin/article.html");
+    }
     /*显示文章所在页面方法*/
     public function detail($data=array()){
         if ($data["id"]){

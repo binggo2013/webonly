@@ -1,5 +1,10 @@
 <?php
 class download extends Controller{
+    private function showNav(){
+        $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort asc limit 9");
+        //$this->dump($frontNav);
+        $this->assign("frontNav",$frontNav);
+    }
     public function topic(){
         $total=$this->model->getAllTotal("topic");
         $this->page($total);
@@ -118,6 +123,7 @@ class download extends Controller{
         $this->assign("topic",$str);
     }
     public function AllDownload(){
+        $this->showNav();
         $allTopic=$this->model->getAll("topic");
         $temp=array();
         foreach ($allTopic as $key=>$value){
@@ -131,10 +137,11 @@ class download extends Controller{
         $this->view("home/download.html");
     }
     public function all($data=array()){
+        $this->showNav();
         $this->assign("downloadLeaderboard",$this->model->getAll("download","order by download_num desc limit 0,5"));
         $oneTopic=$this->model->getOne("topic","where name='".$data['name']."'");
         $this->assign("oneTopic",$oneTopic[0]);
-        $this->page($this->model->getAllTotal("download","where tid=".$oneTopic[0]->id));
+        $this->page($this->model->getAllTotal("download","where tid=".$oneTopic[0]->id),10);
         $allDownload=$this->model->getAll("download","where tid=".$oneTopic[0]->id." order by id desc ",$this->model->limit);
         $this->assign("allDownload",$allDownload);
         $this->assign("back","/download/AllDownload");

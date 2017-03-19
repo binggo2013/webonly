@@ -1,15 +1,21 @@
 $(function() {
-	$("#cid").change(function(){
-		$(".text-danger").html("");
-	});
 	$("#submitBtn").click(function() {
+		//alert(ue.getContent());
+		//alert($("#commentEditor")[0].getContent());
 		if ($("#cid").val() == 0) {
-			// $(".text-danger").html("主题不得为空");
-			$(".text-danger").html("主题不得为空");
+			$("#msgModal .msg").html("主题不得为空");
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
 			return false;
 		}
-		if($.trim($("#respond").val()).length==0){
-			$(".text-danger").html("提问内容不得为空");
+		if(ue.getContent().length==0){
+			$("#msgModal .msg").html("内容不得为空");
+			$("#msgModal").modal("show");
+			setTimeout(function(){
+				$("#msgModal").modal("hide");
+			},2000);
 			return false;
 		}
 		return true;

@@ -4,13 +4,24 @@ class learning extends Controller{
         $this->showNav();
         $oneCourse=$this->model->getOne("course", "where id=".$data['cid']);
         $this->assign("oneCourse",$oneCourse[0]);
-        $choices=$this->model->getAll("choice","where course_id=".$data['cid']." order by Rand() limit 0,25");
-        $judges=$this->model->getAll("judge","where course_id=".$data['cid']." order by Rand() limit 0,25");
+        //显示的题目数量
+        $choices=$this->model->getAll("choice","where course_id=".$data['cid']." order by Rand() limit 0,50");
+        $judges=$this->model->getAll("judge","where course_id=".$data['cid']." order by Rand() limit 0,50");
         //$this->dump($oneCourse);
         $this->assign("show",true);
         $this->assign("choices",$choices);
         $this->assign("judges",$judges);
         $this->view("home/quiz.html");
+    }
+    public function deleteChoice($data=array()){
+        $result=$this->model->delete("choice","where id=".$data['id']);
+        if($result){
+            $this->redirect("删除成功", "/learning/showChoice");
+        }else{
+            $this->redirect("删除失败", "/learning/showChoice",0);
+        }
+        $this->assign("showChoice",true);
+        $this->view("admin/learning.html");
     }
     private function showNav(){
         $frontNav=$this->model->getAll("nav","where pid=0 and state=1 order by sort asc limit 9");

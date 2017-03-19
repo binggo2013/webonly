@@ -3,36 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title>字典管理</title>
-<link href="public/styles/bootstrap.css" rel="stylesheet">
-<link href="public/styles/normalize.css" rel="stylesheet">
-<link href="public/styles/font-awesome.css" rel="stylesheet">
-<script src="public/scripts/jquery-1.10.2.js"></script>
-<script src="public/scripts/bootstrap.js"></script>
-<script src="public/scripts/admin.js"></script>
-<script src="public/scripts/tools.js"></script>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="libs/ueditor/lang/zh-cn/zh-cn.js"></script>
-<link href="public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+<link href="{$ROOT}/vendor/fontawesome/styles/font-awesome.css" rel="stylesheet">
+<script src="{$ROOT}/vendor/jquery/jquery-3.1.1.js"></script>
+<script src="{$ROOT}/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="{$ROOT}/public/scripts/admin.js"></script>
+<script src="{$ROOT}/public/scripts/redirect.js"></script>
+<link href="{$ROOT}/public/styles/admin.css" rel="stylesheet">
+<link href="{$ROOT}/public/styles/page.css" rel="stylesheet">
 </head>
 <body>
-<!--modal模态框开始  -->
-<div class="confirm modal-content" id="myModal" aria-labelledby='myModalLabel' aria-hidden='true'>
-				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true" id="confirmCloseBtn"></span><span class="rs-only"></span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">确定要删除吗</h4>
-			</div>
-			<div class="modal-body body">
-				<span class="text-danger h4">删除是不可逆的，确定要删除吗？</span>
-			</div>
-			<div class="modal-footer">
-				<a href="" type="button" class="btn btn-success" id="true">确定</a>
-				<a href="" type="button" class="btn btn-danger" data-dismiss="modal" id="falseBtn">取消</a>
-			</div>
-</div>
-<!--modal模态框结束  -->
+{include file="admin/common.html"}
 {if $keyword}
 	<div class="row">
 		<div class="col-xs-12">
@@ -85,11 +67,11 @@
 		<div class="col-xs-12">
 		<form method="post" action="?a=dict&action=search">
 			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=dict&action=admin'>字典管理</a></li>
-					<li><a href='?a=dict&action=reportAdmin'>用户提交新词管理</a></li>
+					<li><a href='/amdin/welcome' target="main">后台首页</a></li>
+					<li><a href='/dict/admin'>字典管理</a></li>
+					<li><a href='/dict/reportAdmin'>用户提交新词管理</a></li>
 					<li class="active">显示词条</li>
-					<li><a href="?a=dict&action=add" title='添加词条'><i class="fa fa-plus-circle"></i></a></li>
+					<li><a href="/dict/add" title='添加词条'><i class="fa fa-plus-circle"></i></a></li>
 					<li>
 					<input type="text" class="search" name="keyword">
 					<input type="submit" value="查询" name="send">
@@ -97,9 +79,8 @@
 				</ul>
 				</form>
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=ad&action=deleteAll" method="post">
+			<form action="" method="post">
 				<tr>
-					<td>编号</td>
 					<td>标题</td>
 					<td>音标</td>
 					<td>图片</td>
@@ -115,7 +96,6 @@
 				{if $AllEntry}
 				{foreach $AllEntry as $key=>$value}
 				<tr>
-					<td>{$key+$num}</td>
 					<td>{$value->wordname}</td>
 					<td>{$value->phonetic}</td>
 					<td>{$value->pic}</td>
@@ -126,8 +106,8 @@
 					<td>{$value->state}</td>
 					<td>{$value->description}</td>
 					<td>
-						<a href="?a=dict&action=update&id={$value->id}">修改</a>
-						<a href="?a=dict&action=delete&id={$value->id}" class="deleteBtn" info="">删除</a>
+						<a href="/dict/update/id/{$value->id}">修改</a>
+						<a href="/dict/delete/id/{$value->id}" class="deleteBtn" info="">删除</a>
 					</td>
 					<td><input type="checkbox" value="{$value->id}" name="selectAll[]"></td>
 				</tr>
@@ -136,26 +116,14 @@
 					<td colspan="12"><input type="submit" value="全删" class="btn btn-success pull-right" name="send"></td>
 				</tr>
 				{else}
-				<tr><td colspan="7">暂无广告</td></tr>
+				<tr><td colspan="7">暂无数据</td></tr>
 				{/if}
 			</form>
 			</table>
 		</div>
 	</div>
 	<div class="row">
-			<div class="col-md-12 text-center">
-				<form action="" method="get" style="display:inline">
-				<input type="hidden" name="action" value="show">
-				<input type="hidden" name="a" value="ad">
-					<select name="kind" class="input-sm">
-						<option value="0" {$all}>所有广告</option>
-						<option value="1" {$fullcolumn}>通栏广告</option>
-						<option value="2" {$banner}>banner广告</option>
-						<option value="3" {$slider}>slider广告</option>
-						<option value="4" {$sidebar}>侧栏广告</option>
-					</select>
-					<input type="submit" name="send" value="提交" class="btn btn-success">
-				</form>
+			<div class="col-md-12 text-center page">
 			{$page}
 			</div>
 	</div>
@@ -165,10 +133,10 @@
 		<div class="col-xs-12">
 		<form method="post" action="?a=dict&action=search">
 			<ul class="breadcrumb">
-					<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-					<li><a href='?a=dict&action=admin'>字典管理</a></li>
+					<li><a href='/admin/welcome' target="main">后台首页</a></li>
+					<li><a href='/dict/admin'>字典管理</a></li>
 					<li class="active">显示词条</li>
-					<li><a href="?a=dict&action=add" title='添加词条'><i class="fa fa-plus-circle"></i></a></li>
+					<li><a href="/dict/add" title='添加词条'><i class="fa fa-plus-circle"></i></a></li>
 					<li>
 					<input type="text" class="search" name="keyword">
 					<input type="submit" value="查询" name="send">
@@ -176,9 +144,8 @@
 				</ul>
 				</form>
 			<table class="table table-bordered table-striped table-hover table-condensed">
-			<form action="?a=dict&action=deleteAll" method="post">
+			<form action="/dict/deleteAll" method="post">
 				<tr>
-					<td>编号</td>
 					<td>用户名</td>
 					<td>联系方式</td>
 					<td>提交新词</td>
@@ -189,7 +156,6 @@
 				{if $AllReportWords}
 				{foreach $AllReportWords as $key=>$value}
 				<tr>
-					<td>{$key+$num}</td>
 					<td>{$value->provider}</td>
 					<td title="{$value->contact}">{$value->contact|truncate:"10":"..."}</td>
 					<td>{$value->reportWord}</td>
@@ -209,37 +175,27 @@
 		</div>
 	</div>
 	<div class="row">
-			<div class="col-md-12 text-center">
-				<form action="" method="get" style="display:inline">
-				<input type="hidden" name="action" value="show">
-				<input type="hidden" name="a" value="ad">
-					<select name="kind" class="input-sm">
-						<option value="0" {$all}>所有广告</option>
-						<option value="1" {$fullcolumn}>通栏广告</option>
-						<option value="2" {$banner}>banner广告</option>
-						<option value="3" {$slider}>slider广告</option>
-						<option value="4" {$sidebar}>侧栏广告</option>
-					</select>
-					<input type="submit" name="send" value="提交" class="btn btn-success">
-				</form>
-			{$page}
-			</div>
+			<div class="col-md-12 text-center page">{$page}</div>
 	</div>
 {/if}
 {if $add}
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=dict&action=admin'>词条管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/dict/admin'>词条管理</a></li>
 			<li class="active">添加词条</li>
-			<!-- <li><a href="?action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li> -->
 		</ul>
 		<form method="post" enctype="multipart/form-data">
 		<table class="table table-bordered table-striped table-hover table-condensed">				
 				<tr class="text-center"><td colspan="2" id="feedback"></td></tr>
 				<tr>
 					<td class="text-right">所属的类型</td>
+					<td>
+					<select name="catalogue" class="form-control" style="width:120px;">
+					{$catalogue}
+					</select>
+					</td>
 					<!-- <td width=150>
 						<select name="vid" class="form-control input-sm inline-block" id="nav" style="width:160px;">
 						<option value="0">选择词条的类型</option>
@@ -267,8 +223,9 @@
 				<tr>
 					<td class="text-right">示例图</td>
 					<td class="reg">
-						<img src="public/uploads/article/default.jpg" class="img-circle" style="width:80px;height:80px;"><a href="javascript:void(0)" id="iconBtn">太丑了，换一张</a>						
-						<input type="file" name="pic" class="form-control" id="pic" accept="image/*">
+						<img src="{$ROOT}/public/uploads/dict/default.jpg" class="img-circle" style="width:80px;height:80px;">					
+						<input type="file" name="pic" class="form-control" id="pic" accept="image/*" style="display:none">
+						<label for="pic">太丑了，换一张</label>
 					</td>
 				</tr>	
 				<tr>
@@ -276,23 +233,6 @@
 					<td>
 						<!-- <textarea rows="" cols="" name="content" id="content" ></textarea> -->
 						<script id="editor" type="text/plain" style="width:100%" name="paraphrase"></script>
-						<script type="text/javascript">    
-							var ue = UE.getEditor('editor');	
-							$(function(){
-								/* $("#nav").change(function(){
-									$(".text-alert").html("");
-								}); */
-								$("#submitBtn").click(function(){
-									//$("#content").val(UE.getEditor('editor').getContent());
-									/* if($("#nav").val()=="0"){
-										$(".text-alert").html("栏目不得为空");
-										return false;
-									} */
-									return true;
-								});
-							});
-						</script>
-					
 					</td>
 				</tr>			
 				<tr>
@@ -300,27 +240,8 @@
 					<td>
 						<!-- <textarea rows="" cols="" name="example" id="content" style="display:none;"></textarea> -->
 						<script id="editor2" type="text/plain" style="width:100%" name="example"></script>
-						<script type="text/javascript"> 
-							var ue2 = UE.getEditor('editor2');	
-							$(function(){
-								/* $("#nav").change(function(){
-									$(".text-alert").html("");
-								}); */
-								$("#submitBtn").click(function(){
-									//$("#content").val(UE.getEditor('editor').getContent());
-									/* if($("#nav").val()=="0"){
-										$(".text-alert").html("栏目不得为空");
-										return false;
-									} */
-									return true;
-								});
-							});
-						</script>
 					</td>
-				</tr>
-				<tr>
-					<td class="text-right">类型</td><td><input type="text" name="catalogue" class="form-control"></td>
-				</tr>
+				</tr>		
 				<tr>
 					<td class="text-right">提供者</td><td><input type="text" name="provider" class="form-control" value="admin"></td>
 				</tr>
@@ -334,8 +255,8 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="breadcrumb">
-			<li><a href='?a=index&action=welcome' target="main">后台首页</a></li>
-			<li><a href='?a=dict&action=admin'>词条管理</a></li>
+			<li><a href='/admin/welcome' target="main">后台首页</a></li>
+			<li><a href='/dict/admin'>词条管理</a></li>
 			<li class="active">修改词条</li>
 			<!-- <li><a href="?action=add" title='添加广告'><i class="fa fa-plus-circle"></i></a></li> -->
 		</ul>
@@ -345,13 +266,18 @@
 				<tr>
 				<input type="hidden" name="id" value="{$oneEntry->id}">
 					<td class="text-right">所属的类型</td>
+					<td>
+					<select name="catalogue" class="form-control" style="width:120px;">
+					<option>选择类型</option>
+					{$catalogue}
+					</select>
+					</td>
 					<!-- <td width=150>
 						<select name="vid" class="form-control input-sm inline-block" id="nav" style="width:160px;">
 						<option value="0">选择词条的类型</option>
 						 {$nav}
 						</select>(<span class="glyphicon glyphicon-asterisk text-alert"></span>)
 					</td> -->
-					<td><input type="text" value="{$oneEntry->catalog}"></td>
 				</tr>
 				<tr>
 					<td class="text-right">单词</td><td><input type="text" name="wordname" class="form-control" value="{$oneEntry->wordname}"></td>
@@ -373,8 +299,9 @@
 				<tr>
 					<td class="text-right">示例图</td>
 					<td class="reg">
-						<img src="public/uploads/article/default.jpg" class="img-circle" style="width:80px;height:80px;"><a href="javascript:void(0)" id="iconBtn">太丑了，换一张</a>						
+						<img src="{$ROOT}/public/uploads/article/default.jpg" class="img-circle" style="width:80px;height:80px;">					
 						<input type="file" name="pic" class="form-control" id="pic" accept="image/*" value="{$oneEntry->pic}">
+						<label for='pic'>太丑了，换一张。</label>
 					</td>
 				</tr>	
 				<tr>
@@ -382,23 +309,6 @@
 					<td>
 						<!-- <textarea rows="" cols="" name="content" id="content" ></textarea> -->
 						<script id="editor" type="text/plain" style="width:100%" name="paraphrase">{$oneEntry->paraphrase}</script>
-						<script type="text/javascript">    
-							var ue = UE.getEditor('editor');	
-							$(function(){
-								/* $("#nav").change(function(){
-									$(".text-alert").html("");
-								}); */
-								$("#submitBtn").click(function(){
-									//$("#content").val(UE.getEditor('editor').getContent());
-									/* if($("#nav").val()=="0"){
-										$(".text-alert").html("栏目不得为空");
-										return false;
-									} */
-									return true;
-								});
-							});
-						</script>
-					
 					</td>
 				</tr>			
 				<tr>
@@ -406,26 +316,7 @@
 					<td>
 						<!-- <textarea rows="" cols="" name="example" id="content" style="display:none;"></textarea> -->
 						<script id="editor2" type="text/plain" style="width:100%" name="example">{$oneEntry->example}</script>
-						<script type="text/javascript"> 
-							var ue2 = UE.getEditor('editor2');	
-							$(function(){
-								/* $("#nav").change(function(){
-									$(".text-alert").html("");
-								}); */
-								$("#submitBtn").click(function(){
-									//$("#content").val(UE.getEditor('editor').getContent());
-									/* if($("#nav").val()=="0"){
-										$(".text-alert").html("栏目不得为空");
-										return false;
-									} */
-									return true;
-								});
-							});
-						</script>
-					</td>
-				</tr>
-				<tr>
-					<td class="text-right">类型</td><td><input type="text" name="catalogue" class="form-control" value="{$oneEntry->catalogue}"></td>
+				</td>
 				</tr>
 				<tr>
 					<td class="text-right">提供者</td><td><input type="text" name="provider" class="form-control" value="{$oneEntry->provider}"></td>
@@ -436,5 +327,11 @@
 	</div>
 </div>
 {/if}
+<script src="{$ROOT}/vendor/ueditor/ueditor.config.js"></script>
+<script src="{$ROOT}/vendor/ueditor/ueditor.all.js"></script>
+<script>
+	var ue=UE.getEditor("editor");
+	var ue2=UE.getEditor("editor2");
+</script>
 </body>
 </html>

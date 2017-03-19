@@ -24,6 +24,9 @@ class Model{
         }
         return self::$_instance;
     }
+    public function query($statement){
+        return $this->db->query($statement);
+    }
     /**修改时,根据条件获取一条数据  */
     public function getOne($_table,$_where){
         //设置sql语句

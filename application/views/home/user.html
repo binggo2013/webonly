@@ -53,7 +53,7 @@
 				<td style='width:90px;' class="text-right">邮箱</td><td><input type="text" name="email" value="{$oneUser->email}" class="form-control"></td>
 			</tr>
 			<tr>
-				<td style='width:90px;' class="text-right">头像</td><td><img src="public/uploads/user/{$oneUser->icon}" class='icon img-circle'>&nbsp;&nbsp;<a href='javascript:void();' id="changeBtn">换一张</a></td>
+				<td style='width:90px;' class="text-right">头像</td><td><img src="{$ROOT}/public/uploads/user/{$oneUser->icon}" class='icon img-circle'>&nbsp;&nbsp;<a href='javascript:void();' id="changeBtn">换一张</a></td>
 			</tr>
 			<input type="text" name="newpic"  value="{$oneUser->icon}" style="display:none;">
 			<input type="file" id="pic" name="pic" style="display:none;">			
