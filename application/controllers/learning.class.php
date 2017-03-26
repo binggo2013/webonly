@@ -317,6 +317,17 @@ class learning extends Controller{
         $this->assign("showExam",true);
         $this->view("admin/learning.html");
     }
+    public function deleteJudge($data=array()){
+        if($data['id']){
+            if($this->model->delete("judge","where id=".$data['id'])){
+                $this->redirect("判断题删除成功",$_SERVER['HTTP_REFERER']);
+            }else{
+                $this->redirect("判断题除失败",$_SERVER['HTTP_REFERER'],0);
+            }
+        }
+        $this->assign("showExam",true);
+        $this->view("admin/learning.html");
+    }
     public function showJudge(){
         $allCourse=$this->model->getAll("course");
         $courseStr=null;
